@@ -58,7 +58,7 @@ class Panel(ScreenPanel):
         adjust.set_hexpand(False)
         adjust.set_margin_top(15)
 
-        grid = self._gtk.HomogeneousGrid()
+        grid = Gtk.Grid(row_homogeneous=True, column_homogeneous=True)
 
         if self._screen.vertical_mode:
             if self._screen.lang_ltr:
@@ -108,7 +108,9 @@ class Panel(ScreenPanel):
         for p in ('pos_x', 'pos_y', 'pos_z'):
             self.labels[p] = Gtk.Label()
         
-        bottomgrid = self._gtk.HomogeneousGrid()
+        bottomgrid = Gtk.Grid(row_homogeneous=True, column_homogeneous=True)
+        bottomgrid.set_size_request(200, 10)
+        
         bottomgrid.set_direction(Gtk.TextDirection.LTR)
         bottomgrid.attach(self.labels['pos_x'], 0, 0, 1, 1)
         bottomgrid.attach(self.labels['pos_y'], 1, 0, 1, 1)

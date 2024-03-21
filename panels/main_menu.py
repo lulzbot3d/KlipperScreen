@@ -61,7 +61,7 @@ class Panel(MenuPanel):
         self.fan_spd.get_style_context().add_class("buttons_main_top")
         self.fan_spd.get_style_context().add_class("main_temp_off")
 
-        top = self._gtk.HomogeneousGrid()
+        top = Gtk.Grid(row_homogeneous=True, column_homogeneous=True)
         top.set_property("height-request", 80)
         top.set_vexpand(False)
         top.set_margin_bottom(10)
@@ -117,7 +117,8 @@ class Panel(MenuPanel):
         self.print = self._gtk.Button('print', " Print", "button_print", self.bts * 3, Gtk.PositionType.LEFT, 1)
         self.print.connect("clicked", self.menu_item_clicked, {"name": "Print", "panel": "print"})
 
-        right = self._gtk.HomogeneousGrid(width=300, height=0)
+        right = Gtk.Grid(row_homogeneous=True, column_homogeneous=True)
+        right.set_property("width-request", 300)
         right.set_vexpand(True)
         right.set_hexpand(False)
         right.attach(self.change,  0, 0, 1, 1)

@@ -95,8 +95,12 @@ class BasePanel(ScreenPanel):
         self.control['time_box'] = Gtk.Box(halign=Gtk.Align.END)
         self.control['time_box'].pack_end(self.control['time'], True, True, 10)
 
+        self.control['ip_box'] = Gtk.Box()
+        self.control['ip'] = Gtk.Label(label=self.ip)
+        self.control['ip_box'].set_halign(Gtk.Align.END)
+        self.control['ip_box'].pack_end(self.control['ip'], True, True, 10)
 
-        #self.titlebar = Gtk.Box(spacing=5, valign=Gtk.Align.CENTER)
+        self.titlebar = Gtk.Box(spacing=5, valign=Gtk.Align.CENTER)
         self.titlebar.get_style_context().add_class("title_bar")
         self.titlebar.add(self.control['temp_box'])
         self.titlebar.add(self.titlelbl)
