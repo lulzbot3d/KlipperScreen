@@ -101,7 +101,7 @@ class Panel(ScreenPanel):
             ctx = self.labels[i].get_style_context()
             ctx.add_class("horizontal_togglebuttons")
             if i == self.distance:
-                ctx.add_class("distbutton_active")
+                ctx.add_class("horizontal_togglebuttons_active")
             distgrid.attach(self.labels[i], 0, j, 1, 1)
         distgrid.attach(adjust, 0, j+1, 1, 1)
 
