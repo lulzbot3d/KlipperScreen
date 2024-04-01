@@ -111,8 +111,8 @@ class Panel(MenuPanel):
         return
 
     def create_right_panel(self):
-        self.change = self._gtk.Button('Filament3', " Filament", "button_change", self.bts * 3,\
-                                        Gtk.PositionType.LEFT, 2)
+        self.change = self._gtk.Button('Filament3', " Filament", "button_change", self.bts * 3,
+                                       Gtk.PositionType.LEFT, 2)
         self.change.connect("clicked", self.menu_item_clicked, {"name": "Filament", "panel": "extrude"})
 
         self.print = self._gtk.Button('print', " Print", "button_print", self.bts * 3, Gtk.PositionType.LEFT, 1)
