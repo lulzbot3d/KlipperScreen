@@ -32,7 +32,7 @@ class BasePanel(ScreenPanel):
         self.control['back'].connect("clicked", self.back)
         self.control['home'] = self._gtk.Button('main', scale=abscale)
         self.control['home'].connect("clicked", self._screen._menu_go_back, True)
-        
+
         for control in self.control:
             self.set_control_sensitive(False, control)
         self.control['estop'] = self._gtk.Button('emergency', scale=abscale)
@@ -104,7 +104,7 @@ class BasePanel(ScreenPanel):
         self.titlebar.get_style_context().add_class("title_bar")
         self.titlebar.add(self.control['temp_box'])
         self.titlebar.add(self.titlelbl)
-        #self.titlebar.add(self.control['time_box'])
+        # self.titlebar.add(self.control['time_box'])
         self.titlebar.add(self.control['ip_box'])
 
         # Main layout
@@ -379,7 +379,7 @@ class BasePanel(ScreenPanel):
         self._screen._menu_go_back(home=True)
 
     def get_ip(self):
-        #borrowed from network.py
+        # borrowed from network.py
         gws = netifaces.gateways()
         if "default" in gws and netifaces.AF_INET in gws["default"]:
             self.interface = gws["default"][netifaces.AF_INET][1]

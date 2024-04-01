@@ -7,9 +7,10 @@ from gi.repository import Gtk, Pango
 from ks_includes.KlippyGcodes import KlippyGcodes
 from ks_includes.screen_panel import ScreenPanel
 
-# NOTE:  The changes I have made for the custom Lulzbot layout 
+# NOTE:  The changes I have made for the custom Lulzbot layout
 # have probably broken the vertical layout badly but we don't
 # use or support that on Mini 3 anyway.
+
 
 class Panel(ScreenPanel):
     distances = ['.1', '.5', '1', '5', '10', '25', '50']
@@ -37,7 +38,7 @@ class Panel(ScreenPanel):
             'z-': self._gtk.Button("arrow-down", "Z-", "color3"),
             'home': self._gtk.Button("home", _("Home Menu"), "color4"),
             'motors_off': self._gtk.Button("motor-off", _("Disable Motors"), "color4"),
-            'home-all' : self._gtk.Button("home", _("Home All"), "color4"),
+            'home-all': self._gtk.Button("home", _("Home All"), "color4"),
         }
         self.buttons['x+'].connect("clicked", self.move, "X", "+")
         self.buttons['x-'].connect("clicked", self.move, "X", "-")
@@ -47,12 +48,12 @@ class Panel(ScreenPanel):
         self.buttons['z-'].connect("clicked", self.move, "Z", "-")
         self.buttons['home'].connect("clicked", self.home)
         self.buttons['home-all'].connect("clicked", self.home_all)
-        
+
         script = {"script": "M18"}
         self.buttons['motors_off'].connect("clicked", self._screen._confirm_send_action,
                                            _("Are you sure you wish to disable motors?"),
                                            "printer.gcode.script", script)
-        
+
         adjust = self._gtk.Button("SpeedOMeter", None, "color2", 1, Gtk.PositionType.LEFT, 1)
         adjust.connect("clicked", self.load_menu, 'options', _('Settings'))
         adjust.set_hexpand(False)
@@ -90,7 +91,7 @@ class Panel(ScreenPanel):
         grid.attach(self.buttons['home'], 0, 0, 1, 1)
         grid.attach(self.buttons['motors_off'], 2, 2, 1, 1)
         grid.attach(self.buttons['home-all'], 1, 1, 1, 1)
-        #grid.attach(adjust, 2, 2, 1, 1)
+        # grid.attach(adjust, 2, 2, 1, 1)
 
         distgrid = Gtk.Grid()
         distgrid.set_margin_left(20)
@@ -103,20 +104,20 @@ class Panel(ScreenPanel):
             if i == self.distance:
                 ctx.add_class("horizontal_togglebuttons_active")
             distgrid.attach(self.labels[i], 0, j, 1, 1)
-        distgrid.attach(adjust, 0, j+1, 1, 1)
+        distgrid.attach(adjust, 0, j + 1, 1, 1)
 
         for p in ('pos_x', 'pos_y', 'pos_z'):
             self.labels[p] = Gtk.Label()
-        
+
         bottomgrid = Gtk.Grid(row_homogeneous=True, column_homogeneous=True)
         bottomgrid.set_size_request(200, 10)
-        
+
         bottomgrid.set_direction(Gtk.TextDirection.LTR)
         bottomgrid.attach(self.labels['pos_x'], 0, 0, 1, 1)
         bottomgrid.attach(self.labels['pos_y'], 1, 0, 1, 1)
         bottomgrid.attach(self.labels['pos_z'], 2, 0, 1, 1)
-        #bottomgrid.attach(self.labels['move_dist'], 0, 1, 3, 1)
-        #if not self._screen.vertical_mode:
+        # bottomgrid.attach(self.labels['move_dist'], 0, 1, 3, 1)
+        # if not self._screen.vertical_mode:
         #    bottomgrid.attach(adjust, 3, 0, 0, 2)
 
         self.labels['move_menu'] = Gtk.Grid()
@@ -138,9 +139,9 @@ class Panel(ScreenPanel):
             max_z_velocity = max_velocity
 
         configurable_options = [
-            #{"invert_x": {"section": "main", "name": _("Invert X"), "type": "binary", "value": "False"}},
-            #{"invert_y": {"section": "main", "name": _("Invert Y"), "type": "binary", "value": "False"}},
-            #{"invert_z": {"section": "main", "name": _("Invert Z"), "type": "binary", "value": "False"}},
+            # {"invert_x": {"section": "main", "name": _("Invert X"), "type": "binary", "value": "False"}},
+            # {"invert_y": {"section": "main", "name": _("Invert Y"), "type": "binary", "value": "False"}},
+            # {"invert_z": {"section": "main", "name": _("Invert Z"), "type": "binary", "value": "False"}},
             {"move_speed_xy": {
                 "section": "main", "name": _("XY Speed (mm/s)"), "type": "scale", "value": "45",
                 "range": [1, max_velocity], "step": 1}},

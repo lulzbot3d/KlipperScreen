@@ -1,7 +1,7 @@
-#*********************************
+# *********************************
 # Lulzbot KlipperScreen Main Menu
-# By Carl Smith  2024 - FAME3D  
-#*********************************
+# By Carl Smith  2024 - FAME3D
+# *********************************
 
 import logging
 import gi
@@ -9,6 +9,7 @@ import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, GLib
 from panels.menu import Panel as MenuPanel
+
 
 class Panel(MenuPanel):
     def __init__(self, screen, title, items=None):
@@ -20,11 +21,11 @@ class Panel(MenuPanel):
 
         logging.info("### Making Lulzbot MainMenu")
 
-        # Build new top row live extruder temp, bed temp, and fan buttons.  Buttons are defined here 
+        # Build new top row live extruder temp, bed temp, and fan buttons.  Buttons are defined here
         # rather than in create_top_panel so they can be seen by the update routine
         self.ext_temp = self._gtk.Button('nozzle1', "°C", "color1", self.bts * 1.5, Gtk.PositionType.LEFT, 1)
         self.bed_temp = self._gtk.Button('bed', "°C", "color2", self.bts * 1.3, Gtk.PositionType.LEFT, 1)
-        self.fan_spd  = self._gtk.Button('fan', "%", "color3", self.bts * 1.5, Gtk.PositionType.LEFT, 1)
+        self.fan_spd = self._gtk.Button('fan', "%", "color3", self.bts * 1.5, Gtk.PositionType.LEFT, 1)
         self.top_panel = self.create_top_panel()
         self.main_menu.attach(self.top_panel, 0, 0, 3, 1)
 
@@ -34,7 +35,7 @@ class Panel(MenuPanel):
 
         for child in self.labels['menu'].get_children():
             child.get_style_context().add_class("buttons_main_left")
-            
+
         self.right_panel = self.create_right_panel()
         self.main_menu.attach(self.right_panel, 2, 1, 1, 1)
 
@@ -46,7 +47,7 @@ class Panel(MenuPanel):
         self.update_top_panel()
 
     def create_top_panel(self):
-        #Buttons are defined in the init so they can be seen by the update routine
+        # Buttons are defined in the init so they can be seen by the update routine
 
         self.ext_temp.connect("clicked", self.menu_item_clicked, {"name": "Temperature", "panel": "temperature"})
         self.bed_temp.connect("clicked", self.menu_item_clicked, {"name": "Temperature", "panel": "temperature"})
@@ -67,7 +68,7 @@ class Panel(MenuPanel):
         top.set_margin_bottom(10)
         top.attach(self.ext_temp, 0, 0, 1, 1)
         top.attach(self.bed_temp, 1, 0, 1, 1)
-        top.attach(self.fan_spd,  2, 0, 1, 1)
+        top.attach(self.fan_spd, 2, 0, 1, 1)
 
         return top
 
@@ -109,11 +110,11 @@ class Panel(MenuPanel):
         self.fan_spd.set_label(fan_label)
         return
 
-
     def create_right_panel(self):
-        self.change = self._gtk.Button('Filament3', " Filament", "button_change", self.bts * 3, Gtk.PositionType.LEFT, 2)
+        self.change = self._gtk.Button('Filament3', " Filament", "button_change", self.bts * 3,\
+                                        Gtk.PositionType.LEFT, 2)
         self.change.connect("clicked", self.menu_item_clicked, {"name": "Filament", "panel": "extrude"})
-        
+
         self.print = self._gtk.Button('print', " Print", "button_print", self.bts * 3, Gtk.PositionType.LEFT, 1)
         self.print.connect("clicked", self.menu_item_clicked, {"name": "Print", "panel": "print"})
 
@@ -121,6 +122,6 @@ class Panel(MenuPanel):
         right.set_property("width-request", 300)
         right.set_vexpand(True)
         right.set_hexpand(False)
-        right.attach(self.change,  0, 0, 1, 1)
+        right.attach(self.change, 0, 0, 1, 1)
         right.attach(self.print, 0, 1, 1, 1)
         return right
