@@ -98,12 +98,12 @@ class Panel(ScreenPanel):
         functions = []
         pobox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
-        if "Z_ENDSTOP_CALIBRATE" in self._printer.available_commands:
-            self._add_button("Endstop", "endstop", pobox)
-            functions.append("endstop")
         if "PROBE_CALIBRATE" in self._printer.available_commands:
-            self._add_button("Probe", "probe", pobox)
+            self._add_button("1) Probe", "probe", pobox)
             functions.append("probe")
+        if "Z_ENDSTOP_CALIBRATE" in self._printer.available_commands:
+            self._add_button("2) Endstop", "endstop", pobox)
+            functions.append("endstop")
         if "BED_MESH_CALIBRATE" in self._printer.available_commands:
             self.mesh_min = self._csv_to_array(self._printer.get_config_section("bed_mesh")['mesh_min'])
             self.mesh_max = self._csv_to_array(self._printer.get_config_section("bed_mesh")['mesh_max'])
