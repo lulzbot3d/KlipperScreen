@@ -116,7 +116,7 @@ class Panel(MenuPanel):
         self.change.connect("clicked", self.menu_item_clicked, {"name": "Filament", "panel": "extrude"})
 
         self.preheat = self._gtk.Button('heat-up', " Preheat", "button_change", self.bts * 3,
-                                       Gtk.PositionType.LEFT, 2)
+                                        Gtk.PositionType.LEFT, 2)
         self.preheat.connect("clicked", self.preheat_clicked)
 
         self.print = self._gtk.Button('print', " Print", "button_print", self.bts * 3, Gtk.PositionType.LEFT, 1)
