@@ -222,6 +222,7 @@ class BasePanel(ScreenPanel):
             self._screen._menu_go_back()
 
     def process_update(self, action, data):
+        '''  Supress CPU usage notices
         if action == "notify_proc_stat_update":
             cpu = (max(data["system_cpu_usage"][core] for core in data["system_cpu_usage"] if core.startswith("cpu")))
             memory = (data["system_memory"]["used"] / data["system_memory"]["total"]) * 100
@@ -245,6 +246,7 @@ class BasePanel(ScreenPanel):
                 ctx.remove_class(error)
                 self.titlelbl.set_label(f"{self._screen.connecting_to_printer}")
             return
+        '''
 
         if action == "notify_update_response":
             if self.update_dialog is None:
