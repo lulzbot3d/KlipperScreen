@@ -115,6 +115,10 @@ class Panel(MenuPanel):
                                        Gtk.PositionType.LEFT, 2)
         self.change.connect("clicked", self.menu_item_clicked, {"name": "Filament", "panel": "extrude"})
 
+        self.preheat = self._gtk.Button('heat-up', " Preheat", "button_change", self.bts * 3,
+                                        Gtk.PositionType.LEFT, 2)
+        self.preheat.connect("clicked", self.preheat_clicked)
+
         self.print = self._gtk.Button('print', " Print", "button_print", self.bts * 3, Gtk.PositionType.LEFT, 1)
         self.print.connect("clicked", self.menu_item_clicked, {"name": "Print", "panel": "print"})
 
@@ -122,6 +126,12 @@ class Panel(MenuPanel):
         right.set_property("width-request", 300)
         right.set_vexpand(True)
         right.set_hexpand(False)
-        right.attach(self.change, 0, 0, 1, 1)
-        right.attach(self.print, 0, 1, 1, 1)
+        right.attach(self.preheat, 0, 0, 1, 1)
+        right.attach(self.change, 0, 1, 1, 1)
+        right.attach(self.print, 0, 2, 1, 1)
         return right
+
+    def preheat_clicked(self, widget):
+        self._screen._ws.klippy.gcode_script("SET_HEATER_TEMPERATURE HEATER=extruder TARGET=180")
+        self._screen._ws.klippy.gcode_script("SET_HEATER_TEMPERATURE HEATER=heater_bed TARGET=60")
+        return

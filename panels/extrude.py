@@ -71,7 +71,7 @@ class Panel(ScreenPanel):
                 self.labels[extruder] = self._gtk.Button(f"extruder-{n}", f"T{n}")
                 self.labels[extruder].connect("clicked", self.change_extruder, extruder)
             if extruder == self.current_extruder:
-                self.labels[extruder].get_style_context().add_class("button_active")
+                self.labels[extruder].get_style_context().add_class("button_print")
             if self._printer.extrudercount <= limit:
                 xbox.add(self.labels[extruder])
                 i += 1

@@ -99,7 +99,8 @@ button:disabled {
 
 .button_print {
     border: .1em solid #c1d82f; 
-    background-color: rgba(54, 60, 13, .9);
+    /* background-color: rgba(54, 60, 13, .9); */
+    background-color: rgba(193, 216, 47, .5); 
 }
 .button_print label {
     font-size: 26;
@@ -118,4 +119,9 @@ button:disabled {
 }
 .buttons_main_left label {
     font-size: 26;
+}
+
+/* Give keyboard keys green outline. */
+.keyboard_pad {
+    border: .1em solid #c1d82f; 
 }

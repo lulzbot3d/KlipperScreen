@@ -44,8 +44,8 @@ class Panel(ScreenPanel):
             pos.attach(Gtk.Label(label=f"{self.z_offset:.3f}"), 0, 4, 1, 1)
             pos.attach(self.widgets['zoffset'], 1, 4, 1, 1)
         self.buttons = {
-            'zpos': self._gtk.Button('z-farther', _("Raise Nozzle"), 'color4'),
-            'zneg': self._gtk.Button('z-closer', _("Lower Nozzle"), 'color1'),
+            'zpos': self._gtk.Button('arrow-up', _("Raise Nozzle"), 'color4'),
+            'zneg': self._gtk.Button('arrow-down', _("Lower Nozzle"), 'color1'),
             'start': self._gtk.Button('resume', _("Start"), 'color3'),
             'complete': self._gtk.Button('complete', _('Accept'), 'color3'),
             'cancel': self._gtk.Button('cancel', _('Abort'), 'color2'),
