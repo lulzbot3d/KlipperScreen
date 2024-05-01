@@ -98,7 +98,7 @@ class WifiManager:
             msg = "A disconnection from the current network connection was requested"
         elif new_state == NetworkManager.NM_DEVICE_STATE_FAILED:
             msg = "Failed to connect to the requested network"
-            #self.callback("popup", msg)
+            # self.callback("popup", msg)
         elif new_state == NetworkManager.NM_DEVICE_STATE_REASON_DEPENDENCY_FAILED:
             msg = "A dependency of the connection failed"
         elif new_state == NetworkManager.NM_DEVICE_STATE_REASON_CARRIER:
