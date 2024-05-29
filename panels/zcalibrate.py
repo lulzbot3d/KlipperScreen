@@ -104,6 +104,9 @@ class Panel(ScreenPanel):
         if "Z_ENDSTOP_CALIBRATE" in self._printer.available_commands:
             self._add_button("2) Z Endstop", "endstop", pobox)
             functions.append("endstop")
+        if "AXIS_TWIST_COMPENSATION_CALIBRATE" in self._printer.available_commands:
+            self._add_button("3) X Axis Twist", "twist", pobox)
+            functions.append("twist")
         if "BED_MESH_CALIBRATE" in self._printer.available_commands:
             self.mesh_min = self._csv_to_array(self._printer.get_config_section("bed_mesh")['mesh_min'])
             self.mesh_max = self._csv_to_array(self._printer.get_config_section("bed_mesh")['mesh_max'])
@@ -161,6 +164,8 @@ class Panel(ScreenPanel):
                 self._screen._ws.klippy.gcode_script("DELTA_CALIBRATE METHOD=manual")
             elif method == "endstop":
                 self._screen._ws.klippy.gcode_script("Z_ENDSTOP_CALIBRATE")
+            elif method == "twist":
+                self._screen._ws.klippy.gcode_script("AXIS_TWIST_COMPENSATION_CALIBRATE")
 
     def _move_to_position(self, x, y):
         if not x or not y:
