@@ -24,12 +24,12 @@ class Panel(ScreenPanel):
         self.hidetemps = True
 
         o1_button = self._gtk.Button("arrow-down", _("Auto-scroll") + " ", None, self.bts, Gtk.PositionType.RIGHT, 1)
-        o1_button.get_style_context().add_class("button_active")
+        o1_button.get_style_context().add_class("consolebutton_active")
         o1_button.get_style_context().add_class("buttons_slim")
         o1_button.connect("clicked", self.set_autoscroll)
 
         o2_button = self._gtk.Button("heat-up", _("Hide temp.") + " ", None, self.bts, Gtk.PositionType.RIGHT, 1)
-        o2_button.get_style_context().add_class("button_active")
+        o2_button.get_style_context().add_class("consolebutton_active")
         o2_button.get_style_context().add_class("buttons_slim")
         o2_button.connect("clicked", self.hide_temps)
 
@@ -133,9 +133,9 @@ class Panel(ScreenPanel):
     @staticmethod
     def toggle_active_class(widget, cond):
         if cond:
-            widget.get_style_context().add_class("button_active")
+            widget.get_style_context().add_class("consolebutton_active")
         else:
-            widget.get_style_context().remove_class("button_active")
+            widget.get_style_context().remove_class("consolebutton_active")
 
     def _autoscroll(self, *args):
         if self.autoscroll:
