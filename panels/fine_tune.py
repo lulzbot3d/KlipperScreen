@@ -68,8 +68,8 @@ class Panel(ScreenPanel):
         self.labels['speedfactor'] = self._gtk.Button("refresh", "  100%",
                                                       "color3", self.bts, Gtk.PositionType.LEFT, 1)
 
-        self.labels['extrude+'] = self._gtk.Button("flow+", _("Extrusion +"), "color4")
-        self.labels['extrude-'] = self._gtk.Button("flow-", _("Extrusion -"), "color4")
+        self.labels['extrude+'] = self._gtk.Button("flow+", _("Increase Flow Rate"), "color4")
+        self.labels['extrude-'] = self._gtk.Button("flow-", _("Decrease Flow Rate"), "color4")
         self.labels['extrudefactor'] = self._gtk.Button("refresh", "  100%",
                                                         "color4", self.bts, Gtk.PositionType.LEFT, 1)
         if self._screen.vertical_mode:
