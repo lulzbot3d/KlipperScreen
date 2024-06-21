@@ -159,7 +159,7 @@ class Panel(ScreenPanel):
         else:
             self._screen._ws.klippy.gcode_script("BED_MESH_CLEAR")
             if method == "probe":
-                self._screen._ws.klippy.gcode_script(f'G28\nG0 X{probe_x} Y{probe_y} F3000\nG0 Z5')
+                self._screen._ws.klippy.gcode_script(f'G28\nG0 X{probe_x} Y{probe_y} F3000\nG0 Z15')
                 self._screen._ws.klippy.gcode_script("PROBE_CALIBRATE")
             elif method == "delta":
                 self._screen._ws.klippy.gcode_script("DELTA_CALIBRATE")
