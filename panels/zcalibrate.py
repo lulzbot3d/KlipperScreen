@@ -166,7 +166,7 @@ class Panel(ScreenPanel):
             elif method == "delta_manual":
                 self._screen._ws.klippy.gcode_script("DELTA_CALIBRATE METHOD=manual")
             elif method == "endstop":
-                self._screen._ws.klippy.gcode_script(f'G28\nG0 X{mid_x} Y{mid_y} F3000\nG0 Z5')
+                self._screen._ws.klippy.gcode_script(f'G28\nG0 X{mid_x} Y{mid_y} F3000\nG0 Z15')
                 self._screen._ws.klippy.gcode_script("Z_ENDSTOP_CALIBRATE")
             elif method == "twist":
                 self._screen._ws.klippy.gcode_script(f'G28')
