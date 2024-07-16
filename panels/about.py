@@ -14,7 +14,7 @@ COLORS = {
 class Panel(ScreenPanel):
     def __init__(self, screen, title):
         super().__init__(screen, title)
-        
+
         image = self._gtk.Image("QSG-qr-code", self._gtk.content_width * .25, self._gtk.content_height * .5)
 
         self.tb = Gtk.TextBuffer(text="")
@@ -38,7 +38,7 @@ class Panel(ScreenPanel):
         self.color = COLORS["lulzbot"]
         self.tsize = 42
         self.add_line("LulzBot Mini 3\n")
-        
+
         self.color = COLORS["text"]
         self.tsize = 18
         self.add_line("\n")
