@@ -130,7 +130,8 @@ class Panel(ScreenPanel):
         # This will return the current values
         self._screen._ws.klippy.gcode_script('SET_INPUT_SHAPER')
         # Check for the accelerometer
-        self._screen._ws.klippy.gcode_script('ACCELEROMETER_QUERY')
+        # The below caused an error with two accelerometers.  We will look for the bed chip.
+        self._screen._ws.klippy.gcode_script('ACCELEROMETER_QUERY CHIP=bed')
         # Send at least two commands, with my accelerometer the first command after a reboot will fail
         self._screen._ws.klippy.gcode_script('MEASURE_AXES_NOISE')
 
