@@ -137,3 +137,12 @@ consolebutton.active {
     /* 130px will leave the top edge of row 4 showing a bit */
     min-height: 134px;
 }
+
+.buttons_toolheads {
+    margin: .2em;
+    min-height: 0em;
+    border: .1em solid #c1d82f;
+}
+.buttons_toolheads label {
+    font-size: 32;
+}
