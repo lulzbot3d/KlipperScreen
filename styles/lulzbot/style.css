@@ -135,7 +135,7 @@ consolebutton.active {
     border: .1em solid #c1d82f; 
     /* 134px is perfect to get three rows with the 4th not showing. */
     /* 130px will leave the top edge of row 4 showing a bit */
-    min-height: 134px;
+    min-height: 130px;
 }
 
 .buttons_toolheads {
