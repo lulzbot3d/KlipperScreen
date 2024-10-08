@@ -113,7 +113,7 @@ class Panel(MenuPanel):
     def create_right_panel(self):
         self.change = self._gtk.Button('Filament3', " Filament", "button_change", self.bts * 3,
                                        Gtk.PositionType.LEFT, 2)
-        self.change.connect("clicked", self.menu_item_clicked, {"name": "Filament", "panel": "extrude"})
+        self.change.connect("clicked", self.menu_item_clicked, {"name": "Filament", "panel": "filament"})
 
         self.preheat = self._gtk.Button('heat-up', " Preheat", "button_change", self.bts * 3,
                                         Gtk.PositionType.LEFT, 2)

@@ -691,7 +691,7 @@ class KlipperScreen(Gtk.Window):
     def state_paused(self):
         self.state_printing()
         if self._config.get_main_config().getboolean("auto_open_extrude", fallback=True):
-            self.show_panel("extrude", _("Extrude"))
+            self.show_panel("filament", _("Filament"))
 
     def state_printing(self):
         self.close_screensaver()

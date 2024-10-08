@@ -146,3 +146,16 @@ consolebutton.active {
 .buttons_toolheads label {
     font-size: 32;
 }
+
+.buttons_filament_preset {
+    margin: .2em;
+    min-height: 0em;
+    border: .1em solid #c1d82f; 
+}
+.buttons_filament_preset label{
+    font-size: 23;
+    margin-bottom: .1em;
+    margin-top: .1em;
+    margin-left: .1em;
+    margin-right: .1em;
+}
