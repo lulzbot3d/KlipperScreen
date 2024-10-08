@@ -34,7 +34,7 @@ class Panel(ScreenPanel):
         self.load = self._gtk.Button('arrow-down', " Load", "button_change", self.bts * 3, Gtk.PositionType.LEFT, 2)
         self.unload = self._gtk.Button('arrow-up', " Unload", "button_change", self.bts * 3, Gtk.PositionType.LEFT, 2)
 
-        #Create and add panels
+        # Create and add panels
         self.top_panel = self.create_top_panel()
         self.filament_menu.attach(self.top_panel, 0, 0, 3, 1)
 
@@ -51,21 +51,21 @@ class Panel(ScreenPanel):
 
 
     def create_load_unload_panel(self):
-            self.load.connect("clicked", self.load_clicked)
-            self.unload.connect("clicked", self.unload_clicked)
-            loadunload = Gtk.Grid(row_homogeneous=True, column_homogeneous=True)
-            loadunload.set_vexpand(True)
-            loadunload.set_hexpand(True)
-            loadunload.set_margin_bottom(10)
-            loadunload.attach(self.load, 0, 0, 2, 1)
-            loadunload.attach(self.unload, 2, 0, 2, 1)
-            return loadunload
+        self.load.connect("clicked", self.load_clicked)
+        self.unload.connect("clicked", self.unload_clicked)
+        loadunload = Gtk.Grid(row_homogeneous=True, column_homogeneous=True)
+        loadunload.set_vexpand(True)
+        loadunload.set_hexpand(True)
+        loadunload.set_margin_bottom(10)
+        loadunload.attach(self.load, 0, 0, 2, 1)
+        loadunload.attach(self.unload, 2, 0, 2, 1)
+        return loadunload
 
     def load_clicked(self, widget):
-            self._screen._ws.klippy.gcode_script("LOAD_FILAMENT")
+        self._screen._ws.klippy.gcode_script("LOAD_FILAMENT")
 
     def unload_clicked(self, widget):
-            self._screen._ws.klippy.gcode_script("UNLOAD_FILAMENT")
+        self._screen._ws.klippy.gcode_script("UNLOAD_FILAMENT")
 
 
     def create_preset_panel(self):
@@ -185,6 +185,7 @@ class Panel(ScreenPanel):
 
 
 # The code below was copy and pasted from extruder.py, just added the "limit=4"
+
     def create_sensor_panel(self):
         limit = 4
         filament_sensors = self._printer.get_filament_sensors()
