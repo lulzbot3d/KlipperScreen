@@ -182,6 +182,7 @@ class Panel(ScreenPanel):
             self.right_button_mode = "Cooldown"
             self.load_unload_enabled = True
         self.update_panels()
+        self.update_filament_sensors(data)
 
 
 # The code below was copy and pasted from extruder.py, just added the "limit=4"
@@ -222,3 +223,19 @@ class Panel(ScreenPanel):
             self._screen._ws.klippy.gcode_script(f"SET_FILAMENT_SENSOR SENSOR={name} ENABLE=0")
             self.labels[x]['box'].get_style_context().remove_class("filament_sensor_empty")
             self.labels[x]['box'].get_style_context().remove_class("filament_sensor_detected")
+
+    def update_filament_sensors(self, data):
+        for x in self._printer.get_filament_sensors():
+            if x in data:
+                if 'enabled' in data[x]:
+                    self._printer.set_dev_stat(x, "enabled", data[x]['enabled'])
+                    self.labels[x]['switch'].set_active(data[x]['enabled'])
+                if 'filament_detected' in data[x]:
+                    self._printer.set_dev_stat(x, "filament_detected", data[x]['filament_detected'])
+                    if self._printer.get_stat(x, "enabled"):
+                        if data[x]['filament_detected']:
+                            self.labels[x]['box'].get_style_context().remove_class("filament_sensor_empty")
+                            self.labels[x]['box'].get_style_context().add_class("filament_sensor_detected")
+                        else:
+                            self.labels[x]['box'].get_style_context().remove_class("filament_sensor_detected")
+                            self.labels[x]['box'].get_style_context().add_class("filament_sensor_empty")
