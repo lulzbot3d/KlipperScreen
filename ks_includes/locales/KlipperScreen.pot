@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-02 17:39-0300\n"
+"POT-Creation-Date: 2024-10-09 18:08-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -81,6 +81,9 @@ msgstr ""
 msgid "Are you sure you wish to shutdown the system?"
 msgstr ""
 
+msgid "Asks for confirmation before stopping"
+msgstr ""
+
 msgid "Auto"
 msgstr ""
 
@@ -102,7 +105,7 @@ msgstr ""
 msgid "Bed Mesh"
 msgstr ""
 
-msgid "Bed screw configuration:"
+msgid "Both"
 msgstr ""
 
 msgid "Calibrate"
@@ -135,6 +138,12 @@ msgstr ""
 msgid "Cannot connect to Moonraker"
 msgstr ""
 
+msgid "Changes how the interface looks"
+msgstr ""
+
+msgid "Changes how the time remaining is calculated"
+msgstr ""
+
 msgid "Channel"
 msgstr ""
 
@@ -150,6 +159,9 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
+msgid "Close messages after a timeout"
+msgstr ""
+
 msgid "Complete"
 msgstr ""
 
@@ -159,8 +171,14 @@ msgstr ""
 msgid "Connected"
 msgstr ""
 
+msgid "Connecting"
+msgstr ""
+
 #, python-format
 msgid "Connecting to %s"
+msgstr ""
+
+msgid "Connection failed"
 msgstr ""
 
 msgid "Console"
@@ -169,10 +187,22 @@ msgstr ""
 msgid "Cooldown"
 msgstr ""
 
+msgid "Couldn't add network"
+msgstr ""
+
+msgid "Current"
+msgstr ""
+
+msgid "Current percentage and graph line"
+msgstr ""
+
 msgid "DPMS has failed to load and has been disabled"
 msgstr ""
 
 msgid "Date"
+msgstr ""
+
+msgid "Delete"
 msgstr ""
 
 msgid "Delete Directory?"
@@ -181,13 +211,20 @@ msgstr ""
 msgid "Delete File?"
 msgstr ""
 
-msgid "Deselect"
-msgstr ""
-
 msgid "Disable Motors"
 msgstr ""
 
+msgid "Disable for 12hs with am / pm"
+msgstr ""
+
+msgid "Disconnect"
+msgstr ""
+
 msgid "Distance (mm)"
+msgstr ""
+
+#, python-format
+msgid "Do you want to forget or disconnect %s?"
 msgstr ""
 
 #, python-format
@@ -197,7 +234,10 @@ msgstr ""
 msgid "Elapsed:"
 msgstr ""
 
-msgid "Ended official support in June 2023"
+msgid "Emergency Stop"
+msgstr ""
+
+msgid "Enable screen power management"
 msgstr ""
 
 msgid "Error"
@@ -215,7 +255,16 @@ msgstr ""
 msgid "Error trying to fetch spools"
 msgstr ""
 
+msgid "Error: Couldn't get a position to probe"
+msgstr ""
+
+msgid "Estimated Time"
+msgstr ""
+
 msgid "Estimated Time Method"
+msgstr ""
+
+msgid "Example"
 msgstr ""
 
 msgid "Exclude Object"
@@ -236,10 +285,19 @@ msgstr ""
 msgid "Extrusion -"
 msgstr ""
 
+msgid "Failed to delete connection"
+msgstr ""
+
+msgid "Failed to initialize"
+msgstr ""
+
 msgid "Failed, adjust position first"
 msgstr ""
 
 msgid "Fan"
+msgstr ""
+
+msgid "Filament"
 msgstr ""
 
 msgid "Filament Used"
@@ -284,7 +342,19 @@ msgstr ""
 msgid "Font Size"
 msgstr ""
 
+msgid "For mouse control or to verify touchscreen accuracy"
+msgstr ""
+
+msgid "Forget"
+msgstr ""
+
 msgid "Full Update"
+msgstr ""
+
+msgid "Gcodes"
+msgstr ""
+
+msgid "Getting IP address"
 msgstr ""
 
 msgid "Go Back"
@@ -293,16 +363,10 @@ msgstr ""
 msgid "Height:"
 msgstr ""
 
-msgid "Hidden"
-msgstr ""
-
 msgid "Hide"
 msgstr ""
 
 msgid "Hide sensors in Temp."
-msgstr ""
-
-msgid "Hide temp."
 msgstr ""
 
 msgid "Home"
@@ -344,6 +408,9 @@ msgstr ""
 msgid "Input Shaper"
 msgstr ""
 
+msgid "Insufficient privileges"
+msgstr ""
+
 msgid "Interface"
 msgstr ""
 
@@ -351,6 +418,12 @@ msgid "Invalid"
 msgstr ""
 
 msgid "Invalid password"
+msgstr ""
+
+msgid "Invalid temperature"
+msgstr ""
+
+msgid "Inversely affects the icon size"
 msgstr ""
 
 msgid "Invert X"
@@ -363,6 +436,12 @@ msgid "Invert Z"
 msgstr ""
 
 msgid "It may take more than 5 minutes depending on the heater power."
+msgstr ""
+
+msgid "It's possible that the configuration is not correct"
+msgstr ""
+
+msgid "Job Status"
 msgstr ""
 
 msgid "Klipper Restart"
@@ -383,9 +462,6 @@ msgstr ""
 msgid "Klipper will reboot"
 msgstr ""
 
-msgid "KlipperScreen will drop support in June 2024"
-msgstr ""
-
 msgid ""
 "LOAD_FILAMENT/UNLOAD_FILAMENT are hidden and should be used from extrude"
 msgstr ""
@@ -396,7 +472,13 @@ msgstr ""
 msgid "Large"
 msgstr ""
 
+msgid "Last Duration"
+msgstr ""
+
 msgid "Last Used"
+msgstr ""
+
+msgid "Layer Height"
 msgstr ""
 
 msgid "Layer:"
@@ -441,10 +523,10 @@ msgstr ""
 msgid "Max Acceleration"
 msgstr ""
 
-msgid "Max Acceleration to Deceleration"
+msgid "Max Velocity"
 msgstr ""
 
-msgid "Max Velocity"
+msgid "Max:"
 msgstr ""
 
 msgid "Maximum"
@@ -462,10 +544,16 @@ msgstr ""
 msgid "Medium"
 msgstr ""
 
+msgid "Memory"
+msgstr ""
+
 msgid "Menu"
 msgstr ""
 
-msgid "Mesh calibrate"
+msgid "Minimum Cruise Ratio"
+msgstr ""
+
+msgid "Minimum:"
 msgstr ""
 
 msgid "Modified"
@@ -489,6 +577,15 @@ msgstr ""
 msgid "Network"
 msgstr ""
 
+msgid "Network connected"
+msgstr ""
+
+msgid "Network disconnected"
+msgstr ""
+
+msgid "Network not found"
+msgstr ""
+
 msgid "Never"
 msgstr ""
 
@@ -498,15 +595,16 @@ msgstr ""
 msgid "No elegible macros:"
 msgstr ""
 
+msgid "No info available"
+msgstr ""
+
 msgid "No mesh has been loaded"
 msgstr ""
 
 msgid "No wireless interface has been found"
 msgstr ""
 
-msgid ""
-"Not supported for auto-detection, it needs to be configured in klipperscreen."
-"conf"
+msgid "Not all screens support this"
 msgstr ""
 
 msgid "Not working or not configured"
@@ -521,11 +619,14 @@ msgstr ""
 msgid "Notifications"
 msgstr ""
 
-#, python-format
-msgid "Outdated by %d"
+msgid "Nozzle diameter"
 msgstr ""
 
-msgid "PSK for"
+msgid "Only for the move panel"
+msgstr ""
+
+#, python-format
+msgid "Outdated by %d"
 msgstr ""
 
 msgid "Package will be updated"
@@ -534,6 +635,9 @@ msgstr[0] ""
 msgstr[1] ""
 
 msgid "Part Fan"
+msgstr ""
+
+msgid "Password"
 msgstr ""
 
 msgid "Password saved"
@@ -554,22 +658,28 @@ msgstr ""
 msgid "Please recompile and flash the micro-controller."
 msgstr ""
 
+msgid "Please wait"
+msgstr ""
+
 msgid "Power"
 msgstr ""
 
 msgid "Power On Printer"
 msgstr ""
 
+msgid "Pressure Advance"
+msgstr ""
+
 msgid "Pressure Advance:"
+msgstr ""
+
+msgid "Pressure advance"
 msgstr ""
 
 msgid "Print"
 msgstr ""
 
 msgid "Print Control"
-msgstr ""
-
-msgid "Print Time"
 msgstr ""
 
 msgid "Printer"
@@ -614,6 +724,9 @@ msgstr ""
 msgid "Refresh"
 msgstr ""
 
+msgid "Remove network"
+msgstr ""
+
 msgid "Rename/Move:"
 msgstr ""
 
@@ -639,6 +752,9 @@ msgid "Retry"
 msgstr ""
 
 msgid "Retrying"
+msgstr ""
+
+msgid "Rotation invalid"
 msgstr ""
 
 msgid "Save"
@@ -669,7 +785,7 @@ msgstr ""
 msgid "Screws Adjust"
 msgstr ""
 
-msgid "Select"
+msgid "Screws not used:"
 msgstr ""
 
 msgid "Send"
@@ -690,6 +806,12 @@ msgstr ""
 msgid "Show Scrollbars Buttons"
 msgstr ""
 
+msgid "Show cursor"
+msgstr ""
+
+msgid "Show only devices that are able to be set"
+msgstr ""
+
 msgid "Shutdown"
 msgstr ""
 
@@ -703,6 +825,9 @@ msgid "Slicer:"
 msgstr ""
 
 msgid "Small"
+msgstr ""
+
+msgid "Smooth time"
 msgstr ""
 
 msgid "Speed (mm/s)"
@@ -726,13 +851,13 @@ msgstr ""
 msgid "Start"
 msgstr ""
 
-msgid "Starting WiFi Association"
-msgstr ""
-
 msgid "Starting recovery for"
 msgstr ""
 
 msgid "Starting update for"
+msgstr ""
+
+msgid "Swaps buttons if they are on top of each other, affects other panels"
 msgstr ""
 
 msgid "System"
@@ -744,10 +869,31 @@ msgstr ""
 msgid "System Shutdown"
 msgstr ""
 
+msgid "System:"
+msgstr ""
+
 msgid "Temp (°C)"
 msgstr ""
 
 msgid "Temperature"
+msgstr ""
+
+msgid "Temperature too low to extrude"
+msgstr ""
+
+msgid "The system doesn't meet the minimum requirement"
+msgstr ""
+
+msgid "This panel supports up-to 9 screws in a 3x3 Grid"
+msgstr ""
+
+msgid "This will affect screw positions and mesh graph"
+msgstr ""
+
+msgid "Timeout for screen black-out or power-off"
+msgstr ""
+
+msgid "Timeout for screen black-out or power-off during printing"
 msgstr ""
 
 msgid "Total:"
@@ -756,7 +902,7 @@ msgstr ""
 msgid "Unknown Heater"
 msgstr ""
 
-msgid "Unknown screw position"
+msgid "Unknown security type"
 msgstr ""
 
 msgid "Unload"
@@ -777,13 +923,16 @@ msgstr ""
 msgid "Updating"
 msgstr ""
 
-msgid "Uploaded"
+msgid "Useful for un-responsive touchscreens"
 msgstr ""
 
-msgid "Warning"
+msgid "User"
 msgstr ""
 
 msgid "WebRTC is not supported by the backend trying Stream"
+msgstr ""
+
+msgid "Working"
 msgstr ""
 
 msgid "XY Move Speed (mm/s)"
@@ -812,7 +961,12 @@ msgid_plural "commits"
 msgstr[0] ""
 msgstr[1] ""
 
-msgid "dBm"
+msgid "day"
+msgid_plural "days"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "g"
 msgstr ""
 
 msgid "hour"
@@ -842,3 +996,11 @@ msgstr ""
 
 msgid "mm³/s"
 msgstr ""
+
+msgid "s"
+msgstr ""
+
+msgid "second"
+msgid_plural "seconds"
+msgstr[0] ""
+msgstr[1] ""

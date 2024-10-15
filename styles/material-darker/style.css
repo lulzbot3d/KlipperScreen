@@ -24,6 +24,7 @@
     font-family: RobotoMedium;
 }
 
+junction,
 list row,
 treeview.view,
 window {
@@ -51,6 +52,7 @@ button.color4 {
     background-color: #252525;
     border-color: #252525;
     border-radius: .25em;
+    padding-top: 0.4em;
 }
 
 button.color1:active,
@@ -64,6 +66,7 @@ button.invalid:active,
     background-color: #424242;
 }
 
+.active image,
 button.update {
     color: #2196f3;
     background-color: #121212;
@@ -97,6 +100,10 @@ switch {
 treeview.view check:checked,
 switch:checked {
     background-color: #2f5631;
+}
+
+treeview.view check:checked {
+    -gtk-icon-source: url("./styles/material-darker/images/complete.svg");
 }
 
 label {

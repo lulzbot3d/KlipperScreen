@@ -16,13 +16,26 @@ except ImportError:
 
 
 def format_date(date):
-    try:
-        return datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%f').replace(tzinfo=ZoneInfo('UTC'))
-    except ValueError:
+    if date.endswith('Z'):
+        date = f'{date[:-1]}+00:00'
+
+    formats = [
+        '%Y-%m-%dT%H:%M:%S.%f%z',
+        '%Y-%m-%dT%H:%M:%S%z',
+        '%Y-%m-%dT%H:%M:%S'
+    ]
+    for fmt in formats:
         try:
-            return datetime.strptime(date, '%Y-%m-%dT%H:%M:%S').replace(tzinfo=ZoneInfo('UTC'))
+            parsed_date = datetime.strptime(date, fmt)
+            # If there's no timezone info, assume UTC
+            if parsed_date.tzinfo is None:
+                parsed_date = parsed_date.replace(tzinfo=ZoneInfo('UTC'))
+            return parsed_date
         except ValueError:
-            return None
+            continue
+
+    logging.error(f"Date parsing failed for: {date}")
+    return None
 
 
 class SpoolmanVendor:
@@ -148,6 +161,7 @@ class Panel(ScreenPanel):
             self._filterable.refilter()
 
     def __init__(self, screen, title):
+        title = title or "Spoolman"
         super().__init__(screen, title)
         self.apiClient = screen.apiclient
         if self._config.get_main_config().getboolean("24htime", True):
@@ -242,7 +256,7 @@ class Panel(ScreenPanel):
         self.get_active_spool()
         self._treeview = Gtk.TreeView(model=sortable, headers_visible=False, show_expanders=False)
 
-        text_renderer = Gtk.CellRendererText()
+        text_renderer = Gtk.CellRendererText(wrap_width=self._gtk.content_width / 4)
         pixbuf_renderer = Gtk.CellRendererPixbuf(xpad=5, ypad=5)
         checkbox_renderer = Gtk.CellRendererToggle()
         column_id = Gtk.TreeViewColumn(cell_renderer=text_renderer)
@@ -413,5 +427,5 @@ class Panel(ScreenPanel):
         if not result:
             self._screen.show_popup_message(_("Error getting active spool"))
             return
-        self._active_spool_id = result["result"]["spool_id"]
+        self._active_spool_id = result["spool_id"]
         return self._active_spool_id

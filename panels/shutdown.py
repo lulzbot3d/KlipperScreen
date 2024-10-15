@@ -9,6 +9,7 @@ from ks_includes.screen_panel import ScreenPanel
 
 class Panel(ScreenPanel):
     def __init__(self, screen, title):
+        title = title or _("Shutdown")
         super().__init__(screen, title)
 
         estop = self._gtk.Button("emergency", _("Emergency Stop"), "color2")
@@ -20,9 +21,13 @@ class Panel(ScreenPanel):
         restart = self._gtk.Button("refresh", _("Restart"), "color3")
         restart.connect("clicked", self.reboot_poweroff, "reboot")
 
+        restart_ks = self._gtk.Button("refresh", _("Restart") + " KlipperScreen", "color3")
+        restart_ks.connect("clicked", self._screen.restart_ks)
+
         self.main = Gtk.Grid(row_homogeneous=True, column_homogeneous=True)
         if self._printer and self._printer.state not in {'disconnected', 'startup', 'shutdown', 'error'}:
-            self.main.attach(estop, 0, 0, 2, 1)
+            self.main.attach(estop, 0, 0, 1, 1)
+        self.main.attach(restart_ks, 1, 0, 1, 1)
         self.main.attach(poweroff, 0, 1, 1, 1)
         self.main.attach(restart, 1, 1, 1, 1)
         self.content.add(self.main)
@@ -36,11 +41,14 @@ class Panel(ScreenPanel):
             label.set_label(_("Are you sure you wish to shutdown the system?"))
             title = _("Shutdown")
         buttons = []
-        logging.info(self._screen.apiclient.endpoint)
-        local = {"127.0.0.1", "localhost"}
-        if any(endpoint in self._screen.apiclient.endpoint for endpoint in local):
+        if (
+            self._screen.apiclient is None
+            or "127.0.0.1" in self._screen.apiclient.endpoint
+            or "localhost" in self._screen.apiclient.endpoint
+        ):
             buttons.append({"name": _("Accept"), "response": Gtk.ResponseType.ACCEPT, "style": 'dialog-primary'})
         else:
+            logging.info(self._screen.apiclient.endpoint)
             buttons.extend([
                 {"name": _("Host"), "response": Gtk.ResponseType.OK, "style": 'dialog-info'},
                 {"name": _("Printer"), "response": Gtk.ResponseType.APPLY, "style": 'dialog-warning'},

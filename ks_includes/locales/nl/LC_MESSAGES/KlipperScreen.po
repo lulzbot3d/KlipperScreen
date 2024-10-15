@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-02 17:39-0300\n"
-"PO-Revision-Date: 2024-03-16 18:48+0000\n"
-"Last-Translator: Mikachu <micah.sh@proton.me>\n"
+"POT-Creation-Date: 2024-10-09 18:08-0300\n"
+"PO-Revision-Date: 2024-10-10 13:25+0000\n"
+"Last-Translator: Thijs Triemstra <info@collab.nl>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/klipperscreen/"
 "klipperscreen/nl/>\n"
 "Language: nl\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.5-dev\n"
+"X-Generator: Weblate 5.8-dev\n"
 
 #, python-format
 msgid "%s will be updated to version"
@@ -82,6 +82,9 @@ msgstr "Weet je zeker dat je het systeem wilt herstarten?"
 msgid "Are you sure you wish to shutdown the system?"
 msgstr "Weet je zeker dat je het systeem wilt afsluiten?"
 
+msgid "Asks for confirmation before stopping"
+msgstr "Vraagt om bevestiging voor stop"
+
 msgid "Auto"
 msgstr "Auto"
 
@@ -103,8 +106,8 @@ msgstr "Bed Level"
 msgid "Bed Mesh"
 msgstr "Bed Mesh"
 
-msgid "Bed screw configuration:"
-msgstr "Bed schroef configuratie:"
+msgid "Both"
+msgstr "Beide"
 
 msgid "Calibrate"
 msgstr "Kalibreer"
@@ -136,6 +139,12 @@ msgstr "Annuleren"
 msgid "Cannot connect to Moonraker"
 msgstr "Kan geen verbinding met Moonraker maken"
 
+msgid "Changes how the interface looks"
+msgstr "Wijzigt het uiterlijk van de interface"
+
+msgid "Changes how the time remaining is calculated"
+msgstr "Wijzigt de calculatie van de resterende tijd"
+
 msgid "Channel"
 msgstr "Kanaal"
 
@@ -151,6 +160,9 @@ msgstr "Leegmaken"
 msgid "Close"
 msgstr "Sluiten"
 
+msgid "Close messages after a timeout"
+msgstr "Sluit berichten na een timeout"
+
 msgid "Complete"
 msgstr "Voltooid"
 
@@ -160,9 +172,15 @@ msgstr "Bevestig Nood Stop"
 msgid "Connected"
 msgstr "Verbonden"
 
+msgid "Connecting"
+msgstr "Verbinden"
+
 #, python-format
 msgid "Connecting to %s"
 msgstr "Verbinden met %s"
+
+msgid "Connection failed"
+msgstr "Verbindingsfout"
 
 msgid "Console"
 msgstr "Console"
@@ -170,11 +188,23 @@ msgstr "Console"
 msgid "Cooldown"
 msgstr "Afkoelen"
 
+msgid "Couldn't add network"
+msgstr "Kan netwerk niet toevoegen"
+
+msgid "Current"
+msgstr "Huidige"
+
+msgid "Current percentage and graph line"
+msgstr "Huidige percentage en grafiek lijn"
+
 msgid "DPMS has failed to load and has been disabled"
 msgstr "DPMS kon niet worden geladen en is uitgeschakeld"
 
 msgid "Date"
 msgstr "Datum"
+
+msgid "Delete"
+msgstr "Verwijder"
 
 msgid "Delete Directory?"
 msgstr "Verwijder directory?"
@@ -182,14 +212,21 @@ msgstr "Verwijder directory?"
 msgid "Delete File?"
 msgstr "Verwijder bestand?"
 
-msgid "Deselect"
-msgstr "Deselecteer"
-
 msgid "Disable Motors"
 msgstr "Motors Uitschakelen"
 
+msgid "Disable for 12hs with am / pm"
+msgstr "Uitschakelen gedurende 12 uur met am / pm"
+
+msgid "Disconnect"
+msgstr ""
+
 msgid "Distance (mm)"
 msgstr "Afstand (mm)"
+
+#, python-format
+msgid "Do you want to forget or disconnect %s?"
+msgstr "Wil je vergeten of disconnect %s?"
 
 #, python-format
 msgid "Do you want to recover %s?"
@@ -198,8 +235,11 @@ msgstr "Wil je %s herstellen?"
 msgid "Elapsed:"
 msgstr "Verstreken:"
 
-msgid "Ended official support in June 2023"
-msgstr "Ondersteuning officieel beëindigt in juni 2023"
+msgid "Emergency Stop"
+msgstr "Noodstop"
+
+msgid "Enable screen power management"
+msgstr "Scherm stroom beheer inschakelen"
 
 msgid "Error"
 msgstr "Error"
@@ -216,8 +256,17 @@ msgstr "Error instellen actieve spoel"
 msgid "Error trying to fetch spools"
 msgstr "Error tijdens laden spoelen"
 
+msgid "Error: Couldn't get a position to probe"
+msgstr "Error: kon geen probe positie vinden"
+
+msgid "Estimated Time"
+msgstr "Geschatte Tijd"
+
 msgid "Estimated Time Method"
 msgstr "Schatting Tijd Methode"
+
+msgid "Example"
+msgstr "Voorbeeld"
 
 msgid "Exclude Object"
 msgstr "Uitsluiten Object"
@@ -237,11 +286,20 @@ msgstr "Extrusion +"
 msgid "Extrusion -"
 msgstr "Extrusion -"
 
+msgid "Failed to delete connection"
+msgstr "Kan connectie niet verwijderen"
+
+msgid "Failed to initialize"
+msgstr "Kan niet initialiseren"
+
 msgid "Failed, adjust position first"
 msgstr "Mislukt, wijzig positie eerst"
 
 msgid "Fan"
 msgstr "Ventilator"
+
+msgid "Filament"
+msgstr "Filament"
 
 msgid "Filament Used"
 msgstr "Filament Gebruikt"
@@ -285,8 +343,20 @@ msgstr "Flowrate:"
 msgid "Font Size"
 msgstr "Lettertype Grootte"
 
+msgid "For mouse control or to verify touchscreen accuracy"
+msgstr ""
+
+msgid "Forget"
+msgstr "Vergeet"
+
 msgid "Full Update"
 msgstr "Volledige Update"
+
+msgid "Gcodes"
+msgstr "Gcodes"
+
+msgid "Getting IP address"
+msgstr "Zoeken IP adres"
 
 msgid "Go Back"
 msgstr "Ga Terug"
@@ -294,17 +364,11 @@ msgstr "Ga Terug"
 msgid "Height:"
 msgstr "Hoogte:"
 
-msgid "Hidden"
-msgstr "Verborgen"
-
 msgid "Hide"
 msgstr "Verberg"
 
 msgid "Hide sensors in Temp."
 msgstr "Verberg sensoren in Temp."
-
-msgid "Hide temp."
-msgstr "Verberg temp."
 
 msgid "Home"
 msgstr "Home"
@@ -345,6 +409,9 @@ msgstr "Initieer een PID-kalibratie voor:"
 msgid "Input Shaper"
 msgstr "Input Shaper"
 
+msgid "Insufficient privileges"
+msgstr "Onvoldoende rechten"
+
 msgid "Interface"
 msgstr "Interface"
 
@@ -353,6 +420,12 @@ msgstr "Ongeldig"
 
 msgid "Invalid password"
 msgstr "Ongeldig wachtwoord"
+
+msgid "Invalid temperature"
+msgstr "Ongeldige temperatuur"
+
+msgid "Inversely affects the icon size"
+msgstr ""
 
 msgid "Invert X"
 msgstr "Invert X"
@@ -365,6 +438,12 @@ msgstr "Invert Z"
 
 msgid "It may take more than 5 minutes depending on the heater power."
 msgstr "Het kan meer dan 5 minuten duren op basis van de heater power."
+
+msgid "It's possible that the configuration is not correct"
+msgstr "Het is mogelijk dat de configuratie incorrect is"
+
+msgid "Job Status"
+msgstr ""
 
 msgid "Klipper Restart"
 msgstr "Klipper Herstarten"
@@ -384,9 +463,6 @@ msgstr "Klipper probeert te starten"
 msgid "Klipper will reboot"
 msgstr "Klipper zal herstarten"
 
-msgid "KlipperScreen will drop support in June 2024"
-msgstr "KlipperScreen ondersteuning wordt in juni 2024 beëindigt"
-
 msgid ""
 "LOAD_FILAMENT/UNLOAD_FILAMENT are hidden and should be used from extrude"
 msgstr ""
@@ -399,8 +475,14 @@ msgstr "Taal"
 msgid "Large"
 msgstr "Groot"
 
+msgid "Last Duration"
+msgstr ""
+
 msgid "Last Used"
 msgstr "Laatst Gebruikt"
+
+msgid "Layer Height"
+msgstr "Laag Hoogte"
 
 msgid "Layer:"
 msgstr "Laag:"
@@ -444,11 +526,11 @@ msgstr "Max"
 msgid "Max Acceleration"
 msgstr "Max Acceleratie"
 
-msgid "Max Acceleration to Deceleration"
-msgstr "Max Acceleratie naar De-acceleratie"
-
 msgid "Max Velocity"
 msgstr "Max Velocity"
+
+msgid "Max:"
+msgstr "Max:"
 
 msgid "Maximum"
 msgstr "Maximum"
@@ -465,11 +547,17 @@ msgstr "Meet Y"
 msgid "Medium"
 msgstr "Medium"
 
+msgid "Memory"
+msgstr "Geheugen"
+
 msgid "Menu"
 msgstr "Menu"
 
-msgid "Mesh calibrate"
-msgstr "Mesh kalibreren"
+msgid "Minimum Cruise Ratio"
+msgstr ""
+
+msgid "Minimum:"
+msgstr "Minimum:"
 
 msgid "Modified"
 msgstr "Aangepast"
@@ -492,6 +580,15 @@ msgstr "Naam"
 msgid "Network"
 msgstr "Netwerk"
 
+msgid "Network connected"
+msgstr "Netwerk verbonden"
+
+msgid "Network disconnected"
+msgstr "Network verbroken"
+
+msgid "Network not found"
+msgstr "Netwerk niet gevonden"
+
 msgid "Never"
 msgstr "Nooit"
 
@@ -501,18 +598,17 @@ msgstr "Nieuw"
 msgid "No elegible macros:"
 msgstr "Macros komen niet in aanmerking:"
 
+msgid "No info available"
+msgstr "Geen info beschikbaar"
+
 msgid "No mesh has been loaded"
 msgstr "Geen mesh geladen"
 
 msgid "No wireless interface has been found"
 msgstr "Geen draadloze netwerk interface gevonden"
 
-msgid ""
-"Not supported for auto-detection, it needs to be configured in klipperscreen."
-"conf"
-msgstr ""
-"Niet ondersteunt voor auto-detectie, dit moet worden geconfigureerd in "
-"klipperscreen.conf"
+msgid "Not all screens support this"
+msgstr "Niet alle schermen ondersteunen dit"
 
 msgid "Not working or not configured"
 msgstr "Niet werkend of niet geconfigureerd"
@@ -526,12 +622,15 @@ msgstr "Notificatie log is leeg"
 msgid "Notifications"
 msgstr "Notificaties"
 
+msgid "Nozzle diameter"
+msgstr ""
+
+msgid "Only for the move panel"
+msgstr ""
+
 #, python-format
 msgid "Outdated by %d"
 msgstr "Verouderd sinds %d"
-
-msgid "PSK for"
-msgstr "PSK voor"
 
 msgid "Package will be updated"
 msgid_plural "Packages will be updated"
@@ -540,6 +639,9 @@ msgstr[1] "Pakketten worden ge-update"
 
 msgid "Part Fan"
 msgstr "Part Ventilator"
+
+msgid "Password"
+msgstr "Wachtwoord"
 
 msgid "Password saved"
 msgstr "Wachtwoord opgeslagen"
@@ -559,23 +661,29 @@ msgstr "Pinnen"
 msgid "Please recompile and flash the micro-controller."
 msgstr "Hercompileer en flash de micro-controller aub."
 
+msgid "Please wait"
+msgstr "Even geduld aub"
+
 msgid "Power"
 msgstr "Stroom"
 
 msgid "Power On Printer"
 msgstr "Printer Aanzetten"
 
+msgid "Pressure Advance"
+msgstr "Pressure Advance"
+
 msgid "Pressure Advance:"
 msgstr "Pressure Advance:"
+
+msgid "Pressure advance"
+msgstr ""
 
 msgid "Print"
 msgstr "Print"
 
 msgid "Print Control"
 msgstr "Print Control"
-
-msgid "Print Time"
-msgstr "Print Tijd"
 
 msgid "Printer"
 msgstr "Printer"
@@ -619,6 +727,9 @@ msgstr "Referentie"
 msgid "Refresh"
 msgstr "Refresh"
 
+msgid "Remove network"
+msgstr "Verwijder netwerk"
+
 msgid "Rename/Move:"
 msgstr "Hernoem/beweeg:"
 
@@ -645,6 +756,9 @@ msgstr "Opnieuw"
 
 msgid "Retrying"
 msgstr "Probeert opnieuw"
+
+msgid "Rotation invalid"
+msgstr "Rotatie ongeldig"
 
 msgid "Save"
 msgstr "Opslaan"
@@ -674,8 +788,8 @@ msgstr "Scherm Uitschakelen Tijd"
 msgid "Screws Adjust"
 msgstr "Schroeven Aanpassen"
 
-msgid "Select"
-msgstr "Selecteer"
+msgid "Screws not used:"
+msgstr ""
 
 msgid "Send"
 msgstr "Verstuur"
@@ -695,6 +809,12 @@ msgstr "Toon Heater Stroom"
 msgid "Show Scrollbars Buttons"
 msgstr "Toon Scrollbars Knoppen"
 
+msgid "Show cursor"
+msgstr "Toon cursor"
+
+msgid "Show only devices that are able to be set"
+msgstr ""
+
 msgid "Shutdown"
 msgstr "Afsluiten"
 
@@ -709,6 +829,9 @@ msgstr "Slicer:"
 
 msgid "Small"
 msgstr "Klein"
+
+msgid "Smooth time"
+msgstr ""
 
 msgid "Speed (mm/s)"
 msgstr "Snelheid (mm/s)"
@@ -731,14 +854,14 @@ msgstr "Standby"
 msgid "Start"
 msgstr "Start"
 
-msgid "Starting WiFi Association"
-msgstr "WiFi Association starten"
-
 msgid "Starting recovery for"
 msgstr "Herstel starten voor"
 
 msgid "Starting update for"
 msgstr "Update starten voor"
+
+msgid "Swaps buttons if they are on top of each other, affects other panels"
+msgstr ""
 
 msgid "System"
 msgstr "Systeem"
@@ -749,11 +872,32 @@ msgstr "Systeem Herstarten"
 msgid "System Shutdown"
 msgstr "Systeem Afsluiten"
 
+msgid "System:"
+msgstr "Systeem:"
+
 msgid "Temp (°C)"
 msgstr "Temp (°C)"
 
 msgid "Temperature"
 msgstr "Temperatuur"
+
+msgid "Temperature too low to extrude"
+msgstr "Temperatuur te laag voor extrude"
+
+msgid "The system doesn't meet the minimum requirement"
+msgstr ""
+
+msgid "This panel supports up-to 9 screws in a 3x3 Grid"
+msgstr ""
+
+msgid "This will affect screw positions and mesh graph"
+msgstr ""
+
+msgid "Timeout for screen black-out or power-off"
+msgstr ""
+
+msgid "Timeout for screen black-out or power-off during printing"
+msgstr ""
 
 msgid "Total:"
 msgstr "Totaal:"
@@ -761,8 +905,8 @@ msgstr "Totaal:"
 msgid "Unknown Heater"
 msgstr "Onbekende Heater"
 
-msgid "Unknown screw position"
-msgstr "Onbekende schroef positie"
+msgid "Unknown security type"
+msgstr "Onbekend beveiliging type"
 
 msgid "Unload"
 msgstr "Uitladen"
@@ -782,14 +926,17 @@ msgstr "Update"
 msgid "Updating"
 msgstr "Bezig met updaten"
 
-msgid "Uploaded"
-msgstr "Geupload"
+msgid "Useful for un-responsive touchscreens"
+msgstr ""
 
-msgid "Warning"
-msgstr "Waarschuwing"
+msgid "User"
+msgstr "Gebruiker"
 
 msgid "WebRTC is not supported by the backend trying Stream"
 msgstr "WebRTC is niet ondersteund door de backend"
+
+msgid "Working"
+msgstr ""
 
 msgid "XY Move Speed (mm/s)"
 msgstr "XY Move Snelheid (mm/s)"
@@ -817,8 +964,13 @@ msgid_plural "commits"
 msgstr[0] "commit"
 msgstr[1] "commits"
 
-msgid "dBm"
-msgstr "dBm"
+msgid "day"
+msgid_plural "days"
+msgstr[0] "dag"
+msgstr[1] "dagen"
+
+msgid "g"
+msgstr ""
 
 msgid "hour"
 msgid_plural "hours"
@@ -847,6 +999,69 @@ msgstr "mm/s²"
 
 msgid "mm³/s"
 msgstr "mm³/s"
+
+msgid "s"
+msgstr ""
+
+msgid "second"
+msgid_plural "seconds"
+msgstr[0] "seconde"
+msgstr[1] "seconden"
+
+#~ msgid "Hide temp."
+#~ msgstr "Verberg temp."
+
+#~ msgid "PSK for"
+#~ msgstr "PSK voor"
+
+#~ msgid "Mesh calibrate"
+#~ msgstr "Mesh kalibreren"
+
+#~ msgid "Uploaded"
+#~ msgstr "Geupload"
+
+#~ msgid "Ended official support in June 2023"
+#~ msgstr "Ondersteuning officieel beëindigt in juni 2023"
+
+#~ msgid "Hidden"
+#~ msgstr "Verborgen"
+
+#~ msgid "KlipperScreen will drop support in June 2024"
+#~ msgstr "KlipperScreen ondersteuning wordt in juni 2024 beëindigt"
+
+#~ msgid "Print Time"
+#~ msgstr "Print Tijd"
+
+#~ msgid "Starting WiFi Association"
+#~ msgstr "WiFi Association starten"
+
+#~ msgid "Warning"
+#~ msgstr "Waarschuwing"
+
+#~ msgid "dBm"
+#~ msgstr "dBm"
+
+#~ msgid "Deselect"
+#~ msgstr "Deselecteer"
+
+#~ msgid "Select"
+#~ msgstr "Selecteer"
+
+#~ msgid "Bed screw configuration:"
+#~ msgstr "Bed schroef configuratie:"
+
+#~ msgid ""
+#~ "Not supported for auto-detection, it needs to be configured in "
+#~ "klipperscreen.conf"
+#~ msgstr ""
+#~ "Niet ondersteunt voor auto-detectie, dit moet worden geconfigureerd in "
+#~ "klipperscreen.conf"
+
+#~ msgid "Unknown screw position"
+#~ msgstr "Onbekende schroef positie"
+
+#~ msgid "Max Acceleration to Deceleration"
+#~ msgstr "Max Acceleratie naar De-acceleratie"
 
 #~ msgid "Continue"
 #~ msgstr "Doorgaan"

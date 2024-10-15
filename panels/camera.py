@@ -10,6 +10,7 @@ from ks_includes.screen_panel import ScreenPanel
 
 class Panel(ScreenPanel):
     def __init__(self, screen, title):
+        title = title or _("Camera")
         super().__init__(screen, title)
         self.mpv = None
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
@@ -95,6 +96,13 @@ class Panel(ScreenPanel):
             self._screen._menu_go_back()
 
     def log(self, loglevel, component, message):
-        logging.debug(f'[{loglevel}] {component}: {message}')
-        if loglevel == 'error' and 'No Xvideo support found' not in message and 'youtube-dl' not in message:
+        if 'unable to decode' in message:  # skip proprietary app fields errors
+            return
+        if (
+            loglevel == 'error'
+            and 'No Xvideo support found' not in message  # will fall back automatically
+            and 'youtube-dl' not in message  # needed for some streams, not relevant for our case
+        ):
             self._screen.show_popup_message(f'{message}')
+        else:
+            logging.debug(f'[{loglevel}] {component}: {message}')
