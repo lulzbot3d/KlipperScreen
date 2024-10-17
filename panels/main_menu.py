@@ -73,12 +73,12 @@ class Panel(MenuPanel):
         return top
 
     def update_top_panel(self):
-        ext_temp = self._printer.get_dev_stat("extruder", "temperature")
-        ext_target = self._printer.get_dev_stat("extruder", "target")
+        ext_temp = self._printer.get_stat("extruder", "temperature")
+        ext_target = self._printer.get_stat("extruder", "target")
         ext_label = f"{int(ext_temp)} / {int(ext_target)}°C"
 
-        bed_temp = self._printer.get_dev_stat("heater_bed", "temperature")
-        bed_target = self._printer.get_dev_stat("heater_bed", "target")
+        bed_temp = self._printer.get_stat("heater_bed", "temperature")
+        bed_target = self._printer.get_stat("heater_bed", "target")
         bed_label = f" {int(bed_temp)} / {int(bed_target)}°C"
 
         fs = self._printer.get_fan_speed("fan")
