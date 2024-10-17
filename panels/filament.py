@@ -143,8 +143,8 @@ class Panel(ScreenPanel):
 
 
     def update_panels(self):
-        ext_temp = self._printer.get_dev_stat("extruder", "temperature")
-        ext_target = self._printer.get_dev_stat("extruder", "target")
+        ext_temp = self._printer.get_stat("extruder", "temperature")
+        ext_target = self._printer.get_stat("extruder", "target")
         ext_label = f"{int(ext_temp)} / {int(ext_target)}°C"
 
         if ext_target > 0:
@@ -212,30 +212,25 @@ class Panel(ScreenPanel):
 
     def enable_disable_fs(self, switch, gparams, name, x):
         if switch.get_active():
-            self._printer.set_dev_stat(x, "enabled", True)
             self._screen._ws.klippy.gcode_script(f"SET_FILAMENT_SENSOR SENSOR={name} ENABLE=1")
             if self._printer.get_stat(x, "filament_detected"):
                 self.labels[x]['box'].get_style_context().add_class("filament_sensor_detected")
             else:
                 self.labels[x]['box'].get_style_context().add_class("filament_sensor_empty")
         else:
-            self._printer.set_dev_stat(x, "enabled", False)
             self._screen._ws.klippy.gcode_script(f"SET_FILAMENT_SENSOR SENSOR={name} ENABLE=0")
             self.labels[x]['box'].get_style_context().remove_class("filament_sensor_empty")
             self.labels[x]['box'].get_style_context().remove_class("filament_sensor_detected")
 
     def update_filament_sensors(self, data):
         for x in self._printer.get_filament_sensors():
-            if x in data:
-                if 'enabled' in data[x]:
-                    self._printer.set_dev_stat(x, "enabled", data[x]['enabled'])
+            if x in data and x in self.labels:
+                if 'enabled' in data[x] and 'switch' in self.labels[x]:
                     self.labels[x]['switch'].set_active(data[x]['enabled'])
-                if 'filament_detected' in data[x]:
-                    self._printer.set_dev_stat(x, "filament_detected", data[x]['filament_detected'])
-                    if self._printer.get_stat(x, "enabled"):
-                        if data[x]['filament_detected']:
-                            self.labels[x]['box'].get_style_context().remove_class("filament_sensor_empty")
-                            self.labels[x]['box'].get_style_context().add_class("filament_sensor_detected")
-                        else:
-                            self.labels[x]['box'].get_style_context().remove_class("filament_sensor_detected")
-                            self.labels[x]['box'].get_style_context().add_class("filament_sensor_empty")
+                if 'filament_detected' in data[x] and self._printer.get_stat(x, "enabled"):
+                    if data[x]['filament_detected']:
+                        self.labels[x]['box'].get_style_context().remove_class("filament_sensor_empty")
+                        self.labels[x]['box'].get_style_context().add_class("filament_sensor_detected")
+                    else:
+                        self.labels[x]['box'].get_style_context().remove_class("filament_sensor_detected")
+                        self.labels[x]['box'].get_style_context().add_class("filament_sensor_empty")
