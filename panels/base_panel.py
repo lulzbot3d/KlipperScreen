@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
-import psutil
+#import psutil
 import gi
 
 import netifaces
@@ -410,7 +410,8 @@ class BasePanel(ScreenPanel):
             return self.battery_icons['unknown']
 
     def battery_percentage(self):
-        battery = psutil.sensors_battery()
+        #battery = psutil.sensors_battery()
+        battery = None
         if battery and battery.percent:
             self.labels['battery_icon'].set_from_pixbuf(
                 self.get_battery_icon(battery.percent, battery.power_plugged)

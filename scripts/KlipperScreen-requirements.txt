@@ -1,5 +1,3 @@
-# This comment intentionally left blank
-
 jinja2==3.1.4;python_version>="3.6"
 requests==2.32.3;python_version>="3.8"
 sdbus==0.11.1;python_version>="3.8"
@@ -18,4 +16,4 @@ pycairo==1.26.1;python_version=="3.8"
 PyGObject==3.50.0;python_version>"3.8"
 pycairo==1.27.0;python_version>"3.8"
 websocket-client==1.8.0;python_version>="3.8"
-psutil==6.0.0;python_version>="3.8"
+#psutil==6.0.0;python_version>="3.8"
