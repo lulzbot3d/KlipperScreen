@@ -120,7 +120,7 @@ class Panel(MenuPanel):
         self.preheat.connect("clicked", self.preheat_clicked)
 
         self.print = self._gtk.Button('print', " Print", "button_print", self.bts * 3, Gtk.PositionType.LEFT, 1)
-        self.print.connect("clicked", self.menu_item_clicked, {"name": "Print", "panel": "print"})
+        self.print.connect("clicked", self.menu_item_clicked, {"name": "Print", "panel": "gcodes"})
 
         right = Gtk.Grid(row_homogeneous=True, column_homogeneous=True)
         right.set_property("width-request", 300)
