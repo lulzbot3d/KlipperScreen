@@ -21,9 +21,9 @@ class Panel(ScreenPanel):
         super().__init__(screen, title)
 
         if self.ks_printer_cfg is not None:
-            dis = self.ks_printer_cfg.get("move_distances", '0.1, 1, 10, 25, 50')
-            if re.match(r'^[0-9,\.\s]+$', dis):
-                dis = [str(i.strip()) for i in dis.split(',')]
+            dis = self.ks_printer_cfg.get("move_distances", "0.1, 1, 10, 25, 50")
+            if re.match(r"^[0-9,\.\s]+$", dis):
+                dis = [str(i.strip()) for i in dis.split(",")]
                 if 1 < len(dis) <= 7:
                     self.distances = dis
                     self.distance = self.distances[-2]
@@ -31,37 +31,40 @@ class Panel(ScreenPanel):
         self.settings = {}
         self.menu.append("move_menu")
         self.buttons = {
-            'x+': self._gtk.Button("arrow-right", "X+", "color1"),
-            'x-': self._gtk.Button("arrow-left", "X-", "color1"),
-            'y+': self._gtk.Button("arrow-Y-forward", "Y+", "color2"),
-            'y-': self._gtk.Button("arrow-Y-back", "Y-", "color2"),
-            'z+': self._gtk.Button("arrow-up", "Z+", "color3"),
-            'z-': self._gtk.Button("arrow-down", "Z-", "color3"),
-            'home': self._gtk.Button("home", _("Home Menu"), "color4"),
-            'motors_off': self._gtk.Button("motor-off", _("Disable Motors"), "color4"),
-            'home-all': self._gtk.Button("home", _("Home All"), "color4"),
+            "x+": self._gtk.Button("arrow-right", "X+", "color1"),
+            "x-": self._gtk.Button("arrow-left", "X-", "color1"),
+            "y+": self._gtk.Button("arrow-Y-forward", "Y+", "color2"),
+            "y-": self._gtk.Button("arrow-Y-back", "Y-", "color2"),
+            "z+": self._gtk.Button("arrow-up", "Z+", "color3"),
+            "z-": self._gtk.Button("arrow-down", "Z-", "color3"),
+            "home": self._gtk.Button("home", _("Home"), "color4"),
+            "motors_off": self._gtk.Button("motor-off", _("Disable Motors"), "color4"),
+            'home-all': self._gtk.Button("home", _("Home All"), "color4")
         }
-        self.buttons['x+'].connect("clicked", self.move, "X", "+")
-        self.buttons['x-'].connect("clicked", self.move, "X", "-")
-        self.buttons['y+'].connect("clicked", self.move, "Y", "+")
-        self.buttons['y-'].connect("clicked", self.move, "Y", "-")
-        self.buttons['z+'].connect("clicked", self.move, "Z", "+")
-        self.buttons['z-'].connect("clicked", self.move, "Z", "-")
-        self.buttons['home'].connect("clicked", self.home)
+        self.buttons["x+"].connect("clicked", self.move, "X", "+")
+        self.buttons["x-"].connect("clicked", self.move, "X", "-")
+        self.buttons["y+"].connect("clicked", self.move, "Y", "+")
+        self.buttons["y-"].connect("clicked", self.move, "Y", "-")
+        self.buttons["z+"].connect("clicked", self.move, "Z", "+")
+        self.buttons["z-"].connect("clicked", self.move, "Z", "-")
+        self.buttons["home"].connect("clicked", self.home)
         self.buttons['home-all'].connect("clicked", self.home_all)
-
         script = {"script": "M18"}
-        self.buttons['motors_off'].connect("clicked", self._screen._confirm_send_action,
-                                           _("Are you sure you wish to disable motors?"),
-                                           "printer.gcode.script", script)
-
-        adjust = self._gtk.Button("SpeedOMeter", None, "color2", 1, Gtk.PositionType.LEFT, 1)
-        adjust.connect("clicked", self.load_menu, 'options', _('Settings'))
+        self.buttons["motors_off"].connect(
+            "clicked",
+            self._screen._confirm_send_action,
+            _("Are you sure you wish to disable motors?"),
+            "printer.gcode.script",
+            script,
+        )
+        adjust = self._gtk.Button(
+            "settings", None, "color2", 1, Gtk.PositionType.LEFT, 1
+        )
+        adjust.connect("clicked", self.load_menu, "options", _("Settings"))
         adjust.set_hexpand(False)
         adjust.set_margin_top(15)
 
         grid = Gtk.Grid(row_homogeneous=True, column_homogeneous=True)
-
         if self._screen.vertical_mode:
             if self._screen.lang_ltr:
                 grid.attach(self.buttons["x+"], 2, 1, 1, 1)
@@ -79,20 +82,23 @@ class Panel(ScreenPanel):
 
         else:
             if self._screen.lang_ltr:
-                grid.attach(self.buttons['x+'], 2, 1, 1, 1)
-                grid.attach(self.buttons['x-'], 0, 1, 1, 1)
+                grid.attach(self.buttons["x+"], 2, 1, 1, 1)
+                grid.attach(self.buttons["x-"], 0, 1, 1, 1)
             else:
-                grid.attach(self.buttons['x+'], 2, 1, 1, 1)
-                grid.attach(self.buttons['x-'], 0, 1, 1, 1)
-            grid.attach(self.buttons['y+'], 0, 2, 1, 1)
-            grid.attach(self.buttons['y-'], 2, 0, 1, 1)
-            grid.attach(self.buttons['z+'], 1, 0, 1, 1)
-            grid.attach(self.buttons['z-'], 1, 2, 1, 1)
+                grid.attach(self.buttons["x+"], 2, 1, 1, 1)
+                grid.attach(self.buttons["x-"], 0, 1, 1, 1)
+            grid.attach(self.buttons["y+"], 0, 2, 1, 1)
+            grid.attach(self.buttons["y-"], 2, 0, 1, 1)
+            if self._config.get_config()["main"].getboolean("invert_z", False):
+                grid.attach(self.buttons["z+"], 1, 0, 1, 1)
+                grid.attach(self.buttons["z-"], 1, 2, 1, 1)
+            else:
+                grid.attach(self.buttons["z+"], 1, 0, 1, 1)
+                grid.attach(self.buttons["z-"], 1, 2, 1, 1)
 
-        grid.attach(self.buttons['home'], 0, 0, 1, 1)
-        grid.attach(self.buttons['motors_off'], 2, 2, 1, 1)
+        grid.attach(self.buttons["home"], 0, 0, 1, 1)
+        grid.attach(self.buttons["motors_off"], 2, 2, 1, 1)
         grid.attach(self.buttons['home-all'], 1, 1, 1, 1)
-        # grid.attach(adjust, 2, 2, 1, 1)
 
         distgrid = Gtk.Grid()
         distgrid.set_margin_left(20)
@@ -109,22 +115,24 @@ class Panel(ScreenPanel):
 
         for p in ("pos_x", "pos_y", "pos_z"):
             self.labels[p] = Gtk.Label()
+        #self.labels["move_dist"] = Gtk.Label(label=_("Move Distance (mm)"))
 
         bottomgrid = Gtk.Grid(row_homogeneous=True, column_homogeneous=True)
         bottomgrid.set_size_request(200, 10)
-
         bottomgrid.set_direction(Gtk.TextDirection.LTR)
-        bottomgrid.attach(self.labels['pos_x'], 0, 0, 1, 1)
-        bottomgrid.attach(self.labels['pos_y'], 1, 0, 1, 1)
-        bottomgrid.attach(self.labels['pos_z'], 2, 0, 1, 1)
-        # bottomgrid.attach(self.labels['move_dist'], 0, 1, 3, 1)
-        # if not self._screen.vertical_mode:
-        #    bottomgrid.attach(adjust, 3, 0, 0, 2)
+        bottomgrid.attach(self.labels["pos_x"], 0, 0, 1, 1)
+        bottomgrid.attach(self.labels["pos_y"], 1, 0, 1, 1)
+        bottomgrid.attach(self.labels["pos_z"], 2, 0, 1, 1)
+        #bottomgrid.attach(self.labels["move_dist"], 0, 1, 3, 1)
+        #if not self._screen.vertical_mode:
+        #    bottomgrid.attach(adjust, 3, 0, 1, 2)
 
-        self.labels['move_menu'] = Gtk.Grid()
-        self.labels['move_menu'].attach(grid, 0, 0, 2, 5)
-        self.labels['move_menu'].attach(bottomgrid, 0, 5, 2, 1)
-        self.labels['move_menu'].attach(distgrid, 3, 0, 1, 7)
+        self.labels["move_menu"] = Gtk.Grid(
+        #    row_homogeneous=True, column_homogeneous=True
+        )
+        self.labels["move_menu"].attach(grid, 0, 0, 2, 5)
+        self.labels["move_menu"].attach(bottomgrid, 0, 5, 2, 1)
+        self.labels["move_menu"].attach(distgrid, 3, 0, 1, 7)
 
         self.content.add(self.labels["move_menu"])
 
@@ -138,15 +146,60 @@ class Panel(ScreenPanel):
             self.max_z_velocity = max_velocity
 
         configurable_options = [
-            # {"invert_x": {"section": "main", "name": _("Invert X"), "type": "binary", "value": "False"}},
-            # {"invert_y": {"section": "main", "name": _("Invert Y"), "type": "binary", "value": "False"}},
-            # {"invert_z": {"section": "main", "name": _("Invert Z"), "type": "binary", "value": "False"}},
-            {"move_speed_xy": {
-                "section": "main", "name": _("XY Speed (mm/s)"), "type": "scale", "value": "45",
-                "range": [1, max_velocity], "step": 1}},
-            {"move_speed_z": {
-                "section": "main", "name": _("Z Speed (mm/s)"), "type": "scale", "value": "45",
-                "range": [1, max_z_velocity], "step": 1}}
+            {
+                "invert_x": {
+                    "section": "main",
+                    "name": _("Invert X"),
+                    "type": "binary",
+                    "tooltip": _("This will affect screw positions and mesh graph"),
+                    "value": "False",
+                    "callback": self.reinit_panels,
+                }
+            },
+            {
+                "invert_y": {
+                    "section": "main",
+                    "name": _("Invert Y"),
+                    "type": "binary",
+                    "tooltip": _("This will affect screw positions and mesh graph"),
+                    "value": "False",
+                    "callback": self.reinit_panels,
+                }
+            },
+            {
+                "invert_z": {
+                    "section": "main",
+                    "name": _("Invert Z"),
+                    "tooltip": _(
+                        "Swaps buttons if they are on top of each other, affects other panels"
+                    ),
+                    "type": "binary",
+                    "value": "False",
+                    "callback": self.reinit_move,
+                }
+            },
+            {
+                "move_speed_xy": {
+                    "section": "main",
+                    "name": _("XY Speed (mm/s)"),
+                    "type": "scale",
+                    "tooltip": _("Only for the move panel"),
+                    "value": "50",
+                    "range": [1, max_velocity],
+                    "step": 1,
+                }
+            },
+            {
+                "move_speed_z": {
+                    "section": "main",
+                    "name": _("Z Speed (mm/s)"),
+                    "type": "scale",
+                    "tooltip": _("Only for the move panel"),
+                    "value": "10",
+                    "range": [1, self.max_z_velocity],
+                    "step": 1,
+                }
+            },
         ]
 
         self.labels["options_menu"] = self._gtk.ScrolledWindow()
