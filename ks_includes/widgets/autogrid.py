@@ -29,10 +29,10 @@ class AutoGrid(Gtk.Grid):
         if vertical and length < 4:
             # Arrange 1 x 4
             columns = 1
-        elif length in {4, 2}:
+        elif length in {4, 3, 2}:
             # Arrange 2 x 2
             columns = min(2, max_columns)
-        elif length in {3, 5, 6}:
+        elif length in {5, 6}:
             # Arrange 3 x 2
             columns = min(3, max_columns)
         else:
