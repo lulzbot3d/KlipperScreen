@@ -248,13 +248,13 @@ class Panel(ScreenPanel):
             if device in self.active_heaters:
                 self.active_heaters.pop(self.active_heaters.index(device))
                 self.devices[device]["name_button"].get_style_context().remove_class(
-                    "button_active"
+                    "distbutton_active"
                 )
                 logging.info(f"Deselecting {device}")
                 return
             self.active_heaters.append(device)
             self.devices[device]["name_button"].get_style_context().add_class(
-                "button_active"
+                "distbutton_active"
             )
             logging.info(f"Selecting {device}")
         return
