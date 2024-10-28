@@ -182,8 +182,8 @@ class Panel(ScreenPanel):
             commands.append({"PROBE_CALIBRATE"})
         if "Z_ENDSTOP_CALIBRATE" in self._printer.available_commands:
             commands.append({"Z_ENDSTOP_CALIBRATE"})
-        if "BED_MESH_CALIBRATE" in self._printer.available_commands:
-            commands.append({"BED_MESH_CALIBRATE METHOD=manual"})
+#        if "BED_MESH_CALIBRATE" in self._printer.available_commands:
+#            commands.append({"BED_MESH_CALIBRATE METHOD=manual"})
         if "DELTA_CALIBRATE" in self._printer.available_commands:
             commands.append({"DELTA_CALIBRATE"})
             commands.append({"DELTA_CALIBRATE METHOD=manual"})
@@ -220,7 +220,18 @@ class Panel(ScreenPanel):
             self._screen._ws.klippy.gcode_script("BED_MESH_CLEAR")
         if self._printer.get_stat("toolhead", "homed_axes") != "xyz":
             self._screen._ws.klippy.gcode_script("G28")
-        self._move_to_position(*self._get_calibration_location())
+
+        mid_x, mid_y = self._lulzbot_get_probe_location()
+        probe_x = mid_x - self.x_offset
+        probe_y = mid_y - self.y_offset
+        if command == "PROBE_CALIBRATE":
+            self._screen._ws.klippy.gcode_script(f'G28\nG0 X{probe_x} Y{probe_y} F3000\nG0 Z15')
+        elif command == "Z_ENDSTOP_CALIBRATE":
+            self._screen._ws.klippy.gcode_script(f'G28\nG0 X{mid_x} Y{mid_y} F3000\nG0 Z15')
+        elif command == "AXIS_TWIST_COMPENSATION_CALIBRATE":
+            self._screen._ws.klippy.gcode_script(f'G28')
+        else:
+            self._move_to_position(*self._get_calibration_location())
         self._screen._ws.klippy.gcode_script(command)
 
     def _move_to_position(self, x, y):
@@ -252,6 +263,18 @@ class Panel(ScreenPanel):
             return self.mesh_origin[0] - self.x_offset, self.mesh_origin[1] - self.y_offset
 
         x, y = self._calculate_position()
+        return x, y
+
+    def _lulzbot_get_probe_location(self):
+        if self.ks_printer_cfg is not None:
+            x = self.ks_printer_cfg.getfloat("calibrate_x_position", None)
+            y = self.ks_printer_cfg.getfloat("calibrate_y_position", None)
+            if x and y:
+                logging.debug(f"Using KS configured position: {x}, {y}")
+                return x, y
+        x = 90  # Center of bed for Mini 3
+        y = 90
+        logging.debug(f"Using Lulzbot Mini 3 default position: {x}, {y}")
         return x, y
 
     def _get_safe_z(self):
