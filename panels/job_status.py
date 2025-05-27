@@ -349,7 +349,7 @@ class Panel(ScreenPanel):
             'restart': self._gtk.Button("refresh", _("Restart"), "color3"),
             'resume': self._gtk.Button("resume", _("Resume"), "color1"),
             'save_offset_probe': self._gtk.Button("home-z", _("Save Z") + "\n" + "Probe", "color1"),
-            'save_offset_endstop': self._gtk.Button("home-z", _("Save Z") + "\n" + "Endstop", "color2"),
+            'save_offset_endstop': self._gtk.Button("home-z", _("Save Z") + "\n" + "Offset", "color2"),
         }
         self.buttons['cancel'].connect("clicked", self.cancel)
         self.buttons['control'].connect("clicked", self._screen._go_to_submenu, "")
@@ -714,10 +714,10 @@ class Panel(ScreenPanel):
                     self.buttons['button_grid'].attach(self.buttons["save_offset_endstop"], 0, 0, 1, 1)
                 else:
                     self.buttons['button_grid'].attach(Gtk.Label(), 0, 0, 1, 1)
-                if "Z_OFFSET_APPLY_PROBE" in self._printer.available_commands:
-                    self.buttons['button_grid'].attach(self.buttons["save_offset_probe"], 1, 0, 1, 1)
-                else:
-                    self.buttons['button_grid'].attach(Gtk.Label(), 1, 0, 1, 1)
+#                if "Z_OFFSET_APPLY_PROBE" in self._printer.available_commands:
+#                    self.buttons['button_grid'].attach(self.buttons["save_offset_probe"], 1, 0, 1, 1)
+#                else:
+                self.buttons['button_grid'].attach(Gtk.Label(), 1, 0, 1, 1)
             else:
                 self.buttons['button_grid'].attach(Gtk.Label(), 0, 0, 1, 1)
                 self.buttons['button_grid'].attach(Gtk.Label(), 1, 0, 1, 1)
