@@ -127,9 +127,8 @@ class Panel(ScreenPanel):
         # if not self._screen.vertical_mode:
         #    bottomgrid.attach(adjust, 3, 0, 1, 2)
 
-        self.labels["move_menu"] = Gtk.Grid(
+        self.labels["move_menu"] = Gtk.Grid()
         #    row_homogeneous=True, column_homogeneous=True
-                                            )
         self.labels["move_menu"].attach(grid, 0, 0, 2, 5)
         self.labels["move_menu"].attach(bottomgrid, 0, 5, 2, 1)
         self.labels["move_menu"].attach(distgrid, 3, 0, 1, 7)
