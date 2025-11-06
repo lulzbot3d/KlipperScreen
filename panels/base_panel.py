@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
-#import psutil
+# import psutil
 import gi
 
 import netifaces
@@ -107,7 +107,7 @@ class BasePanel(ScreenPanel):
         self.control['battery_box'].add(self.labels['battery_icon'])
         for widget in self.control['battery_box']:
             widget.show()
-            
+
         self.titlebar = Gtk.Box(spacing=5, valign=Gtk.Align.CENTER)
         self.titlebar.get_style_context().add_class("title_bar")
         self.titlebar.add(self.control['temp_box'])
@@ -410,7 +410,7 @@ class BasePanel(ScreenPanel):
             return self.battery_icons['unknown']
 
     def battery_percentage(self):
-        #battery = psutil.sensors_battery()
+        # battery = psutil.sensors_battery()
         battery = None
         if battery and battery.percent:
             self.labels['battery_icon'].set_from_pixbuf(
