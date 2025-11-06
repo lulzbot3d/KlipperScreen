@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # For Moonraker update manager to install packages
-PKGLIST="sdbus sdbus-networkmanager psutil"
+PKGLIST="sdbus sdbus_networkmanager psutil"
 
 
 SCRIPTPATH=$(dirname -- "$(readlink -f -- "$0")")
