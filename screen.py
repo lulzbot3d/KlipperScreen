@@ -1250,6 +1250,13 @@ def main():
     parser = argparse.ArgumentParser(description="KlipperScreen - A GUI for Klipper")
     homedir = os.path.expanduser("~")
 
+    # Start up shell script to change things that can't be done through update manager.
+    script = os.path.expanduser("~/KlipperScreen/scripts/KlipperScreen-fix.sh")
+    try:
+        subprocess.run([script], check=False)
+    except Exception:
+        pass
+ 
     parser.add_argument(
         "-c", "--configfile",
         default="", metavar='<configfile>',
