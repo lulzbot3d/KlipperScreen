@@ -1251,12 +1251,12 @@ def main():
     homedir = os.path.expanduser("~")
 
     # Start up shell script to change things that can't be done through update manager.
-    script = os.path.expanduser("~/KlipperScreen/scripts/KlipperScreen-fix.sh")
+    script = os.path.expanduser("~/KlipperScreen/scripts/KlipperScreen-fix-helper.sh")
     try:
         subprocess.run([script], check=False)
     except Exception:
         pass
- 
+
     parser.add_argument(
         "-c", "--configfile",
         default="", metavar='<configfile>',
