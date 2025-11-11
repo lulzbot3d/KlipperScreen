@@ -23,7 +23,7 @@ echo "Updating Moonraker config for KlipperScreen updates."
 CONF="$HOME/printer_data/config/moonraker.conf"
 
 # Backup first
-cp "$CONF" ".$CONF.bak_$(date +%Y%m%d_%H%M%S)"
+cp "$CONF" "$CONF.bak_$(date +%Y%m%d_%H%M%S)"
 
 sed -i '/^\[update_manager KlipperScreen\]/,/^\[/{
     s|^env:.*|virtualenv: ~/.KlipperScreen-env|;
@@ -31,7 +31,7 @@ sed -i '/^\[update_manager KlipperScreen\]/,/^\[/{
 }' "$CONF"
 
 echo "Done."
-echo "A backup was saved as: .$CONF.bak_<timestamp>"
+echo "A backup was saved as: $CONF.bak_<timestamp>"
 echo
 
 
