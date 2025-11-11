@@ -25,7 +25,7 @@ CONF="$HOME/printer_data/config/moonraker.conf"
 # Backup first
 cp "$CONF" ".$CONF.bak_$(date +%Y%m%d_%H%M%S)"
 
-sed -i '/^\[update_manager KlipperScreen\]/,/^\[/{ 
+sed -i '/^\[update_manager KlipperScreen\]/,/^\[/{
     s|^env:.*|virtualenv: ~/.KlipperScreen-env|;
     s|^install_script:.*|system_dependencies: scripts/system-dependencies.json|;
 }' "$CONF"
