@@ -34,6 +34,12 @@ The options listed here are not editable from within the user interface.
 # Define one or more moonraker power devices that turn on/off with the screensaver (CSV list)
 # screen_on_devices: example1, example2
 # screen_off_devices:  example1, example2
+
+# Define the password to use when locking the screen, this is not secure
+# it's saved as plain text, it's meant to be a deterrent for kids or people at shows
+# it will be redacted from the logs.
+# default is no password
+# lock_password: example_password
 ```
 
 !!! tip
@@ -62,6 +68,7 @@ moonraker_port: 7125
 # For the 'Power on' button on the splash screen:
 # Define one or more moonraker power devices that turn on this printer (CSV list)
 # By Default it tries to match the printer name defined in this section header to the moonraker power device name.
+# This devices will be turned OFF when using the shutdown button
 # power_devices: example1, example2
 
 # Define what items should be shown in titlebar besides the extruder and bed
@@ -204,6 +211,7 @@ printer.gcode_macros.count # Number of gcode macros
 printer.gcode_macros.list # List of names of the gcode macros
 printer.leds.count # Number of leds
 printer.config_sections # Array of section headers of Klipper config (printer.cfg)
+printer.available_commands # List of all the commands that the printer supports
 ```
 
 

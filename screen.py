@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import ast
 import argparse
 import gc
 import json
@@ -28,8 +29,11 @@ from ks_includes.KlippyGtk import KlippyGtk
 from ks_includes.printer import Printer
 from ks_includes.widgets.keyboard import Keyboard
 from ks_includes.widgets.prompts import Prompt
+from ks_includes.widgets.lockscreen import LockScreen
+from ks_includes.widgets.screensaver import ScreenSaver
 from ks_includes.config import KlipperScreenConfig
 from panels.base_panel import BasePanel
+
 
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 
@@ -58,22 +62,24 @@ class KlipperScreen(Gtk.Window):
     connected_printer = None
     files = None
     keyboard = None
+    keyboard_cache = {}
     panels = {}
     popup_message = None
-    screensaver = None
-    printers = printer = None
+    printers = None
+    printer = None
     updating = False
     _ws = None
-    screensaver_timeout = None
     reinit_count = 0
     max_retries = 4
-    initialized = initializing = False
+    initialized = False
+    initializing = False
     popup_timeout = None
     wayland = False
     windowed = False
     notification_log = []
     prompt = None
     tempstore_timeout = None
+    check_dpms_timeout = None
 
     def __init__(self, args):
         self.server_info = None
@@ -104,9 +110,12 @@ class KlipperScreen(Gtk.Window):
         self.display_number = os.environ.get('DISPLAY') or ':0'
         logging.debug(f"Display for xset: {self.display_number}")
         monitor_amount = Gdk.Display.get_n_monitors(display)
-        for i in range(monitor_amount):
-            m = display.get_monitor(i)
-            logging.info(f"Screen {i}: {m.get_geometry().width}x{m.get_geometry().height}")
+        if (monitor_amount):
+            for i in range(monitor_amount):
+                m = display.get_monitor(i)
+                logging.info(f"Screen {i}: {m.get_geometry().width}x{m.get_geometry().height}")
+        else:
+            logging.warning(f"WARNING: No monitors detected by Gdk")
         try:
             mon_n = int(args.monitor)
             if not (-1 < mon_n < monitor_amount):
@@ -143,13 +152,16 @@ class KlipperScreen(Gtk.Window):
         self.show_cursor = self._config.get_main_config().getboolean("show_cursor", fallback=False)
         self.setup_gtk_settings()
         self.style_provider = Gtk.CssProvider()
+        self.screensaver = ScreenSaver(self)
         self.gtk = KlippyGtk(self)
         self.base_css = ""
         self.load_base_styles()
         self.set_icon_from_file(os.path.join(klipperscreendir, "styles", "icon.svg"))
         self.base_panel = BasePanel(self)
         self.change_theme(self.theme)
-        self.add(self.base_panel.main_grid)
+        self.overlay = Gtk.Overlay()
+        self.add(self.overlay)
+        self.overlay.add_overlay(self.base_panel.main_grid)
         self.show_all()
         self.update_cursor(self.show_cursor)
         min_ver = (3, 8)
@@ -165,7 +177,10 @@ class KlipperScreen(Gtk.Window):
             self.show_error_modal("Invalid config file", self._config.get_errors())
             return
         self.base_panel.activate()
-        self.set_screenblanking_timeout(self._config.get_main_config().get('screen_blanking'))
+        self.use_dpms = self._config.get_main_config().getboolean("use_dpms", fallback=True)
+        self.use_dpms &= functions.dpms_loaded
+        self.set_dpms(self.use_dpms)
+        self.lock_screen = LockScreen(self)
         self.log_notification("KlipperScreen Started", 1)
         self.initial_connection()
 
@@ -174,9 +189,9 @@ class KlipperScreen(Gtk.Window):
         self.gtk.set_cursor(show, window=self.get_window())
 
     def state_execute(self, state, callback):
-        self.close_screensaver()
+        self.screensaver.close()
         if 'printer_select' in self._cur_panels:
-            logging.debug(f"Connected printer chaged {state}")
+            logging.debug(f"Connected printer changed {state}")
             return False
         if state in ("printing", "paused"):
             self.set_screenblanking_timeout(self._config.get_main_config().get('screen_blanking_printing'))
@@ -320,6 +335,9 @@ class KlipperScreen(Gtk.Window):
     def show_panel(self, panel, title=None, remove_all=False, panel_name=None, **kwargs):
         if panel_name is None:
             panel_name = panel
+        if self._cur_panels and panel_name == self._cur_panels[-1]:
+            logging.error("Panel is already is in view")
+            return
         try:
             if remove_all:
                 self.panels_reinit = list(self.panels)
@@ -383,7 +401,7 @@ class KlipperScreen(Gtk.Window):
                 return
             self.last_popup_time = datetime.now()
 
-        self.close_screensaver()
+        self.screensaver.close()
         if self.popup_message is not None:
             self.close_popup_message()
 
@@ -571,6 +589,7 @@ class KlipperScreen(Gtk.Window):
         menuitems = self._config.get_menu_items(menu, name)
         if len(menuitems) != 0:
             self.show_panel("menu", disname, panel_name=name, items=menuitems)
+            logging.info(f"menu, {disname}, panel_name={name}, items={menuitems}")
         else:
             logging.info("No items in menu")
 
@@ -580,7 +599,7 @@ class KlipperScreen(Gtk.Window):
             self._remove_current_panel()
             del self._cur_panels[-1]
         self._cur_panels.clear()
-        self.close_screensaver()
+        self.screensaver.close()
         gc.collect()
 
     def _remove_current_panel(self):
@@ -600,136 +619,98 @@ class KlipperScreen(Gtk.Window):
                 break
         self.attach_panel(self._cur_panels[-1])
 
-    def reset_screensaver_timeout(self, *args):
-        if self.screensaver_timeout is not None:
-            GLib.source_remove(self.screensaver_timeout)
-            self.screensaver_timeout = None
-        if self.use_dpms:
-            return
-        if self.printer and self.printer.state in ("printing", "paused"):
-            use_screensaver = self._config.get_main_config().get('screen_blanking_printing') != "off"
-        else:
-            use_screensaver = self._config.get_main_config().get('screen_blanking') != "off"
-        if use_screensaver:
-            self.screensaver_timeout = GLib.timeout_add_seconds(self.blanking_time, self.show_screensaver)
-
-    def show_screensaver(self):
-        logging.debug("Showing Screensaver")
-        if self.screensaver is not None:
-            self.close_screensaver()
-        if self.screensaver_timeout is not None:
-            GLib.source_remove(self.screensaver_timeout)
-            self.screensaver_timeout = None
-        if self.blanking_time == 0:
-            return False
-        self.remove_keyboard()
-        self.close_popup_message()
-        for dialog in self.dialogs:
-            logging.debug("Hiding dialog")
-            dialog.hide()
-
-        close = Gtk.Button()
-        close.connect("clicked", self.close_screensaver)
-
-        box = Gtk.Box(halign=Gtk.Align.CENTER, width_request=self.width, height_request=self.height)
-        box.pack_start(close, True, True, 0)
-        box.get_style_context().add_class("screensaver")
-        self.remove(self.base_panel.main_grid)
-        self.add(box)
-
-        # Avoid leaving a cursor-handle
-        close.grab_focus()
-        self.gtk.set_cursor(False, window=self.get_window())
-
-        self.screensaver = box
-        self.screensaver.show_all()
-        self.power_devices(None, self._config.get_main_config().get("screen_off_devices", ""), on=False)
-        return False
-
-    def close_screensaver(self, widget=None):
-        if self.screensaver is None:
-            return False
-        logging.debug("Closing Screensaver")
-        self.remove(self.screensaver)
-        self.screensaver = None
-        self.add(self.base_panel.main_grid)
-        if self.use_dpms:
-            self.wake_screen()
-        else:
-            self.reset_screensaver_timeout()
-        for dialog in self.dialogs:
-            logging.info(f"Restoring Dialog {dialog}")
-            dialog.show()
-        self.gtk.set_cursor(self.show_cursor, window=self.get_window())
-        self.show_all()
-        self.power_devices(None, self._config.get_main_config().get("screen_on_devices", ""), on=True)
-
     def check_dpms_state(self):
         if not self.use_dpms:
             return False
         state = functions.get_DPMS_state()
         if state == functions.DPMS_State.Fail:
-            logging.info("DPMS State FAIL: Stopping DPMS Check")
+            self.show_popup_message(_("DPMS has failed and has been disabled"))
             self.set_dpms(False)
             return False
         elif state != functions.DPMS_State.On:
-            if self.screensaver is None:
-                self.show_screensaver()
+            if not self.screensaver.is_showing():
+                self.screensaver.show()
         return True
 
     def wake_screen(self):
         # Wake the screen (it will go to standby as configured)
+        if not self.use_dpms:
+            logging.debug("DPMS is disabled cannot wake the screen")
+            return
         if self._config.get_main_config().get('screen_blanking') != "off":
             logging.debug("Screen wake up")
-            if not self.wayland:
-                os.system(f"xset -display {self.display_number} dpms force on")
+        try:
+            subprocess.run(
+                f"xset -display {self.display_number} dpms force on",
+                shell=True, check=True
+            )
+        except subprocess.CalledProcessError as e:
+            self.show_popup_message(f"Error: {e}")
+            self.set_dpms(False)
+            return
 
     def set_dpms(self, use_dpms):
+        if not use_dpms:
+            if self.check_dpms_timeout is not None:
+                GLib.source_remove(self.check_dpms_timeout)
+            self.check_dpms_timeout = None
+            state = functions.get_DPMS_state()
+            if state != functions.DPMS_State.Fail:
+                try:
+                    subprocess.run(
+                        f"xset -display {self.display_number} dpms 0 0 0",
+                        shell=True, check=True
+                    )
+                    subprocess.run(
+                        f"xset -display {self.display_number} -dpms",
+                        shell=True, check=True
+                    )
+                except subprocess.CalledProcessError as e:
+                    self.show_popup_message(f"FAILED to turn DPMS off on {self.display_number}:\n {e}")
+                    return
         self.use_dpms = use_dpms
-        logging.info(f"DPMS set to: {self.use_dpms}")
-        if self.printer.state in ("printing", "paused"):
+        self._config.set("main", "use_dpms", use_dpms)
+        self._config.save_user_config_options()
+        if self.printer and self.printer.state in ("printing", "paused"):
             self.set_screenblanking_timeout(self._config.get_main_config().get('screen_blanking_printing'))
         else:
             self.set_screenblanking_timeout(self._config.get_main_config().get('screen_blanking'))
 
+    def set_dpms_timeout(self):
+        try:
+            subprocess.run(
+                f"xset -display {self.display_number} dpms 0 {self.blanking_time} 0",
+                shell=True, check=True
+            )
+            logging.info(f"DPMS on {self.display_number} set to: {self.blanking_time}")
+        except subprocess.CalledProcessError as e:
+            self.show_popup_message(f"DPMS Error:\n {e}")
+            self.set_dpms(False)
+            return
+        if self.blanking_time > 0 and self.check_dpms_timeout is None:
+            self.check_dpms_timeout = GLib.timeout_add_seconds(1, self.check_dpms_state)
+            return
+
     def set_screenblanking_printing_timeout(self, time):
-        if self.printer.state in ("printing", "paused"):
+        if self.printer and self.printer.state in ("printing", "paused"):
             self.set_screenblanking_timeout(time)
 
     def set_screenblanking_timeout(self, time):
-        if not self.wayland:
-            os.system(f"xset -display {self.display_number} s off")
-        self.use_dpms = self._config.get_main_config().getboolean("use_dpms", fallback=True)
-
+        # disable screensaver we have our own
+        os.system(f"xset -display {self.display_number} s off")
+        os.system(f"xset -display {self.display_number} s noblank")
         if time == "off":
-            logging.debug(f"Screen blanking: {time}")
             self.blanking_time = 0
-            if not self.wayland:
-                os.system(f"xset -display {self.display_number} dpms 0 0 0")
-            return
-
-        self.blanking_time = abs(int(time))
-        logging.debug(f"Changing screen blanking to: {self.blanking_time}")
-        if self.use_dpms and functions.dpms_loaded is True:
-            if not self.wayland:
-                os.system(f"xset -display {self.display_number} +dpms")
-            if functions.get_DPMS_state() == functions.DPMS_State.Fail:
-                logging.info("DPMS State FAIL")
-                self.show_popup_message(_("DPMS has failed to load and has been disabled"))
-                self._config.set("main", "use_dpms", "False")
-                self._config.save_user_config_options()
-            else:
-                logging.debug("Using DPMS")
-                if not self.wayland:
-                    os.system(f"xset -display {self.display_number} dpms 0 {self.blanking_time} 0")
-                GLib.timeout_add_seconds(1, self.check_dpms_state)
-                return
-        # Without dpms just blank the screen
-        logging.debug("Not using DPMS")
-        if not self.wayland:
-            os.system(f"xset -display {self.display_number} dpms 0 0 0")
-        self.reset_screensaver_timeout()
-        return
+        else:
+            try:
+                self.blanking_time = abs(int(time))
+            except Exception as exc:
+                logging.exception(exc)
+        if self.use_dpms:
+            self.set_dpms_timeout()
+        else:
+            self.screensaver.reset_timeout()
+        logging.debug(f"Blanking timeout: {time} DPMS:{self.use_dpms}")
 
     def show_printer_select(self, widget=None):
         self.base_panel.show_heaters(False)
@@ -809,7 +790,7 @@ class KlipperScreen(Gtk.Window):
     def toggle_shortcut(self, show):
         if show and not self.printer.get_printer_status_data()["printer"]["gcode_macros"]["count"] > 0:
             self.show_popup_message(
-                _("No elegible macros:") + "\n"
+                _("No eligible macros:") + "\n"
                 + _("macros with a name starting with '_' are hidden") + "\n"
                 + _("macros that use 'rename_existing' are hidden") + "\n"
                 + _("LOAD_FILAMENT/UNLOAD_FILAMENT are hidden and should be used from extrude") + "\n"
@@ -881,25 +862,23 @@ class KlipperScreen(Gtk.Window):
             if re.match('^(?:ok\\s+)?(B|C|T\\d*):', data):
                 return
             if data.startswith("// action:"):
-                action = data[10:]
-                if action.startswith('prompt_begin'):
-                    if self.prompt is not None:
-                        self.prompt.end()
-                    self.prompt = Prompt(self)
-                if self.prompt is None:
-                    return
-                self.prompt.decode(action)
+                self.process_action(data[10:])
+                return
             elif data.startswith("echo: "):
                 self.show_popup_message(data[6:], 1, from_ws=True)
             elif "!! Extrude below minimum temp" in data:
-                if "temperature" != self._cur_panels[-1]:
+                if self._cur_panels[-1] != "temperature":
                     self.show_panel("temperature", extra=self.printer.get_stat("toolhead", "extruder"))
                 self.show_popup_message(_("Temperature too low to extrude"))
                 return
             elif data.startswith("!! "):
                 self.show_popup_message(data[3:], 3, from_ws=True)
-            elif "unknown" in data.lower() and \
-                    not ("TESTZ" in data or "MEASURE_AXES_NOISE" in data or "ACCELEROMETER_QUERY" in data):
+            elif (
+                "unknown" in data.lower()
+                and "TESTZ" not in data
+                and "MEASURE_AXES_NOISE" not in data
+                and "ACCELEROMETER_QUERY" not in data
+            ):
                 self.show_popup_message(data, from_ws=True)
             elif "SAVE_CONFIG" in data and self.printer.state == "ready":
                 script = {"script": "SAVE_CONFIG"}
@@ -911,10 +890,81 @@ class KlipperScreen(Gtk.Window):
                 )
         self.process_update(action, data)
 
+    def process_action(self, action):
+        if action.startswith("prompt"):
+            if action.startswith("prompt_begin"):
+                if self.prompt is not None:
+                    self.prompt.end()
+                self.prompt = Prompt(self)
+            if self.prompt is None:
+                return
+            self.prompt.decode(action)
+        if action.startswith("ks_show"):
+            self.parse_ks_action(action[8:].strip())
+
+    def parse_ks_action(self, action):
+        action = action.split(" ", 1)
+        if len(action) == 2:
+            panel, params = action
+            key, value = params.split("=", 1)
+            key = key.strip()
+            value = value.strip()
+            params = {key: ast.literal_eval(value)}
+            self.show_panel(panel, **params)
+        else:
+            self.show_panel(*action)
+
     def process_update(self, *args):
         self.base_panel.process_update(*args)
         if self._cur_panels and hasattr(self.panels[self._cur_panels[-1]], "process_update"):
             self.panels[self._cur_panels[-1]].process_update(*args)
+
+    def confirm_save(self, widget):
+        buttons = [
+            {"name": _("Save"), "response": Gtk.ResponseType.OK, "style": 'dialog-info'},
+            {"name": _("Cancel"), "response": Gtk.ResponseType.CANCEL, "style": 'dialog-error'}
+        ]
+        label = Gtk.Label(label=_("Save configuration?") + "\n\n" + _("Klipper will reboot"),
+                          hexpand=True, vexpand=True,
+                          halign=Gtk.Align.CENTER, valign=Gtk.Align.CENTER,
+                          wrap=True, wrap_mode=Pango.WrapMode.WORD_CHAR)
+        grid = Gtk.Grid()
+        grid.attach(label, 0, 3, 2, 1)
+        offset = self.printer.get_stat("gcode_move", "homing_origin")
+        zoffset = float(offset[2]) if offset else 0
+        if zoffset != 0:
+            sign = "+" if zoffset > 0 else "-"
+            msg = f"Apply {sign}{abs(zoffset)} offset?"
+            zlabel = Gtk.Label(label=msg, hexpand=True, vexpand=True, wrap=True)
+            grid.attach(zlabel, 0, 1, 2, 1)
+            if "Z_OFFSET_APPLY_PROBE" in self.printer.available_commands:
+                apply_probe = self.gtk.Button(label=_("Save Z") + "\n" + "Probe", style="color1")
+                apply_probe.set_vexpand(False)
+                apply_probe.set_size_request(-1, self.gtk.dialog_buttons_height)
+                apply_probe.connect("clicked", self.save, "Z_OFFSET_APPLY_PROBE")
+                grid.attach(apply_probe, 0, 2, 1, 1)
+            if "Z_OFFSET_APPLY_ENDSTOP" in self.printer.available_commands:
+                apply_end = self.gtk.Button(label=_("Save Z") + "\n" + "Endstop", style="color2")
+                apply_end.set_vexpand(False)
+                apply_end.set_size_request(-1, self.gtk.dialog_buttons_height)
+                apply_end.connect("clicked", self.save, "Z_OFFSET_APPLY_ENDSTOP")
+                grid.attach(apply_end, 1, 2, 1, 1)
+        if self.confirm is not None:
+            self.gtk.remove_dialog(self.confirm)
+        self.confirm = self.gtk.Dialog(
+            "KlipperScreen", buttons, grid, self.save
+        )
+
+    def save(self, dialog, response_id):
+        self.gtk.remove_dialog(dialog)
+        if response_id == Gtk.ResponseType.OK:
+            self._ws.klippy.gcode_script("SAVE_CONFIG")
+        if response_id == "Z_OFFSET_APPLY_PROBE":
+            self._ws.klippy.gcode_script("Z_OFFSET_APPLY_PROBE")
+            self._ws.klippy.gcode_script("SAVE_CONFIG")
+        if response_id == "Z_OFFSET_APPLY_ENDSTOP":
+            self._ws.klippy.gcode_script("Z_OFFSET_APPLY_ENDSTOP")
+            self._ws.klippy.gcode_script("SAVE_CONFIG")
 
     def _confirm_send_action(self, widget, text, method, params=None):
         buttons = [
@@ -1051,6 +1101,10 @@ class KlipperScreen(Gtk.Window):
         if self.reinit_count > self.max_retries or 'printer_select' in self._cur_panels:
             logging.info("Stopping Retries")
             return False
+        if not self.server_info:
+            logging.debug("Connection Lost Retrying")
+            self.connect_to_moonraker()
+            return False
         self.reinit_count += 1
         self.server_info = self.apiclient.get_server_info()
         logging.info(f"Moonraker info {self.server_info}")
@@ -1111,6 +1165,7 @@ class KlipperScreen(Gtk.Window):
         self.ws_subscribe()
 
         self.files.set_gcodes_path()
+        self.power_devices(None, self._config.get_main_config().get("screen_on_devices", ""), on=True)
 
         logging.info("Printer initialized")
         self.initialized = True
@@ -1160,12 +1215,16 @@ class KlipperScreen(Gtk.Window):
         self.remove_tempstore_timeout()
         return self.init_tempstore()
 
-    def show_keyboard(self, entry=None, event=None):
+    def show_keyboard(self, entry=None, event=None, box=None, close_cb=None):
         if entry is None:
             logging.debug("Error: no entry provided for keyboard")
             return
+        if box is None:
+            box = self.base_panel.content
+        if close_cb is None:
+            close_cb = self.remove_keyboard
         if self.keyboard is not None:
-            self.remove_keyboard()
+            self.remove_keyboard(box=box)
             entry.grab_focus()
         kbd_grid = Gtk.Grid()
         kbd_grid.set_size_request(self.gtk.content_width, self.gtk.keyboard_height)
@@ -1179,11 +1238,22 @@ class KlipperScreen(Gtk.Window):
             kbd_grid.set_column_homogeneous(True)
             kbd_width = 2 if purpose == Gtk.InputPurpose.DIGITS else 3
         kbd_grid.attach(Gtk.Box(), 0, 0, 1, 1)
-        kbd_grid.attach(Keyboard(self, self.remove_keyboard, entry=entry), 1, 0, kbd_width, 1)
+        kbd = self._get_keyboard(entry.get_input_purpose())
+        kbd.reinit(close_cb=close_cb, entry=entry, box=box)
+        kbd_grid.attach(kbd, 1, 0, kbd_width, 1)
         kbd_grid.attach(Gtk.Box(), kbd_width + 1, 0, 1, 1)
-        self.keyboard = {"box": kbd_grid}
-        self.base_panel.content.pack_end(kbd_grid, False, False, 0)
-        self.base_panel.content.show_all()
+        self.keyboard = {
+            "box": kbd_grid,
+            "kbd": kbd
+        }
+        box.pack_end(kbd_grid, False, False, 0)
+        box.show_all()
+
+    def _get_keyboard(self, input_purpose):
+        if input_purpose in self.keyboard_cache:
+            return self.keyboard_cache[input_purpose]
+        k = self.keyboard_cache[input_purpose] = Keyboard(self, lambda *args, **kwargs: None, purpose=input_purpose)
+        return k
 
     def _show_matchbox_keyboard(self, kbd_grid):
         env = os.environ.copy()
@@ -1201,24 +1271,28 @@ class KlipperScreen(Gtk.Window):
         keyboard = Gtk.Socket()
         kbd_grid.get_style_context().add_class("keyboard_matchbox")
         kbd_grid.attach(keyboard, 0, 0, 1, 1)
-        self.base_panel.content.pack_end(box, False, False, 0)
+        self.base_panel.content.pack_end(kbd_grid, False, False, 0)
 
         self.show_all()
         keyboard.add_id(xid)
 
         self.keyboard = {
-            "box": box,
+            "box": kbd_grid,
             "process": p,
             "socket": keyboard
         }
         return
 
-    def remove_keyboard(self, entry=None, event=None):
+    def remove_keyboard(self, entry=None, event=None, box=None):
         if self.keyboard is None:
             return
+        if box is None:
+            box = self.base_panel.content
         if 'process' in self.keyboard:
             os.kill(self.keyboard['process'].pid, SIGTERM)
-        self.base_panel.content.remove(self.keyboard['box'])
+        if 'kbd' in self.keyboard:
+            self.keyboard['box'].remove(self.keyboard['kbd'])
+        box.remove(self.keyboard['box'])
         self.keyboard = None
         if entry:
             entry.set_sensitive(False)  # Move the focus

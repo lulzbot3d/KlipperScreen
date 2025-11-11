@@ -54,8 +54,8 @@ gcode:
 description: Helper: park toolhead used in PAUSE and CANCEL_PRINT
 variable_extrude: 1.0
 gcode:
-  ##### set park positon for x and y #####
-  # default is your max posion from your printer.cfg
+  ##### set park position for x and y #####
+  # default is your max position from your printer.cfg
 
   {% set x_park = printer.toolhead.axis_maximum.x|float - 5.0 %}
   {% set y_park = printer.toolhead.axis_maximum.y|float - 5.0 %}
@@ -163,7 +163,7 @@ if it loads too fast and your extruder can't keep up, you should adjust the `max
 
 All gcode_macros with the attribute `rename_existing` are hidden , because these are default Klipper Gcodes
 and these should be implemented in KlipperScreen itself with buttons already.
-[This is the same behaiviour of other UIs](https://docs.mainsail.xyz/overview/features/hide-macros-outputs-or-fans#macros-with-rename_existing)
+[This is the same behaviour of other UIs](https://docs.mainsail.xyz/overview/features/hide-macros-outputs-or-fans#macros-with-rename_existing)
 
 [LOAD_FILAMENT and UNLOAD_FILAMENT are also hidden](#load_filament-unload_filament)
 
@@ -268,3 +268,22 @@ gcode:
     RESPOND TYPE=command MSG="action:prompt_show"
 ```
 ![Prompt_2](img/macros/Prompt_2.png)
+
+## KlipperScreen actions
+
+!!! warning
+    this should be considered experimental
+
+Show a panel:
+```
+RESPOND TYPE=command MSG="action:ks_show extrude"
+```
+
+Show a menu with items:
+
+!!! note
+    you need to escape double quotes because they are used by MSG
+
+```
+RESPOND TYPE=command MSG="action:ks_show menu items=[{'save': {'name': 'Home', 'icon': 'home', 'panel': None, 'method': 'printer.gcode.script', 'enable': 'True', 'params': '{\"script\": \"G28\"}', 'style': None, 'confirm': None}}]"
+```

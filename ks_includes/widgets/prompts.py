@@ -1,4 +1,5 @@
 import logging
+
 import gi
 
 gi.require_version("Gtk", "3.0")
@@ -126,7 +127,7 @@ class Prompt:
         )
         self.prompt.connect("key-press-event", self._key_press_event)
         self.prompt.connect("delete-event", self.close)
-        self.screen.wake_screen()
+        self.screen.screensaver.close()
 
     def response(self, dialog, response_id):
         for button in self.buttons:

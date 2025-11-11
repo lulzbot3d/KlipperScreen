@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 import os
+
 import gi
 
 gi.require_version("Gtk", "3.0")
@@ -26,8 +27,8 @@ class Panel(ScreenPanel):
         self.oheight = 0.0
         self.current_extruder = None
         self.fila_section = pi * ((1.75 / 2) ** 2)
-        self.filename_label = None
-        self.filename = None
+        self.filename_label = {'complete': "Filename"}
+        self.filename = ""
         self.prev_pos = None
         self.prev_gpos = None
         self.can_close = False
@@ -465,9 +466,9 @@ class Panel(ScreenPanel):
             self.buttons[arg].set_sensitive(False)
 
     def new_print(self):
-        self._screen.close_screensaver()
+        self._screen.screensaver.close()
         if "virtual_sdcard" in self._printer.data:
-            logging.info("reseting progress")
+            logging.info("resetting progress")
             self._printer.data["virtual_sdcard"]["progress"] = 0
         self.update_progress(0.0)
         self.set_state("printing")
@@ -722,7 +723,7 @@ class Panel(ScreenPanel):
         self.show_buttons_for_state()
 
     def _add_timeout(self, timeout):
-        self._screen.close_screensaver()
+        self._screen.screensaver.close()
         if timeout != 0:
             GLib.timeout_add_seconds(timeout, self.close_panel)
 

@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: KlipperScreen\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-09 18:08-0300\n"
-"PO-Revision-Date: 2024-09-07 00:09+0000\n"
-"Last-Translator: Leart Dukaj <premtimdukaj@hotmail.com>\n"
+"POT-Creation-Date: 2024-11-26 12:31-0300\n"
+"PO-Revision-Date: 2025-04-28 23:30+0000\n"
+"Last-Translator: Otis Mohr <mail@otismohr.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/klipperscreen/"
 "klipperscreen/de/>\n"
 "Language: de\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.8-dev\n"
+"X-Generator: Weblate 5.12-dev\n"
 
 #, python-format
 msgid "%s will be updated to version"
@@ -143,7 +143,7 @@ msgid "Changes how the interface looks"
 msgstr "Ändert das Aussehen der Benutzeroberfläche"
 
 msgid "Changes how the time remaining is calculated"
-msgstr "Ändert die Berechnungsweiße der Restzeit"
+msgstr "Ändert, wie die verbleibende Zeit berechnet wird"
 
 msgid "Channel"
 msgstr "Kanal"
@@ -344,7 +344,7 @@ msgid "Font Size"
 msgstr "Schriftgröße"
 
 msgid "For mouse control or to verify touchscreen accuracy"
-msgstr ""
+msgstr "Für Maus Kontroller oder um Touchscreen Genauigkeit zu überprüfen"
 
 msgid "Forget"
 msgstr "Vergessen"
@@ -421,10 +421,8 @@ msgstr "Ungültig"
 msgid "Invalid password"
 msgstr "Ungültiges Passwort"
 
-#, fuzzy
-#| msgid "Temperature"
 msgid "Invalid temperature"
-msgstr "Temperatur"
+msgstr "Ungültige Temperatur"
 
 msgid "Inversely affects the icon size"
 msgstr "Beeinflusst die Symbolgröße umgekehrt"
@@ -503,6 +501,9 @@ msgstr "Laden"
 
 msgid "Loading..."
 msgstr "Lädt..."
+
+msgid "Lock"
+msgstr "Sperren"
 
 msgid "Lost Connection to Moonraker"
 msgstr "Verbindung zu Moonraker verloren"
@@ -642,10 +643,8 @@ msgstr[1] "Pakete werden aktualisiert"
 msgid "Part Fan"
 msgstr "Bauteil Lüfter"
 
-#, fuzzy
-#| msgid "Password saved"
 msgid "Password"
-msgstr "Passwort gespeichert"
+msgstr "Passwort"
 
 msgid "Password saved"
 msgstr "Passwort gespeichert"
@@ -814,7 +813,7 @@ msgid "Show Scrollbars Buttons"
 msgstr "Zeige Scrollbar Schaltfläche"
 
 msgid "Show cursor"
-msgstr ""
+msgstr "Cursor anzeigen"
 
 msgid "Show only devices that are able to be set"
 msgstr "Zeige nur Geräte die eingestellt werden können"
@@ -888,7 +887,7 @@ msgid "Temperature"
 msgstr "Temperatur"
 
 msgid "Temperature too low to extrude"
-msgstr ""
+msgstr "Temperatur zu niedrig zum extrudieren"
 
 msgid "The system doesn't meet the minimum requirement"
 msgstr "Das System erfüllt die minimalen Anforderungen nicht"
@@ -917,6 +916,12 @@ msgstr "Unbekannter Sicherheitstyp"
 msgid "Unload"
 msgstr "Entladen"
 
+msgid "Unlock"
+msgstr "Entsperren"
+
+msgid "Unlock failed"
+msgstr "Entsperren fehlgeschlagen"
+
 msgid "Unretract Extra Length"
 msgstr "Überlänge ausfahren"
 
@@ -929,7 +934,7 @@ msgid "Up To Date"
 msgstr "Aktuell"
 
 msgid "Update"
-msgstr "Aktualsieren"
+msgstr "Aktualisieren"
 
 msgid "Updating"
 msgstr "Aktualisiere"
@@ -938,7 +943,7 @@ msgid "Useful for un-responsive touchscreens"
 msgstr "Nützlich für nicht reagierende Touchscreens"
 
 msgid "User"
-msgstr ""
+msgstr "Benutzer"
 
 msgid "WebRTC is not supported by the backend trying Stream"
 msgstr "WebRTC wird vom Backend nicht unterstützt"

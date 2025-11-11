@@ -1,25 +1,30 @@
-# Android
+# XServer-XSDL (Android Only)
 
-This article describes how to use KlipperScreen from an Android device
+This article describe how to use KlipperScreen from an Android device using XServer-XSDL
 
 !!! warning
     The experience may not be equal to run KlipperScreen natively.
     Depending on the device or the network you may encounter performance degradation or other issues.
 
-1. [First installl KlipperScreen](Installation.md)
-2. Install [XServer-XSDL](https://play.google.com/store/apps/details?id=x.org.server) on the Android device
+!!! bug
+    This method may cause [memory-leaks](https://github.com/KlipperScreen/KlipperScreen/issues/862)
 
-    Devices that do not have acces to the play store can grab the apk from the [official sourceforge](
-    https://sourceforge.net/projects/libsdl-android/files/apk/XServer-XSDL/). ViewTouch does work too
+    It's recommended that you use [VNC](VNC.md) instead or at least install [earlyoom](https://packages.debian.org/en/stable/earlyoom)
 
-    with older versions of Android you may have to use v1.11.40
 
-3. Choose [USB (ADB)](#adb) or [WI-FI](#wifi)
+1. [First install KlipperScreen](Installation.md)
+
+2. Download the apk of XServer-XSDL or ViewTouch from the [official sourceforge](https://sourceforge.net/projects/libsdl-android/files/apk/XServer-XSDL/).
+
+    since it's no longer on the play store.
+
+    With Android 4 you may have to use v1.11.40
+
+3. Install the app on the Android device
+
+4. Choose [USB (ADB)](#adb) or [WI-FI](#wifi)
 
 ### ADB
-
-!!! bug
-    Some [users have found](https://github.com/KlipperScreen/KlipperScreen/issues/862) that using this method may cause memory-leaks
 
 !!! warning
     Leaving the phone always connected it's not recommended, remove the battery to avoid issues.
@@ -108,7 +113,7 @@ Even after enabling the "Stay Awake" option in the Developer/USB Debugging optio
 the Xserver-XSDL may still go to a black screen but keep the backlight of your device on.
 To keep the screen always active, upon start up of Xserver-XSDL app, select the `Change Device Configuration`
 at the top of the splash screen and then select the `Command line parameters, one argument per line` option.
-Append the following argument (must be on seperate lines):
+Append the following argument (must be on separate lines):
 ```
 -s
 0

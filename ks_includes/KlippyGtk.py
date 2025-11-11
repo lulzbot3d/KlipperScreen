@@ -2,6 +2,8 @@
 import logging
 import os
 import pathlib
+from functools import lru_cache
+
 import gi
 
 gi.require_version("Gtk", "3.0")
@@ -125,15 +127,21 @@ class KlippyGtk:
     def PixbufFromIcon(self, filename, width=None, height=None):
         width = width if width is not None else self.img_width
         height = height if height is not None else self.img_height
-        filename = os.path.join(self.themedir, filename)
+        return self._PixbufFromIcon(filename, self.themedir, int(width), int(height))
+
+    @staticmethod
+    @lru_cache(maxsize=500)
+    def _PixbufFromIcon(filename, themedir, width, height):
+        filename = os.path.join(themedir, filename)
         for ext in ["svg", "png"]:
             file = f"{filename}.{ext}"
-            pixbuf = self.PixbufFromFile(file, int(width), int(height)) if os.path.exists(file) else None
+            pixbuf = KlippyGtk.PixbufFromFile(file, width, height) if os.path.exists(file) else None
             if pixbuf is not None:
                 return pixbuf
         return None
 
     @staticmethod
+    @lru_cache(maxsize=500)
     def PixbufFromFile(filename, width=-1, height=-1):
         try:
             return GdkPixbuf.Pixbuf.new_from_file_at_size(filename, int(width), int(height))
@@ -179,7 +187,7 @@ class KlippyGtk:
             format_label(b, lines)
         if style is not None:
             b.get_style_context().add_class(style)
-        b.connect("clicked", self.screen.reset_screensaver_timeout)
+        b.connect("clicked", self.screen.screensaver.reset_timeout)
         return b
 
     @staticmethod
@@ -236,7 +244,7 @@ class KlippyGtk:
             dialog.add_events(Gdk.EventMask.BUTTON_RELEASE_MASK)
             dialog.connect("button-release-event", self.remove_dialog)
 
-        dialog.connect("response", self.screen.reset_screensaver_timeout)
+        dialog.connect("response", self.screen.screensaver.reset_timeout)
         dialog.connect("response", callback, *args)
         dialog.get_style_context().add_class("dialog")
 
@@ -261,6 +269,8 @@ class KlippyGtk:
             return
         if self.screen.updating:
             return
+        if dialog == self.screen.confirm:
+            self.screen.confirm = None
         dialog.destroy()
         if dialog in self.screen.dialogs:
             logging.info("Removing Dialog")

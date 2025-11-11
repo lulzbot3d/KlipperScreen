@@ -1,13 +1,12 @@
 import configparser
-import gettext
-import os
-import logging
-import json
-import re
 import copy
-import pathlib
+import gettext
+import json
 import locale
-
+import logging
+import os
+import pathlib
+import re
 from io import StringIO
 
 SCREEN_BLANKING_OPTIONS = [
@@ -168,6 +167,7 @@ class KlipperScreenConfig:
                 strs = (
                     'default_printer', 'language', 'print_sort_dir', 'theme', 'screen_blanking_printing', 'font_size',
                     'print_estimate_method', 'screen_blanking', "screen_on_devices", "screen_off_devices", 'print_view',
+                    "lock_password"
                 )
                 numbers = (
                     'job_complete_timeout', 'job_error_timeout', 'move_speed_xy', 'move_speed_z',
@@ -581,17 +581,19 @@ class KlipperScreenConfig:
             logging.error(f"Error writing configuration file in {filepath}:\n{e}")
 
     def set(self, section, name, value):
-        self.config.set(section, name, value)
+        self.config.set(section, name, str(value))
 
     def log_config(self, config):
+        sensitive_keys = [
+            r'(moonraker_api_key\s*(?:=|:)\s*)\S+',
+            r'(lock_password\s*(?:=|:)\s*)\S+',
+        ]
+        config_str = self._build_config_string(config)
+        for pattern in sensitive_keys:
+            config_str = re.sub(pattern, r'\1[redacted]', config_str)
         lines = [
-            " "
             "===== Config File =====",
-            re.sub(
-                r'(moonraker_api_key\s*=\s*\S+)',
-                'moonraker_api_key = [redacted]',
-                self._build_config_string(config)
-            ),
+            config_str,
             "======================="
         ]
         logging.info("\n".join(lines))

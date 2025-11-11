@@ -1,5 +1,6 @@
 import logging
 import os
+
 import gi
 
 gi.require_version("Gtk", "3.0")
@@ -69,7 +70,7 @@ class Panel(ScreenPanel):
         self.labels['path'] = Gtk.Label(label=self.loading_msg, vexpand=True, no_show_all=True)
         self.labels['path'].show()
         self.thumbsize = self._gtk.img_scale * self._gtk.button_image_scale * 2.5
-        logging.info(f"Thumbsize: {self.thumbsize}")
+        logging.info(f"Thumbsize: {self.thumbsize:.1f}")
 
         self.flowbox = Gtk.FlowBox(selection_mode=Gtk.SelectionMode.NONE,
                                    column_spacing=0, row_spacing=0)
@@ -524,7 +525,8 @@ class Panel(ScreenPanel):
         lbl = Gtk.Label(label=_("Rename/Move:"), halign=Gtk.Align.START, hexpand=False)
         self.labels['new_name'] = Gtk.Entry(text=fullpath, hexpand=True)
         self.labels['new_name'].connect("activate", self.rename)
-        self.labels['new_name'].connect("focus-in-event", self._screen.show_keyboard)
+        self.labels['new_name'].connect("touch-event", self._screen.show_keyboard)
+        self.labels['new_name'].connect("button-press-event", self._screen.show_keyboard)
 
         save = self._gtk.Button("complete", _("Save"), "color3")
         save.set_hexpand(False)

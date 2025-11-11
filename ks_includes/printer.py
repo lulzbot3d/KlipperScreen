@@ -1,4 +1,5 @@
 import logging
+
 import gi
 
 gi.require_version("Gtk", "3.0")
@@ -257,6 +258,7 @@ class Printer:
                 "gcode_macros": {"count": len(self.get_gcode_macros()), "list": self.get_gcode_macros()},
                 "leds": {"count": self.ledcount},
                 "config_sections": list(self.config.keys()),
+                "available_commands": self.available_commands,
             }
         }
 
@@ -302,6 +304,15 @@ class Printer:
             return self.data.get(stat, {}).get(substat, {})
         else:
             return self.data.get(stat, {})
+
+    def set_stat(self, stat, data):
+        if self.data is None:
+            logging.error("Data is not initialized")
+            return
+        if stat not in self.data:
+            logging.error(f"Stat '{stat}' not found in data")
+            return
+        self.data[stat].update(data)
 
     def get_fan_speed(self, fan="fan"):
         speed = 0

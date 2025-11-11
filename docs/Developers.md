@@ -1,9 +1,9 @@
 # Developer Guide
 
-Basic setup for an enviroment to do development of KlipperScreen.
+Basic setup for an environment to do development of KlipperScreen.
 
 !!! note "Alfrix Note:"
-    I use a standard Linux distro with a desktop enviroment.
+    I use a standard Linux distro with a desktop environment.
 
 ## Clone the repo
 Clone your fork, for example:
@@ -23,6 +23,8 @@ cd ~/KlipperScreen
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r scripts/klipperscreen-requirements.txt
+# this one is optional:
+pip install -r scripts/dev-requirements.txt
 ```
 # Set configurations
 Create klipperscreen.conf and place it on the repo folder

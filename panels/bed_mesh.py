@@ -1,5 +1,6 @@
 import contextlib
 import logging
+
 import gi
 
 gi.require_version("Gtk", "3.0")
@@ -209,7 +210,8 @@ class Panel(ScreenPanel):
             pl = Gtk.Label(label=_("Profile Name:"), hexpand=False)
             self.labels['profile_name'] = Gtk.Entry(hexpand=True, text='')
             self.labels['profile_name'].connect("activate", self.create_profile)
-            self.labels['profile_name'].connect("focus-in-event", self._screen.show_keyboard)
+            self.labels['profile_name'].connect("touch-event", self._screen.show_keyboard)
+            self.labels['profile_name'].connect("button-press-event", self._screen.show_keyboard)
 
             save = self._gtk.Button("complete", _("Save"), "color3")
             save.set_hexpand(False)
