@@ -13,10 +13,10 @@
 # I know this is a bit hacky, but I have been fighting chicken and egg
 # problems for days to get this to work.  I do not really want to use
 # apt to install it in the same script where I want to use it.
-cp /home/biqu/KlipperScreen/scripts/openvt /home/biqu/.local/bin/openvt
-chmod +x /home/biqu/.local/bin/openvt
+cp /home/pi/KlipperScreen/scripts/openvt /home/pi/.local/bin/openvt
+chmod +x /home/pi/.local/bin/openvt
 
 # openvt allocates a new login/terminal and runs a command inside it,
 # but openvt needs to be run with sudo, but that launches the script
-# as root, which breaks it, so the second sudo runs the script as biqu
-sudo /home/biqu/.local/bin/openvt -s -w -- sudo -u "biqu" ~/KlipperScreen/scripts/KlipperScreen-fix.sh
+# as root, which breaks it, so the second sudo runs the script as pi
+sudo /home/pi/.local/bin/openvt -s -w -- sudo -u "pi" ~/KlipperScreen/scripts/KlipperScreen-fix.sh
