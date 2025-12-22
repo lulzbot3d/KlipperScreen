@@ -15,7 +15,7 @@ class Panel(ScreenPanel):
     def __init__(self, screen, title):
         super().__init__(screen, title)
 
-        #image = self._gtk.Image("QSG-qr-code", self._gtk.content_width * .25, self._gtk.content_height * .5)
+        # image = self._gtk.Image("QSG-qr-code", self._gtk.content_width * .25, self._gtk.content_height * .5)
 
         self.tb = Gtk.TextBuffer(text="")
         tv = Gtk.TextView(editable=False, cursor_visible=False, wrap_mode=Gtk.WrapMode.WORD_CHAR)
@@ -25,7 +25,7 @@ class Panel(ScreenPanel):
 
         info = Gtk.Box()
         info.pack_start(scroll, True, True, 8)
-        #info.pack_end(image, False, True, 8)
+        # info.pack_end(image, False, True, 8)
 
         self.content.add(info)
 
