@@ -38,6 +38,8 @@ class Panel(ScreenPanel):
         self.color = COLORS["lulzbot"]
         self.tsize = 42
         self.add_line("LulzBot AMOS\n")
+        self.tsize = 18
+        self.add_line("Advanced Manufacturing\nOperational System\n")
 
         self.color = COLORS["text"]
         self.tsize = 18
@@ -45,7 +47,6 @@ class Panel(ScreenPanel):
         self.add_line("LulzBot\n")
         self.add_line("1001 25th St N\n")
         self.add_line("Fargo, ND 58102\n")
-        self.add_line("USA\n")
         self.add_line("\n")
         self.add_line("Email: support@lulzbot.com\n")
         self.add_line("Phone: +1-701-809-0800 ext 2\n")
