@@ -33,7 +33,6 @@ class Panel(ScreenPanel):
         self.tb.set_text("")
         self.tsize = 26
         self.color = COLORS["text"]
-        self.add_line("\n")
 
         self.color = COLORS["lulzbot"]
         self.tsize = 42
@@ -47,10 +46,10 @@ class Panel(ScreenPanel):
         self.add_line("LulzBot\n")
         self.add_line("1001 25th St N\n")
         self.add_line("Fargo, ND 58102\n")
+        self.add_line("USA\n")
         self.add_line("\n")
         self.add_line("Email: support@lulzbot.com\n")
         self.add_line("Phone: +1-701-809-0800 ext 2\n")
-        self.add_line("\n\n")
 
     def add_line(self, txt):
         self.tb.insert_markup(
