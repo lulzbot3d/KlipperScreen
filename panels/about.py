@@ -36,7 +36,7 @@ class Panel(ScreenPanel):
 
         self.color = COLORS["lulzbot"]
         self.tsize = 42
-        self.add_line("LulzBot AMOS\n")
+        self.add_line("AMOS\n")
         self.tsize = 18
         self.add_line("Advanced Manufacturing\nOperational System\n")
 
