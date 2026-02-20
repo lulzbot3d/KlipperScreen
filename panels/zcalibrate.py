@@ -189,6 +189,10 @@ class Panel(ScreenPanel):
             commands.append({"DELTA_CALIBRATE METHOD=manual"})
         if "AXIS_TWIST_COMPENSATION_CALIBRATE" in self._printer.available_commands:
             commands.append({"AXIS_TWIST_COMPENSATION_CALIBRATE"})
+        if "BEACON_CALIBRATE" in self._printer.available_commands:
+            commands.append({"BEACON_CALIBRATE"})
+        if "BEACON_AUTO_CALIBRATE" in self._printer.available_commands:
+            commands.append({"BEACON_AUTO_CALIBRATE"})
 
         # Custom commands
         if self.ks_printer_cfg is not None:
