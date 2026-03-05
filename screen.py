@@ -90,7 +90,6 @@ class KlipperScreen(Gtk.Window):
             raise RuntimeError from e
         GLib.set_prgname('KlipperScreen')
         self.blanking_time = 600
-        self.use_dpms = True
         self.apiclient = None
         self.dialogs = []
         self.confirm = None
@@ -100,7 +99,6 @@ class KlipperScreen(Gtk.Window):
         configfile = os.path.normpath(os.path.expanduser(args.configfile))
 
         self._config = KlipperScreenConfig(configfile, self)
-        self.lang_ltr = set_text_direction(self._config.get_main_config().get("language", None))
         self.env = Environment(extensions=["jinja2.ext.i18n"], autoescape=True)
         self.env.install_gettext_translations(self._config.get_lang())
 
@@ -153,6 +151,7 @@ class KlipperScreen(Gtk.Window):
         self.setup_gtk_settings()
         self.style_provider = Gtk.CssProvider()
         self.screensaver = ScreenSaver(self)
+        self.lock_screen = LockScreen(self)
         self.gtk = KlippyGtk(self)
         self.base_css = ""
         self.load_base_styles()
@@ -177,12 +176,15 @@ class KlipperScreen(Gtk.Window):
             self.show_error_modal("Invalid config file", self._config.get_errors())
             return
         self.base_panel.activate()
-        self.use_dpms = self._config.get_main_config().getboolean("use_dpms", fallback=True)
+        self.use_dpms = self._config.get_main_config().getboolean("use_dpms", fallback=(not self.wayland))
         self.use_dpms &= functions.dpms_loaded
         self.set_dpms(self.use_dpms)
-        self.lock_screen = LockScreen(self)
+        autolock = self._config.get_main_config().getint("autolock_timeout", fallback=0)
+        self.lock_screen.set_autolock_timeout(autolock)
         self.log_notification("KlipperScreen Started", 1)
         self.initial_connection()
+        if self._config.get_main_config().getboolean('start_locked', False):
+            self.lock_screen.lock(None)
 
     def update_cursor(self, show: bool):
         self.show_cursor = show
@@ -300,7 +302,7 @@ class KlipperScreen(Gtk.Window):
                 "motion_report": ["live_position", "live_velocity", "live_extruder_velocity"],
                 "exclude_object": ["current_object", "objects", "excluded_objects"],
                 "manual_probe": ['is_active'],
-                "screws_tilt_adjust": ['results', 'error'],
+                "screws_tilt_adjust": ['results', 'error', 'max_deviation'],
             }
         }
         for extruder in self.printer.get_tools():
@@ -335,6 +337,9 @@ class KlipperScreen(Gtk.Window):
     def show_panel(self, panel, title=None, remove_all=False, panel_name=None, **kwargs):
         if panel_name is None:
             panel_name = panel
+        if panel == "lock_screen":
+            self.lock_screen.lock(None)
+            return
         if self._cur_panels and panel_name == self._cur_panels[-1]:
             logging.error("Panel is already is in view")
             return
@@ -633,6 +638,8 @@ class KlipperScreen(Gtk.Window):
         return True
 
     def wake_screen(self):
+        if self.wayland:
+            return
         # Wake the screen (it will go to standby as configured)
         if not self.use_dpms:
             logging.debug("DPMS is disabled cannot wake the screen")
@@ -650,6 +657,12 @@ class KlipperScreen(Gtk.Window):
             return
 
     def set_dpms(self, use_dpms):
+        if self.wayland:
+            self.use_dpms = False
+            self._config.set("main", "use_dpms", False)
+            self._config.save_user_config_options()
+            logging.debug("DPMS handling not supported on Wayland")
+            return
         if not use_dpms:
             if self.check_dpms_timeout is not None:
                 GLib.source_remove(self.check_dpms_timeout)
@@ -691,14 +704,18 @@ class KlipperScreen(Gtk.Window):
             self.check_dpms_timeout = GLib.timeout_add_seconds(1, self.check_dpms_state)
             return
 
+    def set_autolock_timeout(self, time):
+        self.lock_screen.set_autolock_timeout(time)
+
     def set_screenblanking_printing_timeout(self, time):
         if self.printer and self.printer.state in ("printing", "paused"):
             self.set_screenblanking_timeout(time)
 
     def set_screenblanking_timeout(self, time):
         # disable screensaver we have our own
-        os.system(f"xset -display {self.display_number} s off")
-        os.system(f"xset -display {self.display_number} s noblank")
+        if not self.wayland:
+            os.system(f"xset -display {self.display_number} s off")
+            os.system(f"xset -display {self.display_number} s noblank")
         if time == "off":
             self.blanking_time = 0
         else:
@@ -706,11 +723,11 @@ class KlipperScreen(Gtk.Window):
                 self.blanking_time = abs(int(time))
             except Exception as exc:
                 logging.exception(exc)
-        if self.use_dpms:
+        if self.use_dpms and not self.wayland:
             self.set_dpms_timeout()
         else:
             self.screensaver.reset_timeout()
-        logging.debug(f"Blanking timeout: {time} DPMS:{self.use_dpms}")
+        logging.debug(f"Blanking timeout: {time}")
 
     def show_printer_select(self, widget=None):
         self.base_panel.show_heaters(False)
@@ -799,7 +816,6 @@ class KlipperScreen(Gtk.Window):
 
     def change_language(self, widget, lang):
         self._config.install_language(lang)
-        self.lang_ltr = set_text_direction(lang)
         self.env.install_gettext_translations(self._config.get_lang())
         self._config._create_configurable_options(self)
         self._config.set('main', 'language', lang)
@@ -839,7 +855,9 @@ class KlipperScreen(Gtk.Window):
             self.printer.process_update(data)
             if 'manual_probe' in data and data['manual_probe']['is_active'] and 'zcalibrate' not in self._cur_panels:
                 self.show_panel("zcalibrate")
-            if "screws_tilt_adjust" in data and 'bed_level' not in self._cur_panels:
+            if ("screws_tilt_adjust" in data and "max_deviation" in data['screws_tilt_adjust']
+                and not data['screws_tilt_adjust']['max_deviation']
+                    and 'bed_level' not in self._cur_panels):
                 self.show_panel("bed_level")
         elif action == "notify_filelist_changed":
             if self.files is not None:
@@ -1314,10 +1332,10 @@ class KlipperScreen(Gtk.Window):
         new_mode = new_ratio < 1.0
         ratio_delta = abs(self.aspect_ratio - new_ratio)
         if ratio_delta > 0.1 and self.vertical_mode != new_mode:
-            self.reload_panels()
             self.vertical_mode = new_mode
             self.aspect_ratio = new_ratio
             logging.info(f"Vertical mode: {self.vertical_mode}")
+            self.reload_panels()
 
 
 def main():

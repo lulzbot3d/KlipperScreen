@@ -76,18 +76,20 @@ class Panel(ScreenPanel):
         self.reload_button.connect("clicked", self.reload_networks)
         self.reload_button.set_hexpand(False)
 
-        self.wifi_toggle = Gtk.Switch(
+        self.wifi_toggle_switch = Gtk.Switch(
             width_request=round(self._gtk.font_size * 2),
             height_request=round(self._gtk.font_size),
             active=self.sdbus_nm.is_wifi_enabled()
         )
-        self.wifi_toggle.connect("notify::active", self.toggle_wifi)
+        self.wifi_toggle_switch.connect("notify::active", self.toggle_wifi)
+        wifi_toggle = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        wifi_toggle.add(self.wifi_toggle_switch)
 
         sbox = Gtk.Box(hexpand=True, vexpand=False)
         sbox.add(self.labels['interface'])
         sbox.add(self.labels['ip'])
         sbox.add(self.reload_button)
-        sbox.add(self.wifi_toggle)
+        sbox.add(wifi_toggle)
 
         scroll = self._gtk.ScrolledWindow()
         self.labels['main_box'] = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, vexpand=True)
@@ -112,6 +114,8 @@ class Panel(ScreenPanel):
 
     def load_networks(self):
         for net in self.sdbus_nm.get_networks():
+            if 'BSSID' not in net:
+                continue
             self.add_network(net['BSSID'])
         GLib.timeout_add_seconds(10, self._gtk.Button_busy, self.reload_button, False)
         self.content.show_all()
@@ -372,13 +376,11 @@ class Panel(ScreenPanel):
             return
         info = _("Password saved") + '\n' if net['known'] else ""
         chan = _("Channel") + f' {net["channel"]}'
-        max_bitrate = _("Max:") + f"{self.format_speed(net['max_bitrate'])}"
         self.networks[net['BSSID']]['icon'].set_from_pixbuf(self.get_signal_strength_icon(net["signal_level"]))
         self.networks[net['BSSID']]['info'].set_markup(
             "<small>"
             f"{info}"
             f"{net['security']}\n"
-            f"{max_bitrate}\n"
             f"{net['frequency']} Ghz  {chan}  {net['signal_level']} %\n"
             f"{net['BSSID']}"
             "</small>"
