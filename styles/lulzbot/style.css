@@ -5,7 +5,7 @@
 
 
 /* This sets the Lulzbot background Logo */
-/* window {background-image: url("/home/pi/KlipperScreen/styles/lulzbot/Darker_Rocto_800_480.png");} */
+window {background-image: url("/home/pi/KlipperScreen/styles/lulzbot/AMOS_background.png");}
 
 
 /* This sets the buttons to be partly transparent so you can see the background image, 
