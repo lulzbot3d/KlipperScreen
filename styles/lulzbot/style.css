@@ -5,8 +5,8 @@
 
 
 /* This sets the Lulzbot background Logo */
-window {background-image: url("/home/pi/KlipperScreen/styles/lulzbot/AMOS_background.png");}
-
+#window {background-image: url("/home/pi/KlipperScreen/styles/lulzbot/AMOS_background.png");}
+window {background-color: rgb(0,0,0);}
 
 /* This sets the buttons to be partly transparent so you can see the background image, 
    and rounds the border corners for buttons that have borders. */
