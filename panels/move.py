@@ -10,7 +10,7 @@ from ks_includes.screen_panel import ScreenPanel
 
 # NOTE:  The changes I have made for the custom Lulzbot layout
 # have probably broken the vertical layout badly but we don't
-# use or support that on Mini 3 anyway.
+# use or support that anyway.
 
 
 class Panel(ScreenPanel):
@@ -40,7 +40,9 @@ class Panel(ScreenPanel):
             "z-": self._gtk.Button("z-closer", "Z-", "color3"),
             "home": self._gtk.Button("home", _("Home"), "color4"),
             "motors_off": self._gtk.Button("motor-off", _("Disable Motors"), "color4"),
-            'home-all': self._gtk.Button("home", _("Home All"), "color4")
+            "home-all": self._gtk.Button("home", _("Home All"), "color4"),
+            "bed-down": self._gtk.Button("present-bed", "Bed Down", "color4")
+
         }
         self.buttons["x+"].connect("clicked", self.move, "X", "+")
         self.buttons["x-"].connect("clicked", self.move, "X", "-")
@@ -50,6 +52,8 @@ class Panel(ScreenPanel):
         self.buttons["z-"].connect("clicked", self.move, "Z", "-")
         self.buttons["home"].connect("clicked", self.home)
         self.buttons['home-all'].connect("clicked", self.home_all)
+        self.buttons['bed-down'].connect("clicked", self.bed_down)
+
         script = {"script": "M18"}
         self.buttons["motors_off"].connect(
             "clicked",
@@ -110,9 +114,10 @@ class Panel(ScreenPanel):
             grid.attach(self.buttons[zp], 2, 2, 1, 1)
             grid.attach(self.buttons[zm], 2, 0, 1, 1)
 
-        grid.attach(self.buttons["home"], 0, 0, 1, 1)
-        grid.attach(self.buttons["motors_off"], 0, 2, 1, 1)
-        grid.attach(self.buttons['home-all'], 1, 1, 1, 1)
+        grid.attach(self.buttons["home"], 1, 1, 1, 1)
+        grid.attach(self.buttons["motors_off"], 0, 0, 1, 1)
+        #grid.attach(self.buttons['home-all'], 1, 1, 1, 1)
+        grid.attach(self.buttons['bed-down'], 0, 2, 1, 1)
 
         distgrid = Gtk.Grid()
         distgrid.set_margin_left(20)
@@ -299,3 +304,6 @@ class Panel(ScreenPanel):
 
     def home_all(self, widget):
         self._screen._send_action(widget, "printer.gcode.script", {"script": 'G28'})
+
+    def bed_down(self, widget):
+        self._screen._send_action(widget, "printer.gcode.script", {"script": 'G0 Z220 F6000'})
