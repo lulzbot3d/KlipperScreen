@@ -116,7 +116,7 @@ class Panel(ScreenPanel):
 
         grid.attach(self.buttons["home"], 1, 1, 1, 1)
         grid.attach(self.buttons["motors_off"], 0, 0, 1, 1)
-        #grid.attach(self.buttons['home-all'], 1, 1, 1, 1)
+        # grid.attach(self.buttons['home-all'], 1, 1, 1, 1)
         grid.attach(self.buttons['bed-down'], 0, 2, 1, 1)
 
         distgrid = Gtk.Grid()
