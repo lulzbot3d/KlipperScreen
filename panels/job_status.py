@@ -382,10 +382,10 @@ class Panel(ScreenPanel):
         msg = f"Apply {sign}{abs(self.zoffset)} offset to {device}?"
         if device == "probe":
             msg = _("Apply %s%.3f offset to Probe?") % (sign, abs(self.zoffset))
-            if probe := self._printer.get_probe():
-                saved_z_offset = probe['z_offset']
-            elif 'beacon model default' in self._printer.get_config_section_list():
+            if 'beacon model default' in self._printer.get_config_section_list():
                 saved_z_offset = self._printer.get_config_section('beacon model default')['model_offset']
+            elif probe := self._printer.get_probe():
+                saved_z_offset = probe['z_offset']
         elif device == "endstop":
             msg = _("Apply %s%.3f offset to Endstop?") % (sign, abs(self.zoffset))
             if 'stepper_z' in self._printer.get_config_section_list():
