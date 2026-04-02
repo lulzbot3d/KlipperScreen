@@ -186,6 +186,8 @@ class Panel(ScreenPanel):
         self.set_led_color(self.color_data)
 
     def set_led_color(self, color_data):
+        if "STOP_LED_EFFECTS" in self._printer.available_commands:
+            self._screen._ws.klippy.gcode_script("STOP_LED_EFFECTS")
         name = self.current_led.split()[1] if len(self.current_led.split()) > 1 else self.current_led
         self._screen._send_action(None, "printer.gcode.script",
                                   {"script": KlippyGcodes.set_led_color(name, color_data)})
