@@ -159,6 +159,7 @@ class Panel(ScreenPanel):
 
     def update_preview_label(self, args):
         self.preview_label.set_label(rgb_to_hex(rgbw_to_rgb(self.color_data)))
+        self.update_color_data()
 
     def process_update(self, action, data):
         if action != 'notify_status_update':
