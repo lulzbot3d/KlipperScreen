@@ -187,6 +187,7 @@ class Panel(ScreenPanel):
         self.set_led_color(self.color_data)
 
     def set_led_color(self, color_data):
+        logging.debug(f"color: {color_data}")
         if "STOP_LED_EFFECTS" in self._printer.available_commands:
             self._screen._ws.klippy.gcode_script("STOP_LED_EFFECTS")
         name = self.current_led.split()[1] if len(self.current_led.split()) > 1 else self.current_led
@@ -215,7 +216,6 @@ class ColorPreviewArea(Gtk.DrawingArea):
         self.connect("draw", self.on_draw)
 
     def set_color(self, value):
-        logging.debug(f"color: {value}")
         self.color = rgbw_to_rgb(value)
         self.queue_draw()
 
