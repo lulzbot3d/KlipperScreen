@@ -232,4 +232,10 @@ class ColorPreviewArea(Gtk.DrawingArea):
         ctx.arc(x + width - radius, height - radius, radius, 0, pi / 2)
         ctx.arc(x + radius, height - radius, radius, pi / 2, pi)
         ctx.close_path()
-        ctx.fill()
+        if self.color == [0, 0, 0]:
+            ctx.fill_preserve()
+            ctx.set_source_rgb(1, 1, 1)
+            ctx.set_line_width(2)
+            ctx.stroke()
+        else:
+            ctx.fill()
