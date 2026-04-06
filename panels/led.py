@@ -159,7 +159,6 @@ class Panel(ScreenPanel):
 
     def update_preview_label(self, args):
         self.preview_label.set_label(rgb_to_hex(rgbw_to_rgb(self.color_data)))
-        self.update_color_data()
 
     def process_update(self, action, data):
         if action != 'notify_status_update':
@@ -167,6 +166,7 @@ class Panel(ScreenPanel):
         if self.current_led in data and "color_data" in data[self.current_led]:
             self.update_scales(data[self.current_led]["color_data"][0])
         self.preview.set_color(self.color_data)
+        self.update_preview_label(self)
 
     def update_scales(self, color_data):
         for idx in self.scales:
