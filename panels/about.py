@@ -43,7 +43,7 @@ class Panel(ScreenPanel):
         self.color = COLORS["text"]
         self.tsize = 18
         self.add_line("\n")
-        self.add_line("LulzBot\n")
+        self.add_line("FAME3D\n")
         self.add_line("1001 25th St N\n")
         self.add_line("Fargo, ND 58102\n")
         self.add_line("USA\n")
