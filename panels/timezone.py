@@ -48,7 +48,6 @@ class Panel(ScreenPanel):
         )
         return result.stdout.splitlines()
 
-
     def get_current_timezone(self):
         result = subprocess.run(
             ["timedatectl", "show", "--property=Timezone", "--value"],
@@ -56,7 +55,6 @@ class Panel(ScreenPanel):
             text=True
         )
         return result.stdout.strip()
-
 
     def on_timezone_clicked(self, widget, timezone):
 
