@@ -169,6 +169,7 @@ consolebutton.active {
 .timezone_confirm {
     margin: .5em;
     min-height: 1.5em;
+    min-width: 6em;
     border: .1em solid #c1d82f; 
     font-size: 23;
     background-color: rgba(193, 216, 47, .4);
