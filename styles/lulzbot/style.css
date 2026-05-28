@@ -172,7 +172,7 @@ consolebutton.active {
     min-width: 6em;
     border: .1em solid #c1d82f; 
     font-size: 23;
-    background-color: rgba(193, 216, 47, .4);
+    background-color: rgba(193, 216, 47, .3);
     border-top-right-radius: .7em;
     border-bottom-right-radius: .7em;
     border-top-left-radius: .7em;
