@@ -26,7 +26,8 @@ class Panel(ScreenPanel):
 
         # These buttons are defined here so they can be seen by the update routine
         self.ext_temp = self._gtk.Button('nozzle1', "°C", "color1", self.bts * 1.5, Gtk.PositionType.LEFT, 1)
-        self.right_button = self._gtk.Button(None, self.right_button_mode, "buttons_filament_preset", self.bts * 1.5, Gtk.PositionType.LEFT, 1)
+        self.right_button = self._gtk.Button(None, self.right_button_mode, "buttons_filament_preset", self.bts * 1.5,
+                                                 Gtk.PositionType.LEFT, 1)
         self.pre1 = self._gtk.Button(None, f"PLA, PVA, PVB = {self.presets_active[0]}°C", "buttons_filament_preset")
         self.pre2 = self._gtk.Button(None, f"TPU, Flexibles = {self.presets_active[1]}°C", "buttons_filament_preset")
         self.pre3 = self._gtk.Button(None, f"ABS, PETg, ASA = {self.presets_active[2]}°C", "buttons_filament_preset")
@@ -49,7 +50,6 @@ class Panel(ScreenPanel):
 
         self.content.add(self.filament_menu)
 
-
     def create_load_unload_panel(self):
         self.load.connect("clicked", self.load_clicked)
         self.unload.connect("clicked", self.unload_clicked)
@@ -66,7 +66,6 @@ class Panel(ScreenPanel):
 
     def unload_clicked(self, widget):
         self._screen._ws.klippy.gcode_script("UNLOAD_FILAMENT")
-
 
     def create_preset_panel(self):
         # Buttons are defined in the init so they can be seen by the update routine
@@ -85,10 +84,10 @@ class Panel(ScreenPanel):
         presets.attach(self.pre4, 2, 1, 2, 1)
         return presets
 
-
     def create_top_panel(self):
         # Some buttons are defined in the init so they can be seen by the update routine
-        self.middle_button = self._gtk.Button(None, "Park for Change", "buttons_filament_preset", self.bts * 1.5, Gtk.PositionType.LEFT, 1)
+        self.middle_button = self._gtk.Button(None, "Park for Change", "buttons_filament_preset", self.bts * 1.5,
+                                                  Gtk.PositionType.LEFT, 1)
 
         self.ext_temp.connect("clicked", self.menu_item_clicked, {"name": "Temperature", "panel": "temperature"})
         self.middle_button.connect("clicked", self.middle_button_clicked)
@@ -141,7 +140,6 @@ class Panel(ScreenPanel):
     def pre4_clicked(self, widget):
         self._screen._ws.klippy.gcode_script(f"SET_HEATER_TEMPERATURE HEATER=extruder TARGET={self.presets_active[3]}")
 
-
     def update_panels(self):
         ext_temp = self._printer.get_dev_stat("extruder", "temperature")
         ext_target = self._printer.get_dev_stat("extruder", "target")
@@ -165,7 +163,6 @@ class Panel(ScreenPanel):
         self.load.set_sensitive(self.load_unload_enabled)
         self.unload.set_sensitive(self.load_unload_enabled)
 
-
     def process_update(self, action, data):
         if action != "notify_status_update":
             return
@@ -183,7 +180,6 @@ class Panel(ScreenPanel):
             self.load_unload_enabled = True
         self.update_panels()
         self.update_filament_sensors(data)
-
 
 # The code below was copy and pasted from extruder.py, just added the "limit=4"
 
