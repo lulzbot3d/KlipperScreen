@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 import gi
+import time
 
 import netifaces
 
@@ -25,8 +26,10 @@ class BasePanel(ScreenPanel):
         self.ip = " "
         self.current_panel = None
         self.time_min = -1
+        self.time_hour = -1
         self.time_format = self._config.get_main_config().getboolean("24htime", True)
         self.time_update = None
+        self.ip_update = None
         self.battery_update = None
         self.titlebar_items = []
         self.titlebar_name_type = None
@@ -118,7 +121,7 @@ class BasePanel(ScreenPanel):
         self.titlebar.get_style_context().add_class("title_bar")
         self.titlebar.add(self.control['temp_box'])
         self.titlebar.add(self.titlelbl)
-        # self.titlebar.add(self.control['time_box'])
+        self.titlebar.add(self.control['time_box'])
         self.titlebar.add(self.control['ip_box'])
 
         # Main layout
@@ -136,6 +139,7 @@ class BasePanel(ScreenPanel):
             self.main_grid.attach(self.content, 1, 1, 1, 1)
 
         self.update_time()
+        self.update_ip()
 
     def load_battery_icons(self):
         img_size = self._gtk.img_scale * self.bts
@@ -240,7 +244,8 @@ class BasePanel(ScreenPanel):
     def activate(self):
         if self.time_update is None:
             self.time_update = GLib.timeout_add_seconds(1, self.update_time)
-            self.time_update = GLib.timeout_add_seconds(15, self.update_ip)
+        if self.ip_update is None:
+            self.ip_update = GLib.timeout_add_seconds(15, self.update_ip)
         if self.battery_update is None:
             self.battery_update = GLib.timeout_add_seconds(60, self.battery_percentage)
 
@@ -388,14 +393,16 @@ class BasePanel(ScreenPanel):
         self.titlelbl.set_label(f"{printer} {title}")
 
     def update_time(self):
+        time.tzset()
         now = datetime.now()
         confopt = self._config.get_main_config().getboolean("24htime", True)
-        if now.minute != self.time_min or self.time_format != confopt:
+        if now.minute != self.time_min or now.hour != self.time_hour or self.time_format != confopt:
             if confopt:
                 self.control['time'].set_text(f'{now:%H:%M }')
             else:
-                self.control['time'].set_text(f'{now:%I:%M %p}')
+                self.control['time'].set_text(f'{now:%-I:%M %p}'.upper())
             self.time_min = now.minute
+            self.time_hour = now.hour
             self.time_format = confopt
         return True
 
