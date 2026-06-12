@@ -394,7 +394,7 @@ class Panel(ScreenPanel):
                 self._screen._ws.klippy.gcode_script("Z_OFFSET_APPLY_PROBE")
             if device == "endstop":
                 self._screen._ws.klippy.gcode_script("Z_OFFSET_APPLY_ENDSTOP")
-            self._screen._ws.klippy.gcode_script("SAVE_CONFIG RESTART=0")  # Save config without restarting, if supported.
+            self._screen._ws.klippy.gcode_script("SAVE_CONFIG RESTART=0")  # Save config without restart if supported
 
     def restart(self, widget):
         if self.filename:
