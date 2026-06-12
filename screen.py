@@ -804,14 +804,15 @@ class KlipperScreen(Gtk.Window):
                 elif "unknown" in data.lower() and \
                         not ("TESTZ" in data or "MEASURE_AXES_NOISE" in data or "ACCELEROMETER_QUERY" in data):
                     self.show_popup_message(data)
-                elif "SAVE_CONFIG" in data and self.printer.state == "ready":
-                    script = {"script": "SAVE_CONFIG"}
-                    self._confirm_send_action(
-                        None,
-                        _("Save configuration?") + "\n\n" + _("Klipper will reboot"),
-                        "printer.gcode.script",
-                        script
-                    )
+                # Supress automatic save config popups so we can save z offset without restarting klipper.
+                # elif "SAVE_CONFIG" in data and self.printer.state == "ready":
+                #    script = {"script": "SAVE_CONFIG"}
+                #    self._confirm_send_action(
+                #        None,
+                #        _("Save configuration?") + "\n\n" + _("Klipper will reboot"),
+                #        "printer.gcode.script",
+                #        script
+                #    )
         self.process_update(action, data)
 
     def process_update(self, *args):
