@@ -480,7 +480,6 @@ class BasePanel(ScreenPanel):
                 ctx.remove_class(error)
                 self.titlelbl.set_label(f"{self._screen.state.printer_name}")
             return
-        '''
 
         if action == "notify_update_response":
             if self.update_dialog is None:
