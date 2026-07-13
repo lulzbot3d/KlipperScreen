@@ -5,6 +5,7 @@ import gi
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
+
 from ks_includes.KlippyGcodes import KlippyGcodes
 from ks_includes.screen_panel import ScreenPanel
 
@@ -40,6 +41,7 @@ class Panel(ScreenPanel):
             "z-": self._gtk.Button("arrow-down", "Z-", "color3"),
             "home": self._gtk.Button("home", _("Home"), "color4"),
             "motors_off": self._gtk.Button("motor-off", _("Disable Motors"), "color4"),
+            "switch_toolhead": self._gtk.Button("toolchanger", "", "color4"),
             'home-all': self._gtk.Button("home", _("Home All"), "color4")
         }
         self.buttons["x+"].connect("clicked", self.move, "X", "+")
@@ -58,47 +60,65 @@ class Panel(ScreenPanel):
             "printer.gcode.script",
             script,
         )
-        adjust = self._gtk.Button(
-            "settings", None, "color2", 1, Gtk.PositionType.LEFT, 1
-        )
+        self.buttons["switch_toolhead"].connect("clicked", self.switch_toolhead)
+        adjust = self._gtk.Button("settings", None, "color2", 1, Gtk.PositionType.LEFT, 1)
         adjust.connect("clicked", self.load_menu, "options", _("Settings"))
         adjust.set_hexpand(False)
         adjust.set_margin_top(15)
 
+
+        xm = "x-"
+        xp = "x+"
+        ym = "y-"
+        yp = "y+"
+        zm = "z-"
+        zp = "z+"
+
+        rotation = (
+            0 if self.ks_printer_cfg is None else self.ks_printer_cfg.getint("screw_rotation", 0)
+        )
+        if rotation == 90:
+            xm, yp, xp, ym = ym, xm, yp, xp
+        elif rotation == 180:
+            xm, yp, xp, ym = xp, ym, xm, yp
+        elif rotation == 270:
+            xm, yp, xp, ym = yp, xp, ym, xm
+
+        if self._config.get_config()["main"].getboolean("invert_z", False):
+            zm, zp = zp, zm
+
+        scale = self._gtk.img_scale * self._gtk.button_image_scale
+        self.buttons[xm].set_image(self._gtk.Image("arrow-left", scale, scale))
+        self.buttons[yp].set_image(self._gtk.Image("arrow-up", scale, scale))
+        self.buttons[xp].set_image(self._gtk.Image("arrow-right", scale, scale))
+        self.buttons[ym].set_image(self._gtk.Image("arrow-down", scale, scale))
+
         grid = Gtk.Grid(row_homogeneous=True, column_homogeneous=True)
         if self._screen.vertical_mode:
-            if self._screen.lang_ltr:
-                grid.attach(self.buttons["x+"], 2, 1, 1, 1)
-                grid.attach(self.buttons["x-"], 0, 1, 1, 1)
-                grid.attach(self.buttons["z+"], 2, 2, 1, 1)
-                grid.attach(self.buttons["z-"], 0, 2, 1, 1)
-            else:
-                grid.attach(self.buttons["x+"], 0, 1, 1, 1)
-                grid.attach(self.buttons["x-"], 2, 1, 1, 1)
-                grid.attach(self.buttons["z+"], 0, 2, 1, 1)
-                grid.attach(self.buttons["z-"], 2, 2, 1, 1)
+            grid.attach(self.buttons[xm], 0, 1, 1, 1)
+            grid.attach(self.buttons[xp], 2, 1, 1, 1)
+            grid.attach(self.buttons[ym], 1, 1, 1, 1)
+            grid.attach(self.buttons[yp], 1, 0, 1, 1)
+            grid.attach(self.buttons[zm], 0, 2, 1, 1)
+            grid.attach(self.buttons[zp], 2, 2, 1, 1)
             grid.attach(adjust, 1, 2, 1, 1)
-            grid.attach(self.buttons["y+"], 1, 0, 1, 1)
-            grid.attach(self.buttons["y-"], 1, 1, 1, 1)
-
         else:
-            if self._screen.lang_ltr:
-                grid.attach(self.buttons["x+"], 2, 1, 1, 1)
-                grid.attach(self.buttons["x-"], 0, 1, 1, 1)
-            else:
-                grid.attach(self.buttons["x+"], 2, 1, 1, 1)
-                grid.attach(self.buttons["x-"], 0, 1, 1, 1)
-            grid.attach(self.buttons["y+"], 0, 2, 1, 1)
-            grid.attach(self.buttons["y-"], 2, 0, 1, 1)
-            if self._config.get_config()["main"].getboolean("invert_z", False):
-                grid.attach(self.buttons["z+"], 1, 0, 1, 1)
-                grid.attach(self.buttons["z-"], 1, 2, 1, 1)
-            else:
-                grid.attach(self.buttons["z+"], 1, 0, 1, 1)
-                grid.attach(self.buttons["z-"], 1, 2, 1, 1)
+            grid.attach(self.buttons[xm], 0, 1, 1, 1)
+            grid.attach(self.buttons[xp], 2, 1, 1, 1)
+            grid.attach(self.buttons[ym], 1, 1, 1, 1)
+            grid.attach(self.buttons[yp], 1, 0, 1, 1)
+            grid.attach(self.buttons[zm], 3, 1, 1, 1)
+            grid.attach(self.buttons[zp], 3, 0, 1, 1)
 
         grid.attach(self.buttons["home"], 0, 0, 1, 1)
-        grid.attach(self.buttons["motors_off"], 2, 2, 1, 1)
+
+        has_dual_carriage = "dual_carriage" in self._printer.get_config_section_list()
+        has_t1 = "T1" in self._printer.available_commands
+        extra_button = self.buttons["motors_off"]
+        if has_dual_carriage and has_t1:
+            extra_button = self.buttons["switch_toolhead"]
+            self.set_toolhead_label()
+        grid.attach(extra_button, 2, 2, 1, 1)
         grid.attach(self.buttons['home-all'], 1, 1, 1, 1)
 
         distgrid = Gtk.Grid()
@@ -115,8 +135,12 @@ class Panel(ScreenPanel):
         distgrid.attach(adjust, 0, j + 1, 1, 1)
 
         for p in ("pos_x", "pos_y", "pos_z"):
-            self.labels[p] = Gtk.Label()
-        # self.labels["move_dist"] = Gtk.Label(label=_("Move Distance (mm)"))
+            self.labels[p] = self._gtk.Button()
+            self.labels[p].set_hexpand(False)
+            self.labels[p].set_vexpand(True)
+            self.labels[p].connect("clicked", self.menu_item_clicked, {"panel": "move_advanced"})
+            self.labels[p].get_style_context().add_class("no-margin")
+        self.labels["move_dist"] = Gtk.Label(label=_("Move Distance (mm)"))
 
         bottomgrid = Gtk.Grid(row_homogeneous=True, column_homogeneous=True)
         bottomgrid.set_size_request(200, 10)
@@ -208,9 +232,7 @@ class Panel(ScreenPanel):
         self.options = {}
         for option in configurable_options:
             name = list(option)[0]
-            self.options.update(
-                self.add_option("options", self.settings, name, option[name])
-            )
+            self.options.update(self.add_option("options", self.settings, name, option[name]))
 
     def reinit_panels(self, value):
         self._screen.panels_reinit.append("bed_level")
@@ -221,24 +243,34 @@ class Panel(ScreenPanel):
         self._screen.panels_reinit.append("zcalibrate")
         self.menu.clear()
 
+    def set_toolhead_label(self):
+        if "switch_toolhead" not in self.buttons:
+            return
+        current = self._printer.get_stat("toolhead", "extruder")
+        if current and current.startswith("extruder"):
+            t_num = current[8:] or "0"
+            self.buttons["switch_toolhead"].set_label(f"T{t_num}")
+
     def process_update(self, action, data):
         if action != "notify_status_update":
             return
+        if (
+            "toolhead" in data
+            and "extruder" in data["toolhead"]
+            and "switch_toolhead" in self.buttons
+        ):
+            self.set_toolhead_label()
         if "toolhead" in data and "max_velocity" in data["toolhead"]:
             max_vel = max(int(float(data["toolhead"]["max_velocity"])), 2)
             adj = self.options["move_speed_xy"].get_adjustment()
             adj.set_upper(max_vel)
-        if (
-            "gcode_move" in data
-            or "toolhead" in data
-            and "homed_axes" in data["toolhead"]
-        ):
+        if "gcode_move" in data or "toolhead" in data and "homed_axes" in data["toolhead"]:
             homed_axes = self._printer.get_stat("toolhead", "homed_axes")
             for i, axis in enumerate(("x", "y", "z")):
                 if axis not in homed_axes:
-                    self.labels[f"pos_{axis}"].set_text(f"{axis.upper()}: ?")
+                    self.labels[f"pos_{axis}"].set_label(f"{axis.upper()}: ?")
                 elif "gcode_move" in data and "gcode_position" in data["gcode_move"]:
-                    self.labels[f"pos_{axis}"].set_text(
+                    self.labels[f"pos_{axis}"].set_label(
                         f"{axis.upper()}: {data['gcode_move']['gcode_position'][i]:.2f}"
                     )
 
@@ -247,25 +279,18 @@ class Panel(ScreenPanel):
         self.labels[f"{self.distance}"].get_style_context().remove_class(
             "horizontal_togglebuttons_active"
         )
-        self.labels[f"{distance}"].get_style_context().add_class(
-            "horizontal_togglebuttons_active"
-        )
+        self.labels[f"{distance}"].get_style_context().add_class("horizontal_togglebuttons_active")
         self.distance = distance
 
     def move(self, widget, axis, direction):
         axis = axis.lower()
-        if (
-            self._config.get_config()["main"].getboolean(f"invert_{axis}", False)
-            and axis != "z"
-        ):
+        if self._config.get_config()["main"].getboolean(f"invert_{axis}", False) and axis != "z":
             direction = "-" if direction == "+" else "+"
 
         dist = f"{direction}{self.distance}"
         config_key = "move_speed_z" if axis == "z" else "move_speed_xy"
         speed = (
-            None
-            if self.ks_printer_cfg is None
-            else self.ks_printer_cfg.getint(config_key, None)
+            None if self.ks_printer_cfg is None else self.ks_printer_cfg.getint(config_key, None)
         )
         if speed is None:
             speed = self._config.get_config()["main"].getint(config_key, self.max_z_velocity)
@@ -273,7 +298,7 @@ class Panel(ScreenPanel):
         script = f"{KlippyGcodes.MOVE_RELATIVE}\nG0 {axis}{dist} F{speed}"
         self._screen._send_action(widget, "printer.gcode.script", {"script": script})
         if self._printer.get_stat("gcode_move", "absolute_coordinates"):
-            self._screen._ws.klippy.gcode_script("G90")
+            self._screen._ws.api.gcode_script("G90")
 
     def home(self, widget):
         if "delta" in self._printer.get_config_section("printer")["kinematics"]:
@@ -286,3 +311,9 @@ class Panel(ScreenPanel):
 
     def home_all(self, widget):
         self._screen._send_action(widget, "printer.gcode.script", {"script": 'G28'})
+
+    def switch_toolhead(self, widget):
+        current = self._printer.get_stat("toolhead", "extruder")
+        is_t1 = current and current.startswith("extruder1")
+        script = {"script": "T0" if is_t1 else "T1"}
+        self._screen._send_action(widget, "printer.gcode.script", script)
