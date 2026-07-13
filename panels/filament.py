@@ -62,10 +62,10 @@ class Panel(ScreenPanel):
         return loadunload
 
     def load_clicked(self, widget):
-        self._screen._ws.klippy.gcode_script("LOAD_FILAMENT")
+        self._screen._ws.api.gcode_script("LOAD_FILAMENT")
 
     def unload_clicked(self, widget):
-        self._screen._ws.klippy.gcode_script("UNLOAD_FILAMENT")
+        self._screen._ws.api.gcode_script("UNLOAD_FILAMENT")
 
     def create_preset_panel(self):
         # Buttons are defined in the init so they can be seen by the update routine
@@ -108,37 +108,37 @@ class Panel(ScreenPanel):
     def middle_button_clicked(self, widget):
         y_filament_change = float(self._printer.get_config_section('stepper_y')['position_min']) + 1.0
         if self._printer.get_stat("toolhead", "homed_axes") != "xyz":
-            self._screen._ws.klippy.gcode_script("G28")
+            self._screen._ws.api.gcode_script("G28")
         if self._printer.state == "printing":
-            self._screen._ws.klippy.gcode_script("PAUSE PARK=false")
-            self._screen._ws.klippy.gcode_script(f"G1 X30 Y{y_filament_change} F6000")
+            self._screen._ws.api.gcode_script("PAUSE PARK=false")
+            self._screen._ws.api.gcode_script(f"G1 X30 Y{y_filament_change} F6000")
         elif self._printer.state == "paused":
-            self._screen._ws.klippy.gcode_script(f"G1 X30 Y{y_filament_change} F6000")
+            self._screen._ws.api.gcode_script(f"G1 X30 Y{y_filament_change} F6000")
         else:
-            self._screen._ws.klippy.gcode_script("Park_Nozzle")
+            self._screen._ws.api.gcode_script("Park_Nozzle")
 
     def right_button_clicked(self, widget):
         if self.right_button_mode == "Pause":
-            self._screen._ws.klippy.gcode_script("PAUSE")
+            self._screen._ws.api.gcode_script("PAUSE")
         elif self.right_button_mode == "Resume":
-            self._screen._ws.klippy.gcode_script("RESUME")
+            self._screen._ws.api.gcode_script("RESUME")
         elif self.right_button_mode == "Cooldown":
-            self._screen._ws.klippy.gcode_script("SET_HEATER_TEMPERATURE HEATER=extruder TARGET=0")
-            self._screen._ws.klippy.gcode_script("SET_HEATER_TEMPERATURE HEATER=heater_bed TARGET=0")
+            self._screen._ws.api.gcode_script("SET_HEATER_TEMPERATURE HEATER=extruder TARGET=0")
+            self._screen._ws.api.gcode_script("SET_HEATER_TEMPERATURE HEATER=heater_bed TARGET=0")
         else:
             return
 
     def pre1_clicked(self, widget):
-        self._screen._ws.klippy.gcode_script(f"SET_HEATER_TEMPERATURE HEATER=extruder TARGET={self.presets_active[0]}")
+        self._screen._ws.api.gcode_script(f"SET_HEATER_TEMPERATURE HEATER=extruder TARGET={self.presets_active[0]}")
 
     def pre2_clicked(self, widget):
-        self._screen._ws.klippy.gcode_script(f"SET_HEATER_TEMPERATURE HEATER=extruder TARGET={self.presets_active[1]}")
+        self._screen._ws.api.gcode_script(f"SET_HEATER_TEMPERATURE HEATER=extruder TARGET={self.presets_active[1]}")
 
     def pre3_clicked(self, widget):
-        self._screen._ws.klippy.gcode_script(f"SET_HEATER_TEMPERATURE HEATER=extruder TARGET={self.presets_active[2]}")
+        self._screen._ws.api.gcode_script(f"SET_HEATER_TEMPERATURE HEATER=extruder TARGET={self.presets_active[2]}")
 
     def pre4_clicked(self, widget):
-        self._screen._ws.klippy.gcode_script(f"SET_HEATER_TEMPERATURE HEATER=extruder TARGET={self.presets_active[3]}")
+        self._screen._ws.api.gcode_script(f"SET_HEATER_TEMPERATURE HEATER=extruder TARGET={self.presets_active[3]}")
 
     def update_panels(self):
         ext_temp = self._printer.get_stat("extruder", "temperature")
@@ -208,13 +208,13 @@ class Panel(ScreenPanel):
 
     def enable_disable_fs(self, switch, gparams, name, x):
         if switch.get_active():
-            self._screen._ws.klippy.gcode_script(f"SET_FILAMENT_SENSOR SENSOR={name} ENABLE=1")
+            self._screen._ws.api.gcode_script(f"SET_FILAMENT_SENSOR SENSOR={name} ENABLE=1")
             if self._printer.get_stat(x, "filament_detected"):
                 self.labels[x]['box'].get_style_context().add_class("filament_sensor_detected")
             else:
                 self.labels[x]['box'].get_style_context().add_class("filament_sensor_empty")
         else:
-            self._screen._ws.klippy.gcode_script(f"SET_FILAMENT_SENSOR SENSOR={name} ENABLE=0")
+            self._screen._ws.api.gcode_script(f"SET_FILAMENT_SENSOR SENSOR={name} ENABLE=0")
             self.labels[x]['box'].get_style_context().remove_class("filament_sensor_empty")
             self.labels[x]['box'].get_style_context().remove_class("filament_sensor_detected")
 

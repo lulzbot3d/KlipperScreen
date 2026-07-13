@@ -219,20 +219,20 @@ class Panel(ScreenPanel):
         if self._printer.config_section_exists("bed_mesh"):
             self._screen._ws.api.gcode_script("BED_MESH_CLEAR")
         if self._printer.get_stat("toolhead", "homed_axes") != "xyz":
-            self._screen._ws.klippy.gcode_script("G28")
+            self._screen._ws.api.gcode_script("G28")
 
         mid_x, mid_y = self._lulzbot_get_probe_location()
         probe_x = mid_x - self.x_offset
         probe_y = mid_y - self.y_offset
         if command == "PROBE_CALIBRATE":
-            self._screen._ws.klippy.gcode_script(f'G28\nG0 X{probe_x} Y{probe_y} F3000\nG0 Z15')
+            self._screen._ws.api.gcode_script(f'G28\nG0 X{probe_x} Y{probe_y} F3000\nG0 Z15')
         elif command == "Z_ENDSTOP_CALIBRATE":
-            self._screen._ws.klippy.gcode_script(f'G28\nG0 X{mid_x} Y{mid_y} F3000\nG0 Z15')
+            self._screen._ws.api.gcode_script(f'G28\nG0 X{mid_x} Y{mid_y} F3000\nG0 Z15')
         elif command == "AXIS_TWIST_COMPENSATION_CALIBRATE":
-            self._screen._ws.klippy.gcode_script(f'G28')
+            self._screen._ws.api.gcode_script(f'G28')
         else:
             self._move_to_position(*self._get_calibration_location())
-        self._screen._ws.klippy.gcode_script(command)
+        self._screen._ws.api.gcode_script(command)
 
     def _move_to_position(self, x, y):
         if not x or not y:
