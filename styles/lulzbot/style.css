@@ -8,9 +8,9 @@
 window {background-image: url("/home/biqu/KlipperScreen/styles/lulzbot/Darker_Rocto_800_480.png");}
 
 
-/* This sets the buttons to be partly transparent so you can see the background image, 
+/* This sets the buttons to be partly transparent so you can see the background image,
    and rounds the border corners for buttons that have borders. */
-button {background-color: rgba(0,0,0,.45); border-radius:1em; border-style:none;} 
+button {background-color: rgba(0,0,0,.45); border-radius:1em; border-style:none;}
 
 
 /* This sets the background color of the button to LulzBot green while you are pressing it */
@@ -36,7 +36,7 @@ button.color3,
 button.color4 {
     margin: .2em;
     min-height: 0em;
-    border: .1em solid #c1d82f; 
+    border: .1em solid #c1d82f;
 }
 
 
@@ -81,7 +81,7 @@ button:disabled {
 .buttons_main_top {
     margin: .2em;
     min-height: 0em;
-    border: .1em solid #c1d82f; 
+    border: .1em solid #c1d82f;
 }
 .buttons_main_top label {
     font-size: 26;
@@ -98,16 +98,16 @@ button:disabled {
 .main_temp_off label {color: white;}
 
 .button_print {
-    border: .1em solid #c1d82f; 
+    border: .1em solid #c1d82f;
     /* background-color: rgba(54, 60, 13, .9); */
-    background-color: rgba(193, 216, 47, .5); 
+    background-color: rgba(193, 216, 47, .5);
 }
 .button_print label {
     font-size: 26;
 }
 
 .button_change {
-    border: .1em solid #c1d82f; 
+    border: .1em solid #c1d82f;
 }
 .button_change label {
     font-size: 26;
@@ -115,7 +115,7 @@ button:disabled {
 
 .buttons_main_left {
     min-height: 0em;
-    border: .1em solid #c1d82f; 
+    border: .1em solid #c1d82f;
 }
 .buttons_main_left label {
     font-size: 26;
@@ -123,7 +123,7 @@ button:disabled {
 
 /* Give keyboard keys green outline. */
 .keyboard_pad {
-    border: .1em solid #c1d82f; 
+    border: .1em solid #c1d82f;
 }
 
 .consolebutton_active,
@@ -132,7 +132,7 @@ consolebutton.active {
 }
 
 .button_more {
-    border: .1em solid #c1d82f; 
+    border: .1em solid #c1d82f;
     /* 134px is perfect to get three rows with the 4th not showing. */
     /* 130px will leave the top edge of row 4 showing a bit */
     min-height: 130px;
@@ -140,17 +140,27 @@ consolebutton.active {
 
 .buttons_toolheads {
     margin: .2em;
-    min-height: 0em;
+    min-height: 6em;
     border: .1em solid #c1d82f;
 }
 .buttons_toolheads label {
     font-size: 32;
 }
 
+.button_toolhead_selected {
+    margin: .2em;
+    min-height: 6em;
+    border: .1em solid #c1d82f;
+    background-color: rgba(193, 216, 47, .5);
+}
+.button_toolhead_selected label {
+    font-size: 32;
+}
+
 .buttons_filament_preset {
     margin: .2em;
     min-height: 0em;
-    border: .1em solid #c1d82f; 
+    border: .1em solid #c1d82f;
 }
 .buttons_filament_preset label{
     font-size: 23;
@@ -158,4 +168,26 @@ consolebutton.active {
     margin-top: .1em;
     margin-left: .1em;
     margin-right: .1em;
+}
+
+.timezone_top {
+    margin: .2em;
+    min-height: 1em;
+    font-size: 23;
+}
+
+.timezone_confirm {
+    margin: .5em;
+    min-height: 1.5em;
+    min-width: 6em;
+    border: .1em solid #c1d82f;
+    font-size: 23;
+    background-color: rgba(193, 216, 47, .3);
+    border-top-right-radius: .7em;
+    border-bottom-right-radius: .7em;
+    border-top-left-radius: .7em;
+    border-bottom-left-radius: .7em;
+}
+.timezone_confirm label {
+    font-size: 23;
 }

@@ -26,8 +26,14 @@ class Panel(ScreenPanel):
 
         # These buttons are defined here so they can be seen by the update routine
         self.ext_temp = self._gtk.Button('nozzle1', "°C", "color1", self.bts * 1.5, Gtk.PositionType.LEFT, 1)
-        self.right_button = self._gtk.Button(None, self.right_button_mode, "buttons_filament_preset",
-                                             self.bts * 1.5, Gtk.PositionType.LEFT, 1)
+        self.right_button = self._gtk.Button(
+            None,
+            self.right_button_mode,
+            "buttons_filament_preset",
+            self.bts * 1.5,
+            Gtk.PositionType.LEFT,
+            1,
+        )
         self.pre1 = self._gtk.Button(None, f"PLA, PVA, PVB = {self.presets_active[0]}°C", "buttons_filament_preset")
         self.pre2 = self._gtk.Button(None, f"TPU, Flexibles = {self.presets_active[1]}°C", "buttons_filament_preset")
         self.pre3 = self._gtk.Button(None, f"ABS, PETg, ASA = {self.presets_active[2]}°C", "buttons_filament_preset")
@@ -86,8 +92,14 @@ class Panel(ScreenPanel):
 
     def create_top_panel(self):
         # Some buttons are defined in the init so they can be seen by the update routine
-        self.middle_button = self._gtk.Button(None, "Park for Change", "buttons_filament_preset",
-                                              self.bts * 1.5, Gtk.PositionType.LEFT, 1)
+        self.middle_button = self._gtk.Button(
+            None,
+            "Park for Change",
+            "buttons_filament_preset",
+            self.bts * 1.5,
+            Gtk.PositionType.LEFT,
+            1,
+        )
 
         self.ext_temp.connect("clicked", self.menu_item_clicked, {"name": "Temperature", "panel": "temperature"})
         self.middle_button.connect("clicked", self.middle_button_clicked)
