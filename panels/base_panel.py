@@ -34,6 +34,7 @@ class BasePanel(ScreenPanel):
         self.time_hour = -1
         self.time_format = self._config.get_main_config().getboolean("24htime", True)
         self.time_update = None
+        self.ip_update = None
         self.battery_update = None
         self.spoolman_update = None
         self.titlebar_items = []
@@ -140,6 +141,7 @@ class BasePanel(ScreenPanel):
         self._build_main_grid()
 
         self.update_time()
+        self.update_ip()
 
     def _reconfigure_main_grid(self):
         self.main_grid.remove(self.titlebar)
