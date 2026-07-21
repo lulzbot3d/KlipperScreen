@@ -61,7 +61,7 @@ class Panel(ScreenPanel):
             script,
         )
         self.buttons["switch_toolhead"].connect("clicked", self.switch_toolhead)
-        adjust = self._gtk.Button("settings", None, "color2", 1, Gtk.PositionType.LEFT, 1)
+        adjust = self._gtk.Button("SpeedOMeter", None, "color2", 1, Gtk.PositionType.LEFT, 1)
         adjust.connect("clicked", self.load_menu, "options", _("Settings"))
         adjust.set_hexpand(False)
         adjust.set_margin_top(15)
