@@ -38,11 +38,11 @@ class Panel(ScreenPanel):
     def activate(self):
         if self._printer is not None and self._printer.data:
             self.process_update("notify_status_update", self._printer.data)
-        if self._screen.apiclient is not None:
+        if self._screen.restApi is not None:
             GLib.idle_add(self.query_save_variables)
 
     def query_save_variables(self):
-        data = self._screen.apiclient.send_request("printer/objects/query?save_variables")
+        data = self._screen.restApi.send_request("printer/objects/query?save_variables")
         if data and 'result' in data and 'status' in data['result']:
             self.process_update("notify_status_update", data['result']['status'])
         return False
@@ -53,7 +53,7 @@ class Panel(ScreenPanel):
         if name in ("MET175", "MET285"):
             self.update_selection(name)
 
-        if self._screen.apiclient is not None:
+        if self._screen.restApi is not None:
             GLib.timeout_add_seconds(1, self.query_save_variables)
 
     def process_update(self, action, data):
