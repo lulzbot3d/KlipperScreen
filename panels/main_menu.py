@@ -42,7 +42,7 @@ class Panel(MenuPanel):
 
         self.labels['menu'] = self.arrangeMenuItems(items, 2, True)
         self.scroll.add(self.labels['menu'])
-        self.main_menu.attach(scroll, 1, 1, 1, 1)
+        self.main_menu.attach(self.scroll, 1, 1, 1, 1)
 
         for child in self.labels['menu'].get_children():
             child.get_style_context().add_class("buttons_main_left")

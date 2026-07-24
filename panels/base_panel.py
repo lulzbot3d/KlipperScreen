@@ -105,7 +105,7 @@ class BasePanel(ScreenPanel):
         self.control["time_box"] = Gtk.Box(halign=Gtk.Align.END)
         self.control["time_box"].pack_end(self.control["time"], True, True, 10)
 
-        self.control["ip_box'] = Gtk.Box()
+        self.control["ip_box"] = Gtk.Box()
         self.control["ip"] = Gtk.Label(label=self.ip)
         self.control["ip_box"].set_halign(Gtk.Align.END)
         self.control["ip_box"].pack_end(self.control["ip"], True, True, 10)
