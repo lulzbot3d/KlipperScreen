@@ -11,7 +11,7 @@ from ks_includes.widgets.combo import ComboBoxPlus
 
 class Panel(ScreenPanel):
     widgets = {}
-    distances = [".005', ".01", ".05", ".1", ".5", "1", "5"]
+    distances = [".005", ".01", ".05", ".1", ".5", "1", "5"]
     distance = distances[-2]
 
     def __init__(self, screen, title):
