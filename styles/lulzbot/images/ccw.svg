@@ -5,7 +5,7 @@
    viewBox="0 0 64 64"
    version="1.1"
    id="svg10"
-   sodipodi:docname="bed-level-t-m.svg"
+   sodipodi:docname="ccw.svg"
    inkscape:version="1.3.2 (091e20ef0f, 2023-11-25, custom)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -38,57 +38,56 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1600"
-     inkscape:window-height="855"
+     inkscape:window-height="827"
      id="namedview12"
      showgrid="false"
      inkscape:pagecheckerboard="false"
-     inkscape:zoom="6.5738834"
-     inkscape:cx="22.056978"
-     inkscape:cy="25.175378"
+     inkscape:zoom="7.6562596"
+     inkscape:cx="28.995882"
+     inkscape:cy="29.453024"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g1628"
+     inkscape:current-layer="svg10"
      inkscape:snap-bbox="true"
-     inkscape:snap-bbox-edge-midpoints="false"
+     inkscape:snap-bbox-edge-midpoints="true"
      inkscape:document-rotation="0"
      inkscape:snap-bbox-midpoints="true"
-     showguides="true"
-     inkscape:guide-bbox="true"
+     inkscape:snap-intersection-paths="true"
+     inkscape:snap-midpoints="true"
+     inkscape:snap-smooth-nodes="true"
+     inkscape:snap-object-midpoints="true"
+     inkscape:snap-center="true"
+     inkscape:bbox-nodes="true"
+     inkscape:bbox-paths="true"
      inkscape:showpageshadow="0"
-     inkscape:deskcolor="#d1d1d1">
-    <sodipodi:guide
-       position="4.194958,54"
-       orientation="0,1"
-       id="guide825"
-       inkscape:label=""
-       inkscape:locked="false"
-       inkscape:color="rgb(0,0,255)" />
-  </sodipodi:namedview>
+     inkscape:deskcolor="#d1d1d1" />
   <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
   <title
      id="title2">folder</title>
   <desc
      id="desc4">Created with Sketch.</desc>
   <g
-     id="g1628"
-     transform="matrix(-0.33899393,0,0,-0.34194017,74.84367,19.316237)"
-     style="stroke-width:2.93717">
+     id="g1"
+     transform="translate(1.2631795)">
     <path
-       style="fill:none;stroke:#ffffff;stroke-width:8.81151;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 166.58418,27.245236 H 86.185318"
-       id="path1608"
-       sodipodi:nodetypes="cc" />
-    <g
-       id="g1628-3"
-       transform="translate(-20.689224,-17.968191)"
-       style="stroke-width:2.93717">
-      <circle
-         style="opacity:0.995;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:8.81151;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
-         id="path1623"
-         cx="147.07397"
-         cy="-11.74843"
-         r="16" />
-    </g>
+       sodipodi:nodetypes="ccc"
+       inkscape:connector-curvature="0"
+       id="path4710-2-1"
+       d="m 4.3403339,31.365635 5.187416,7.118657 5.0236311,-7.118657 z"
+       style="display:inline;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:2.73127;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
+       id="path853"
+       sodipodi:type="arc"
+       sodipodi:cx="33"
+       sodipodi:cy="32"
+       sodipodi:rx="23.5"
+       sodipodi:ry="23.5"
+       sodipodi:start="3.1415927"
+       sodipodi:end="2.3561945"
+       sodipodi:arc-type="arc"
+       sodipodi:open="true"
+       d="M 9.5,32 A 23.5,23.5 0 0 1 28.415378,8.9515457 23.5,23.5 0 0 1 54.711169,23.00694 23.5,23.5 0 0 1 46.0559,51.539536 23.5,23.5 0 0 1 16.38299,48.617009" />
   </g>
 </svg>
