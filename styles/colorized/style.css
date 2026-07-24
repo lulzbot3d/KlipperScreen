@@ -89,7 +89,7 @@ button.update:active,
 button.invalid:active,
 .dialog button:active {
     border-style: none;
-    margin-top: .5em;
+    margin-top: .6em;
 }
 
 button.active {
@@ -115,7 +115,6 @@ button.invalid {
 menu,
 menuitem,
 combobox button,
-combobox arrow,
 combobox menuitem,
 popover,
 popover button {

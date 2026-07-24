@@ -81,6 +81,7 @@ button.update:active,
 button.invalid:active,
 .dialog button:active {
     border-style: none;
+    margin-top: 0.6em;
 }
 
 button.update,
@@ -102,7 +103,6 @@ button.invalid {
 menu,
 menuitem,
 combobox button,
-combobox arrow,
 combobox menuitem {
     background-color: @active-dark;
     border-color: @bg;

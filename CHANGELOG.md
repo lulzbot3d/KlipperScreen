@@ -4,6 +4,22 @@ Probably all versions contain changes regarding documentation, translation, fixe
 
 ## Current master
 
+* add support to use Unix socket for lower overhead on local instances
+* improve the gcode file list load speed (tests show 100x faster on remote instances)
+* show z in bed_level
+* panel to query_endstops and move to absolute positions
+* configurable action-bar shortcut (instead of just macros)
+* network interface selector includes wired connections
+* add a shortcut from titlebar item to respective panels (temp/spoolman)
+* add a configurable screensaver delay for slow to wake displays
+* render multi-color spools (Spoolman multi_color_hexes) as a gradient in the spoolman icon, instead of black
+
+## v0.4.7  (May 13, 2026)
+
+* add a spool edit panel for spoolman
+* add option to add spool weight into the titlebar (spoolman required)
+* add a wifi interface selector in the network panel
+* option to use keyboard navigation
 * allow starting in locked state
 * option to auto-lock the screen
 * if printer power_devices in ks config add shortcut to shutdown panel

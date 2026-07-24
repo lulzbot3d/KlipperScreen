@@ -89,7 +89,7 @@ button.update:focus,
 button.invalid:focus,
 .dialog button:focus
 {
-    outline: .1em dashed @solarized-orange;
+    outline: .1em dashed @active;
     outline-offset: .1em;
 }
 
@@ -101,6 +101,8 @@ button.update:active,
 button.invalid:active,
 .dialog button:active {
     border-style: none;
+    margin-top: 0.6em;
+    box-shadow: 0 0;
 }
 
 button.active {

@@ -8,17 +8,27 @@ import logging
 import gi
 
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk, GLib
+from gi.repository import GLib, Gtk
+
+from ks_includes.KlippyGtk import find_widget
+from ks_includes.widgets.heatergraph import HeaterGraph
+from ks_includes.widgets.keypad import Keypad
 from panels.menu import Panel as MenuPanel
 
 
 class Panel(MenuPanel):
     def __init__(self, screen, title, items=None):
         super().__init__(screen, title, items)
-        self.main_menu = Gtk.Grid()
-        self.main_menu.set_hexpand(True)
-        self.main_menu.set_vexpand(True)
-        scroll = self._gtk.ScrolledWindow()
+        self.left_panel = None
+        self.devices = {}
+        self.graph_update = None
+        self.active_heater = None
+        self.h = self.f = 0
+        self.main_menu = Gtk.Grid(
+            row_homogeneous=True, column_homogeneous=True, hexpand=True, vexpand=True
+        )
+        self.menu_scroll = self._gtk.ScrolledWindow()
+        self.numpad_visible = False
 
         logging.info("### Making Lulzbot MainMenu")
 
@@ -31,7 +41,7 @@ class Panel(MenuPanel):
         self.main_menu.attach(self.top_panel, 0, 0, 3, 1)
 
         self.labels['menu'] = self.arrangeMenuItems(items, 2, True)
-        scroll.add(self.labels['menu'])
+        self.scroll.add(self.labels['menu'])
         self.main_menu.attach(scroll, 1, 1, 1, 1)
 
         for child in self.labels['menu'].get_children():
