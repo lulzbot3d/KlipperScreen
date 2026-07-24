@@ -64,7 +64,7 @@ class Panel(ScreenPanel):
             script,
         )
         self.buttons["switch_toolhead"].connect("clicked", self.switch_toolhead)
-        adjust = self._gtk.Button("settings", None, "color2", 1, Gtk.PositionType.LEFT, 1)
+        adjust = self._gtk.Button("SpeedOMeter", None, "color2", 1, Gtk.PositionType.LEFT, 1)
         adjust.connect("clicked", self.load_menu, "options", _("Settings"))
         adjust.set_hexpand(False)
         adjust.set_margin_top(15)
@@ -108,11 +108,12 @@ class Panel(ScreenPanel):
             grid.attach(self.buttons[xp], 2, 1, 1, 1)
             grid.attach(self.buttons[xm], 0, 1, 1, 1)
             grid.attach(self.buttons[yp], 0, 2, 1, 1)
-            grid.attach(self.buttons[ym], 0, 2, 1, 1)
+            grid.attach(self.buttons[ym], 2, 0, 1, 1)
             grid.attach(self.buttons[zp], 1, 0, 1, 1)
             grid.attach(self.buttons[zm], 1, 2, 1, 1)
 
         grid.attach(self.buttons["home"], 0, 0, 1, 1)
+        grid.attach(self.buttons['home-all'], 1, 1, 1, 1)
 
         has_dual_carriage = "dual_carriage" in self._printer.get_config_section_list()
         has_t1 = "T1" in self._printer.available_commands
