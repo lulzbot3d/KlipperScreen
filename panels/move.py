@@ -139,15 +139,14 @@ class Panel(ScreenPanel):
         for p in ("pos_x", "pos_y", "pos_z"):
             self.labels[p] = self._gtk.Button()
             self.labels[p].set_hexpand(False)
-            self.labels[p].set_vexpand(True)
+            self.labels[p].set_vexpand(False)
             self.labels[p].connect("clicked", self.menu_item_clicked, {"panel": "move_advanced"})
             self.labels[p].get_style_context().add_class("no-margin")
-        # self.labels["move_dist"] = Gtk.Label(label=_("Move Distance (mm)"))
+        self.labels["move_dist"] = Gtk.Label(label=_("Move Distance (mm)"))
 
-        bottomgrid = Gtk.Grid(column_homogeneous=True)
-        bottomgrid.set_row_spacing(0)
-        bottomgrid.get_style_context().add_class("no-margin")
-        bottomgrid.get_style_context().add_class("no-padding")
+        bottomgrid = Gtk.Grid(row_homogeneous=True, column_homogeneous=True)
+        bottomgrid.set_size_request(200, 10)
+        bottomgrid.set_direction(Gtk.TextDirection.LTR)
         bottomgrid.attach(self.labels["pos_x"], 0, 0, 1, 1)
         bottomgrid.attach(self.labels["pos_y"], 1, 0, 1, 1)
         bottomgrid.attach(self.labels["pos_z"], 2, 0, 1, 1)
@@ -155,7 +154,8 @@ class Panel(ScreenPanel):
         # if not self._screen.vertical_mode:
         #    bottomgrid.attach(adjust, 3, 0, 1, 2)
 
-        self.labels["move_menu"] = Gtk.Grid(row_homogeneous=True, column_homogeneous=True)
+        self.labels["move_menu"] = Gtk.Grid()
+        #    row_homogeneous=True, column_homogeneous=True
         self.labels["move_menu"].attach(grid, 0, 0, 2, 5)
         self.labels["move_menu"].attach(bottomgrid, 0, 5, 2, 1)
         self.labels["move_menu"].attach(distgrid, 3, 0, 1, 7)
