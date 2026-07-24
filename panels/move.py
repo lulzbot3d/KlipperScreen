@@ -107,13 +107,15 @@ class Panel(ScreenPanel):
         else:
             grid.attach(self.buttons[xp], 2, 1, 1, 1)
             grid.attach(self.buttons[xm], 0, 1, 1, 1)
-            grid.attach(self.buttons[yp], 0, 2, 1, 1)
-            grid.attach(self.buttons[ym], 2, 0, 1, 1)
-            grid.attach(self.buttons[zp], 1, 0, 1, 1)
-            grid.attach(self.buttons[zm], 1, 2, 1, 1)
+            grid.attach(self.buttons[yp], 1, 0, 1, 1)
+            grid.attach(self.buttons[ym], 1, 2, 1, 1)
+            grid.attach(self.buttons[zp], 2, 2, 1, 1)
+            grid.attach(self.buttons[zm], 2, 0, 1, 1)
 
-        grid.attach(self.buttons["home"], 0, 0, 1, 1)
-        grid.attach(self.buttons['home-all'], 1, 1, 1, 1)
+        grid.attach(self.buttons["home"], 1, 1, 1, 1)
+        grid.attach(self.buttons["motors_off"], 0, 0, 1, 1)
+        # grid.attach(self.buttons['home-all'], 1, 1, 1, 1)
+        grid.attach(self.buttons['bed-down'], 0, 2, 1, 1)
 
         has_dual_carriage = "dual_carriage" in self._printer.get_config_section_list()
         has_t1 = "T1" in self._printer.available_commands
