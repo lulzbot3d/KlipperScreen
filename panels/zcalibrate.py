@@ -229,11 +229,11 @@ class Panel(ScreenPanel):
         probe_x = mid_x - self.x_offset
         probe_y = mid_y - self.y_offset
         if command == "PROBE_CALIBRATE":
-            self._screen._ws.klippy.gcode_script(f'G28\nG0 X{probe_x} Y{probe_y} F3000\nG0 Z15')
+            self._screen._ws.api.gcode_script(f'G28\nG0 X{probe_x} Y{probe_y} F3000\nG0 Z15')
         elif command == "Z_ENDSTOP_CALIBRATE":
-            self._screen._ws.klippy.gcode_script(f'G28\nG0 X{mid_x} Y{mid_y} F3000\nG0 Z15')
+            self._screen._ws.api.gcode_script(f'G28\nG0 X{mid_x} Y{mid_y} F3000\nG0 Z15')
         elif command == "AXIS_TWIST_COMPENSATION_CALIBRATE":
-            self._screen._ws.klippy.gcode_script(f'G28')
+            self._screen._ws.api.gcode_script(f'G28')
         else:
             self._move_to_position(*self._get_calibration_location())
         self._screen._ws.api.gcode_script(command)

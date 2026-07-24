@@ -134,6 +134,6 @@ class Panel(MenuPanel):
         return right
 
     def preheat_clicked(self, widget):
-        self._screen._ws.klippy.gcode_script("SET_HEATER_TEMPERATURE HEATER=extruder TARGET=180")
-        self._screen._ws.klippy.gcode_script("SET_HEATER_TEMPERATURE HEATER=heater_bed TARGET=60")
+        self._screen._ws.api.gcode_script("SET_HEATER_TEMPERATURE HEATER=extruder TARGET=180")
+        self._screen._ws.api.gcode_script("SET_HEATER_TEMPERATURE HEATER=heater_bed TARGET=60")
         return

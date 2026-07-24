@@ -521,7 +521,7 @@ class Panel(ScreenPanel):
     def close_panel(self, widget=None):
         if self.can_close:
             if "LED_STATUS_ON" in self._printer.available_commands:
-                self._screen._ws.klippy.gcode_script("LED_STATUS_ON")
+                self._screen._ws.api.gcode_script("LED_STATUS_ON")
             logging.debug("Closing job_status panel")
             self._screen.state_ready(wait=False)
 

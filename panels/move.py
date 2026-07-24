@@ -55,7 +55,6 @@ class Panel(ScreenPanel):
         self.buttons["home"].connect("clicked", self.home)
         self.buttons['home-all'].connect("clicked", self.home_all)
         self.buttons['bed-down'].connect("clicked", self.bed_down)
-
         script = {"script": "M18"}
         self.buttons["motors_off"].connect(
             "clicked",
@@ -108,10 +107,10 @@ class Panel(ScreenPanel):
         else:
             grid.attach(self.buttons[xp], 2, 1, 1, 1)
             grid.attach(self.buttons[xm], 0, 1, 1, 1)
-            grid.attach(self.buttons[yp], 1, 0, 1, 1)
-            grid.attach(self.buttons[ym], 1, 2, 1, 1)
-            grid.attach(self.buttons[zp], 2, 2, 1, 1)
-            grid.attach(self.buttons[zm], 2, 0, 1, 1)
+            grid.attach(self.buttons[yp], 0, 2, 1, 1)
+            grid.attach(self.buttons[ym], 0, 2, 1, 1)
+            grid.attach(self.buttons[zp], 1, 0, 1, 1)
+            grid.attach(self.buttons[zm], 1, 2, 1, 1)
 
         grid.attach(self.buttons["home"], 0, 0, 1, 1)
 
@@ -121,7 +120,7 @@ class Panel(ScreenPanel):
         if has_dual_carriage and has_t1:
             extra_button = self.buttons["switch_toolhead"]
             self.set_toolhead_label()
-        grid.attach(extra_button, 2, 0, 1, 1)
+        grid.attach(extra_button, 2, 2, 1, 1)
 
         distgrid = Gtk.Grid()
         distgrid.set_margin_left(20)
@@ -142,7 +141,7 @@ class Panel(ScreenPanel):
             self.labels[p].set_vexpand(True)
             self.labels[p].connect("clicked", self.menu_item_clicked, {"panel": "move_advanced"})
             self.labels[p].get_style_context().add_class("no-margin")
-        self.labels["move_dist"] = Gtk.Label(label=_("Move Distance (mm)"))
+        # self.labels["move_dist"] = Gtk.Label(label=_("Move Distance (mm)"))
 
         bottomgrid = Gtk.Grid(column_homogeneous=True)
         bottomgrid.set_row_spacing(0)
@@ -156,9 +155,9 @@ class Panel(ScreenPanel):
         #    bottomgrid.attach(adjust, 3, 0, 1, 2)
 
         self.labels["move_menu"] = Gtk.Grid(row_homogeneous=True, column_homogeneous=True)
-        self.labels["move_menu"].attach(grid, 0, 0, 1, 3)
-        self.labels["move_menu"].attach(bottomgrid, 0, 3, 1, 1)
-        self.labels["move_menu"].attach(distgrid, 0, 4, 1, 1)
+        self.labels["move_menu"].attach(grid, 0, 0, 2, 5)
+        self.labels["move_menu"].attach(bottomgrid, 0, 5, 2, 1)
+        self.labels["move_menu"].attach(distgrid, 3, 0, 1, 7)
 
         self.content.add(self.labels["move_menu"])
 
@@ -172,38 +171,38 @@ class Panel(ScreenPanel):
             self.max_z_velocity = max_velocity
 
         configurable_options = [
-            {
-                "invert_x": {
-                    "section": "main",
-                    "name": _("Invert X"),
-                    "type": "binary",
-                    "tooltip": _("This will affect screw positions and mesh graph"),
-                    "value": "False",
-                    "callback": self.reinit_panels,
-                }
-            },
-            {
-                "invert_y": {
-                    "section": "main",
-                    "name": _("Invert Y"),
-                    "type": "binary",
-                    "tooltip": _("This will affect screw positions and mesh graph"),
-                    "value": "False",
-                    "callback": self.reinit_panels,
-                }
-            },
-            {
-                "invert_z": {
-                    "section": "main",
-                    "name": _("Invert Z"),
-                    "tooltip": _(
-                        "Swaps buttons if they are on top of each other, affects other panels"
-                    ),
-                    "type": "binary",
-                    "value": "False",
-                    "callback": self.reinit_move,
-                }
-            },
+            #{
+            #    "invert_x": {
+            #        "section": "main",
+            #        "name": _("Invert X"),
+            #        "type": "binary",
+            #        "tooltip": _("This will affect screw positions and mesh graph"),
+            #        "value": "False",
+            #        "callback": self.reinit_panels,
+            #    }
+            #},
+            #{
+            #    "invert_y": {
+            #        "section": "main",
+            #        "name": _("Invert Y"),
+            #        "type": "binary",
+            #        "tooltip": _("This will affect screw positions and mesh graph"),
+            #        "value": "False",
+            #        "callback": self.reinit_panels,
+            #    }
+            #},
+            #{
+            #    "invert_z": {
+            #        "section": "main",
+            #        "name": _("Invert Z"),
+            #        "tooltip": _(
+            #            "Swaps buttons if they are on top of each other, affects other panels"
+            #        ),
+            #        "type": "binary",
+            #        "value": "False",
+            #        "callback": self.reinit_move,
+            #    }
+            #},
             {
                 "move_speed_xy": {
                     "section": "main",
